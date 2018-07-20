@@ -19,7 +19,8 @@ const createOriginMiddleware = require('./lib/createOriginMiddleware')
 const createLoggerMiddleware = require('./lib/createLoggerMiddleware')
 const createProviderMiddleware = require('./lib/createProviderMiddleware')
 const setupMultiplex = require('./lib/stream-utils.js').setupMultiplex
-const KeyringController = require('eth-keyring-controller')
+// const KeyringController = require('eth-keyring-controller')
+const ArgentKeyringController = require('./controllers/argent-keyring-controller')
 const NetworkController = require('./controllers/network')
 const PreferencesController = require('./controllers/preferences')
 const CurrencyController = require('./controllers/currency')
@@ -32,7 +33,8 @@ const RecentBlocksController = require('./controllers/recent-blocks')
 const MessageManager = require('./lib/message-manager')
 const PersonalMessageManager = require('./lib/personal-message-manager')
 const TypedMessageManager = require('./lib/typed-message-manager')
-const TransactionController = require('./controllers/transactions')
+// const TransactionController = require('./controllers/transactions')
+const ArgentTransactionController = require('./controllers/transactions/argent-transaction-controller')
 const BalancesController = require('./controllers/computed-balances')
 const TokenRatesController = require('./controllers/token-rates')
 const ConfigManager = require('./lib/config-manager')
@@ -124,10 +126,12 @@ module.exports = class MetamaskController extends EventEmitter {
     })
 
     // key mgmt
-    this.keyringController = new KeyringController({
-      initState: initState.KeyringController,
+    // this.keyringController = new KeyringController({
+    this.keyringController = new ArgentKeyringController({
+      initState: initState.ArgentKeyringController,
       getNetwork: this.networkController.getNetworkState.bind(this.networkController),
       encryptor: opts.encryptor || undefined,
+      provider: this.provider,
     })
 
     // If only one account exists, make sure it is selected.
@@ -151,13 +155,17 @@ module.exports = class MetamaskController extends EventEmitter {
     })
 
     // tx mgmt
-    this.txController = new TransactionController({
-      initState: initState.TransactionController || initState.TransactionManager,
+    const getAccounts = this.keyringController.getAccounts.bind(this.keyringController)
+    // this.txController = new TransactionController({
+    this.txController = new ArgentTransactionController({
+      initState: initState.ArgentTransactionController || initState.TransactionManager,
       networkStore: this.networkController.networkStore,
       preferencesStore: this.preferencesController.store,
       txHistoryLimit: 40,
       getNetwork: this.networkController.getNetworkState.bind(this),
-      signTransaction: this.keyringController.signTransaction.bind(this.keyringController),
+      // signTransaction: this.keyringController.signTransaction.bind(this.keyringController),
+      signMessage: this.keyringController.signMessage.bind(this.keyringController),
+      getWalletAddress: () => getAccounts().then(accounts => accounts[0]),
       provider: this.provider,
       blockTracker: this.blockTracker,
       getGasPrice: this.getGasPrice.bind(this),
@@ -193,8 +201,10 @@ module.exports = class MetamaskController extends EventEmitter {
     this.publicConfigStore = this.initPublicConfigStore()
 
     this.store.updateStructure({
-      TransactionController: this.txController.store,
-      KeyringController: this.keyringController.store,
+      // TransactionController: this.txController.store,
+      ArgentTransactionController: this.txController.store,
+      // KeyringController: this.keyringController.store,
+      ArgentKeyringController: this.keyringController.store,
       PreferencesController: this.preferencesController.store,
       AddressBookController: this.addressBookController.store,
       CurrencyController: this.currencyController.store,
@@ -213,7 +223,8 @@ module.exports = class MetamaskController extends EventEmitter {
       MessageManager: this.messageManager.memStore,
       PersonalMessageManager: this.personalMessageManager.memStore,
       TypesMessageManager: this.typedMessageManager.memStore,
-      KeyringController: this.keyringController.memStore,
+      // KeyringController: this.keyringController.memStore,
+      ArgentKeyringController: this.keyringController.memStore,
       PreferencesController: this.preferencesController.store,
       RecentBlocksController: this.recentBlocksController.store,
       AddressBookController: this.addressBookController.store,
@@ -373,7 +384,8 @@ module.exports = class MetamaskController extends EventEmitter {
 
       // KeyringController
       setLocked: nodeify(keyringController.setLocked, keyringController),
-      createNewVaultAndKeychain: nodeify(this.createNewVaultAndKeychain, this),
+      // createNewVaultAndKeychain: nodeify(this.createNewVaultAndKeychain, this),
+      createNewVault: nodeify(this.createNewVault, this),
       createNewVaultAndRestore: nodeify(this.createNewVaultAndRestore, this),
       addNewKeyring: nodeify(keyringController.addNewKeyring, keyringController),
       exportAccount: nodeify(keyringController.exportAccount, keyringController),
@@ -424,7 +436,28 @@ module.exports = class MetamaskController extends EventEmitter {
    *
    * @returns {Object} vault
    */
-  async createNewVaultAndKeychain (password) {
+  // async createNewVaultAndKeychain (password) {
+  //   const releaseLock = await this.createVaultMutex.acquire()
+  //   try {
+  //     let vault
+  //     const accounts = await this.keyringController.getAccounts()
+  //     if (accounts.length > 0) {
+  //       vault = await this.keyringController.fullUpdate()
+  //     } else {
+  //       vault = await this.keyringController.createNewVaultAndKeychain(password)
+  //       const accounts = await this.keyringController.getAccounts()
+  //       this.preferencesController.setAddresses(accounts)
+  //       this.selectFirstIdentity()
+  //     }
+  //     releaseLock()
+  //     return vault
+  //   } catch (err) {
+  //     releaseLock()
+  //     throw err
+  //   }
+  // }
+
+  async createNewVault (ens, password) {
     const releaseLock = await this.createVaultMutex.acquire()
     try {
       let vault
@@ -432,7 +465,7 @@ module.exports = class MetamaskController extends EventEmitter {
       if (accounts.length > 0) {
         vault = await this.keyringController.fullUpdate()
       } else {
-        vault = await this.keyringController.createNewVaultAndKeychain(password)
+        vault = await this.keyringController.createNewVault(ens, password)
         const accounts = await this.keyringController.getAccounts()
         this.preferencesController.setAddresses(accounts)
         this.selectFirstIdentity()

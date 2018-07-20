@@ -44,8 +44,18 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
 
     h('.initialize-screen.flex-column.flex-center.flex-grow', [
 
-      h(Mascot, {
-        animationEventEmitter: this.animationEventEmitter,
+      // h(Mascot, {
+      //   animationEventEmitter: this.animationEventEmitter,
+      // }),
+
+      h('img', {
+        height: 128,
+        width: 128,
+        src: './images/argent.png',
+        style: {
+          marginBottom: 20,
+          marginTop: 30,
+        }
       }),
 
       h('h1', {
@@ -53,10 +63,11 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
           fontSize: '1.3em',
           textTransform: 'uppercase',
           color: '#7F8082',
-          marginBottom: 10,
+          marginBottom: 20,
+          marginTop: 20,
         },
-      }, 'MetaMask'),
-
+      // }, 'MetaMask'),
+      }, 'Argent-Connect'),
 
       h('div', [
         h('h3', {
@@ -65,10 +76,49 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
             color: '#7F8082',
             display: 'inline',
           },
-        }, 'Encrypt your new DEN'),
+        }, 'Enter your Argent ENS'),
 
         h(Tooltip, {
-          title: 'Your DEN is your password-encrypted storage within MetaMask.',
+          title: 'Reserve your free Argent ENS Name by installing Argent mobile app.',
+        }, [
+          h('i.fa.fa-question-circle.pointer', {
+            style: {
+              fontSize: '18px',
+              position: 'relative',
+              color: 'rgb(247, 134, 28)',
+              top: '2px',
+              marginLeft: '4px',
+            },
+          }),
+        ]),
+      ]),
+
+
+      h('input.large-input.letter-spacey', {
+        type: 'text',
+        id: 'ens-box',
+        placeholder: 'olivier.argent.test',
+        onInput: this.inputChanged.bind(this),
+        style: {
+          width: 260,
+          marginTop: 12,
+          marginBottom: 20,
+        },
+      }),
+
+      h('div', [
+        h('h3', {
+          style: {
+            fontSize: '0.8em',
+            color: '#7F8082',
+            display: 'inline',
+          },
+        // }, 'Encrypt your new DEN'),
+        }, 'Encrypt your new browser key'),
+
+        h(Tooltip, {
+          // title: 'Your DEN is your password-encrypted storage within MetaMask.',
+          title: 'Argent-Connect generates a new browser key to control your wallet. You can revoke that key at any time.',
         }, [
           h('i.fa.fa-question-circle.pointer', {
             style: {
@@ -111,22 +161,24 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
 
 
       h('button.primary', {
-        onClick: this.createNewVaultAndKeychain.bind(this),
+        // onClick: this.createNewVaultAndKeychain.bind(this),
+        // here is oldie
+        onClick: this.createNewVault.bind(this),
         style: {
           margin: 12,
         },
       }, 'Create'),
 
-      h('.flex-row.flex-center.flex-grow', [
-        h('p.pointer', {
-          onClick: this.showRestoreVault.bind(this),
-          style: {
-            fontSize: '0.8em',
-            color: 'rgb(247, 134, 28)',
-            textDecoration: 'underline',
-          },
-        }, 'Import Existing DEN'),
-      ]),
+      // h('.flex-row.flex-center.flex-grow', [
+      //   h('p.pointer', {
+      //     onClick: this.showRestoreVault.bind(this),
+      //     style: {
+      //       fontSize: '0.8em',
+      //       color: 'rgb(247, 134, 28)',
+      //       textDecoration: 'underline',
+      //     },
+      //   }, 'Import Existing DEN'),
+      // ]),
 
     ])
   )
@@ -135,7 +187,8 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
 InitializeMenuScreen.prototype.createVaultOnEnter = function (event) {
   if (event.key === 'Enter') {
     event.preventDefault()
-    this.createNewVaultAndKeychain()
+    // this.createNewVaultAndKeychain()
+    this.createNewVault()
   }
 }
 
@@ -147,24 +200,50 @@ InitializeMenuScreen.prototype.showRestoreVault = function () {
   this.props.dispatch(actions.showRestoreVault())
 }
 
-InitializeMenuScreen.prototype.createNewVaultAndKeychain = function () {
+// InitializeMenuScreen.prototype.createNewVaultAndKeychain = function () {
+//   var passwordBox = document.getElementById('password-box')
+//   var password = passwordBox.value
+//   var passwordConfirmBox = document.getElementById('password-box-confirm')
+//   var passwordConfirm = passwordConfirmBox.value
+
+//   if (password.length < 8) {
+//     this.warning = 'password not long enough'
+//     this.props.dispatch(actions.displayWarning(this.warning))
+//     return
+//   }
+//   if (password !== passwordConfirm) {
+//     this.warning = 'passwords don\'t match'
+//     this.props.dispatch(actions.displayWarning(this.warning))
+//     return
+//   }
+
+//   this.props.dispatch(actions.createNewVaultAndKeychain(password))
+// }
+
+InitializeMenuScreen.prototype.createNewVault = function () {
+  var ensBox = document.getElementById('ens-box')
+  var ens = ensBox.value
   var passwordBox = document.getElementById('password-box')
   var password = passwordBox.value
   var passwordConfirmBox = document.getElementById('password-box-confirm')
   var passwordConfirm = passwordConfirmBox.value
 
-  if (password.length < 8) {
-    this.warning = 'password not long enough'
-    this.props.dispatch(actions.displayWarning(this.warning))
-    return
-  }
-  if (password !== passwordConfirm) {
-    this.warning = 'passwords don\'t match'
-    this.props.dispatch(actions.displayWarning(this.warning))
-    return
-  }
+  // TODO: Add validations on ens here
 
-  this.props.dispatch(actions.createNewVaultAndKeychain(password))
+  // if (password.length < 8) {
+  //   this.warning = 'password not long enough'
+  //   this.props.dispatch(actions.displayWarning(this.warning))
+  //   return
+  // }
+  // if (password !== passwordConfirm) {
+  //   this.warning = 'passwords don\'t match'
+  //   this.props.dispatch(actions.displayWarning(this.warning))
+  //   return
+  // }
+  // ens = 'olivier'
+  // password = 'azerty123'
+
+  this.props.dispatch(actions.createNewVault(ens, password))
 }
 
 InitializeMenuScreen.prototype.inputChanged = function (event) {

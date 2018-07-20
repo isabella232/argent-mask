@@ -72,7 +72,8 @@ var actions = {
   showImportPage,
   showNewAccountPage,
   setNewAccountForm,
-  createNewVaultAndKeychain: createNewVaultAndKeychain,
+  // createNewVaultAndKeychain: createNewVaultAndKeychain,
+  createNewVault: createNewVault,
   createNewVaultAndRestore: createNewVaultAndRestore,
   createNewVaultInProgress: createNewVaultInProgress,
   addNewKeyring,
@@ -408,28 +409,48 @@ function createNewVaultAndRestore (password, seed) {
   }
 }
 
-function createNewVaultAndKeychain (password) {
+// function createNewVaultAndKeychain (password) {
+//   return dispatch => {
+//     dispatch(actions.showLoadingIndication())
+//     log.debug(`background.createNewVaultAndKeychain`)
+
+//     return new Promise((resolve, reject) => {
+//       background.createNewVaultAndKeychain(password, err => {
+//         if (err) {
+//           dispatch(actions.displayWarning(err.message))
+//           return reject(err)
+//         }
+
+//         log.debug(`background.placeSeedWords`)
+
+//         background.placeSeedWords((err) => {
+//           if (err) {
+//             dispatch(actions.displayWarning(err.message))
+//             return reject(err)
+//           }
+
+//           resolve()
+//         })
+//       })
+//     })
+//       .then(() => forceUpdateMetamaskState(dispatch))
+//       .then(() => dispatch(actions.hideLoadingIndication()))
+//       .catch(() => dispatch(actions.hideLoadingIndication()))
+//   }
+// }
+
+function createNewVault (ens, password) {
   return dispatch => {
     dispatch(actions.showLoadingIndication())
-    log.debug(`background.createNewVaultAndKeychain`)
+    log.debug(`background.createNewVault`)
 
     return new Promise((resolve, reject) => {
-      background.createNewVaultAndKeychain(password, err => {
+      background.createNewVault(ens, password, err => {
         if (err) {
           dispatch(actions.displayWarning(err.message))
           return reject(err)
         }
-
-        log.debug(`background.placeSeedWords`)
-
-        background.placeSeedWords((err) => {
-          if (err) {
-            dispatch(actions.displayWarning(err.message))
-            return reject(err)
-          }
-
-          resolve()
-        })
+        resolve()
       })
     })
       .then(() => forceUpdateMetamaskState(dispatch))
@@ -927,8 +948,10 @@ function updateTransaction (txData) {
 
 function updateAndApproveTx (txData) {
   log.info('actions: updateAndApproveTx: ' + JSON.stringify(txData))
+  console.log('actions: updateAndApproveTx: ' + JSON.stringify(txData))
   return (dispatch) => {
     log.debug(`actions calling background.updateAndApproveTx`)
+    console.log('actions calling background.updateAndApproveTx')
 
     return new Promise((resolve, reject) => {
       background.updateAndApproveTransaction(txData, err => {
@@ -940,11 +963,13 @@ function updateAndApproveTx (txData) {
           dispatch(actions.txError(err))
           dispatch(actions.goHome())
           log.error(err.message)
+          // console.log('actions.updateAndApproveTx will-reject-error', err.message)
           reject(err)
+        } else { // note: this was not wrapped in an else in MetaMask
+          dispatch(actions.completedTx(txData.id))
+          // console.log('actions.updateAndApproveTx will-resolve-txData', txData)
+          resolve(txData)
         }
-
-        dispatch(actions.completedTx(txData.id))
-        resolve(txData)
       })
     })
   }

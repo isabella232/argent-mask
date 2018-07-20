@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'recompose'
-import { createNewVaultAndKeychain } from '../../../../ui/app/actions'
+// import { createNewVaultAndKeychain } from '../../../../ui/app/actions'
+import { createNewVault } from '../../../../ui/app/actions'
 import Breadcrumbs from './breadcrumbs'
 import EventEmitter from 'events'
 import Mascot from '../../../../ui/app/components/mascot'
@@ -213,7 +214,8 @@ export default compose(
   connect(
     mapStateToProps,
     dispatch => ({
-      createAccount: password => dispatch(createNewVaultAndKeychain(password)),
+      // createAccount: password => dispatch(createNewVaultAndKeychain(password)),
+      createAccount: (ens, password) => dispatch(createNewVault(ens, password)),
     })
   )
 )(CreatePasswordScreen)

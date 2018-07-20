@@ -104,7 +104,8 @@ class InitializeMenuScreen extends Component {
 
 
         h('button.primary', {
-          onClick: this.createNewVaultAndKeychain.bind(this),
+          // onClick: this.createNewVaultAndKeychain.bind(this),
+          onClick: this.createNewVault.bind(this),
           style: {
             margin: 12,
           },
@@ -140,18 +141,46 @@ class InitializeMenuScreen extends Component {
   createVaultOnEnter (event) {
     if (event.key === 'Enter') {
       event.preventDefault()
-      this.createNewVaultAndKeychain()
+      // this.createNewVaultAndKeychain()
+      this.createNewVault()
     }
   }
 
-  createNewVaultAndKeychain () {
+  // createNewVaultAndKeychain () {
+  //   const { history } = this.props
+  //   var passwordBox = document.getElementById('password-box')
+  //   var password = passwordBox.value
+  //   var passwordConfirmBox = document.getElementById('password-box-confirm')
+  //   var passwordConfirm = passwordConfirmBox.value
+
+  //   this.setState({ warning: null })
+
+  //   if (password.length < 8) {
+  //     this.setState({ warning: this.context.t('passwordShort') })
+  //     return
+  //   }
+
+  //   if (password !== passwordConfirm) {
+  //     this.setState({ warning: this.context.t('passwordMismatch') })
+  //     return
+  //   }
+
+  //   this.props.createNewVaultAndKeychain(password)
+  //     .then(() => history.push(DEFAULT_ROUTE))
+  // }
+
+  createNewVault () {
     const { history } = this.props
+    var ensBox = document.getElementById('ens-box')
+    var ens = ensBox.value
     var passwordBox = document.getElementById('password-box')
     var password = passwordBox.value
     var passwordConfirmBox = document.getElementById('password-box-confirm')
     var passwordConfirm = passwordConfirmBox.value
 
     this.setState({ warning: null })
+
+    // TODO: Add validations on ens here
 
     if (password.length < 8) {
       this.setState({ warning: this.context.t('passwordShort') })
@@ -163,7 +192,7 @@ class InitializeMenuScreen extends Component {
       return
     }
 
-    this.props.createNewVaultAndKeychain(password)
+    this.props.createNewVault(ens, password)
       .then(() => history.push(DEFAULT_ROUTE))
   }
 
@@ -196,7 +225,8 @@ InitializeMenuScreen.propTypes = {
   history: PropTypes.object,
   isInitialized: PropTypes.bool,
   isUnlocked: PropTypes.bool,
-  createNewVaultAndKeychain: PropTypes.func,
+  // createNewVaultAndKeychain: PropTypes.func,
+  createNewVault: PropTypes.func,
   markPasswordForgotten: PropTypes.func,
   dispatch: PropTypes.func,
 }
@@ -216,7 +246,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    createNewVaultAndKeychain: password => dispatch(actions.createNewVaultAndKeychain(password)),
+    // createNewVaultAndKeychain: password => dispatch(actions.createNewVaultAndKeychain(password)),
+    createNewVault: (ens, password) => dispatch(actions.createNewVault(ens, password)),
     markPasswordForgotten: () => dispatch(actions.markPasswordForgotten()),
   }
 }

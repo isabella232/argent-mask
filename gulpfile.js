@@ -33,10 +33,10 @@ function gulpParallel (...args) {
 }
 
 const browserPlatforms = [
-  'firefox',
+  // 'firefox',
   'chrome',
-  'edge',
-  'opera',
+  // 'edge',
+  // 'opera',
 ]
 const commonPlatforms = [
   // browser webapp
@@ -172,10 +172,10 @@ gulp.task('manifest:opera', function () {
 
 gulp.task('manifest:production', function () {
   return gulp.src([
-    './dist/firefox/manifest.json',
+    // './dist/firefox/manifest.json',
     './dist/chrome/manifest.json',
-    './dist/edge/manifest.json',
-    './dist/opera/manifest.json',
+    // './dist/edge/manifest.json',
+    // './dist/opera/manifest.json',
   ], {base: './dist/'})
 
   // Exclude chromereload script in production:
@@ -194,7 +194,7 @@ gulp.task('copy',
     gulp.parallel(...copyTaskNames),
     'manifest:production',
     'manifest:chrome',
-    'manifest:opera'
+    // 'manifest:opera'
   )
 )
 
@@ -202,7 +202,7 @@ gulp.task('dev:copy',
   gulp.series(
     gulp.parallel(...copyDevTaskNames),
     'manifest:chrome',
-    'manifest:opera'
+    // 'manifest:opera'
   )
 )
 
