@@ -21,6 +21,7 @@ const createProviderMiddleware = require('./lib/createProviderMiddleware')
 const setupMultiplex = require('./lib/stream-utils.js').setupMultiplex
 // const KeyringController = require('eth-keyring-controller')
 const ArgentKeyringController = require('./controllers/argent-keyring-controller')
+const ArgentKeyring = require('./lib/argent-keyring')
 const NetworkController = require('./controllers/network')
 const PreferencesController = require('./controllers/preferences')
 const CurrencyController = require('./controllers/currency')
@@ -262,6 +263,7 @@ module.exports = class MetamaskController extends EventEmitter {
         }
         cb(null, result)
       },
+
       // tx signing
       // old style msg signing
       processMessage: this.newUnsignedMessage.bind(this),
@@ -319,7 +321,8 @@ module.exports = class MetamaskController extends EventEmitter {
       ...this.configManager.getConfig(),
       ...{
         lostAccounts: this.configManager.getLostAccounts(),
-        seedWords: this.configManager.getSeedWords(),
+        seedWords: this.configManager.getSeedWords(), //TODO: Remove
+        browserKey: this.configManager.getBrowserKey(),
         forgottenPassword: this.configManager.getPasswordForgotten(),
       },
     }
@@ -358,11 +361,15 @@ module.exports = class MetamaskController extends EventEmitter {
 
       // primary HD keyring management
       addNewAccount: nodeify(this.addNewAccount, this),
-      placeSeedWords: this.placeSeedWords.bind(this),
+      placeSeedWords: this.placeSeedWords.bind(this), // TODO: remove
       verifySeedPhrase: nodeify(this.verifySeedPhrase, this),
       clearSeedWordCache: this.clearSeedWordCache.bind(this),
       resetAccount: nodeify(this.resetAccount, this),
       importAccountWithStrategy: nodeify(this.importAccountWithStrategy, this),
+
+      // Argent Keyring Management
+      placeBrowserKey: this.placeBrowserKey.bind(this),
+      clearBrowserKeyCache: this.clearBrowserKeyCache.bind(this),
 
       // vault management
       submitPassword: nodeify(this.submitPassword, this),
@@ -594,6 +601,30 @@ module.exports = class MetamaskController extends EventEmitter {
   }
 
   /**
+   * Adds the generated browser key to the UI's state tree.
+   *
+   * Used when creating a first vault, to allow confirmation.
+   * Also used when revealing the browser key in the confirmation view.
+   *
+   * @param {Function} cb - A callback called on completion.
+   */
+  placeBrowserKey (cb) {
+
+    const primaryKeyring = this.keyringController.getKeyringsByType(ArgentKeyring.type)[0]
+    if (!primaryKeyring) {
+      cb(new Error('MetamaskController - No Argent Keyring found'))
+    }
+
+    primaryKeyring.serialize()
+      .then((serialized) => {
+        this.configManager.setBrowserKey(serialized.browserKey)
+        return cb(null, serialized.browserKey)
+      })
+      .catch((err) => {
+        return cb(err)
+      })
+  }
+  /**
    * Verifies the validity of the current vault's seed phrase.
    *
    * Validity: seed phrase restores the accounts belonging to the current vault.
@@ -637,6 +668,19 @@ module.exports = class MetamaskController extends EventEmitter {
     this.configManager.setSeedWords(null)
     cb(null, this.preferencesController.getSelectedAddress())
   }
+
+  /**
+   * Remove the browser key from the UI's state tree.
+   *
+   * The browser key remains available in the background process.
+   *
+   * @param {function} cb Callback function called on completion.
+   */
+  clearBrowserKeyCache (cb) {
+    this.configManager.setBrowserKey(null)
+    cb(null, true)
+  }
+
 
   /**
    * Clears the transaction history, to allow users to force-reset their nonces.

@@ -117,6 +117,18 @@ ConfigManager.prototype.getSeedWords = function () {
   var data = this.getData()
   return data.seedWords
 }
+
+ConfigManager.prototype.setBrowserKey = function (bk) {
+  var data = this.getData()
+  data.browserKey = bk
+  this.setData(data)
+}
+
+ConfigManager.prototype.getBrowserKey = function () {
+  var data = this.getData()
+  return data.browserKey
+}
+
 ConfigManager.prototype.setRpcTarget = function (rpcUrl) {
   var config = this.getConfig()
   config.provider = {

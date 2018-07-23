@@ -357,7 +357,7 @@ gulp.task('dev',
     'dev:scss',
     gulp.parallel(
       'dev:extension:js',
-      'dev:mascara:js',
+      // 'dev:mascara:js',
       'dev:copy',
       'dev:reload'
     )

@@ -2,6 +2,8 @@ const ObservableStore = require('obs-store')
 const ArgentKeyring = require('../lib/argent-keyring')
 // const KeyringController = require('eth-keyring-controller')
 const KeyringController = require('./eth-keyring-controller')
+const sigUtil = require('eth-sig-util')
+const normalizeAddress = sigUtil.normalize
 
 class ArgentKeyringController extends KeyringController {
   constructor (opts) {
@@ -54,7 +56,6 @@ class ArgentKeyringController extends KeyringController {
     })
     .then((accounts) => {
       const firstAccount = accounts[0]
-      console.log('TADAMv2: firstAccount=', firstAccount)
       if (!firstAccount) throw new Error('ArgentKeyringController - No account found on keychain.')
       const hexAccount = normalizeAddress(firstAccount)
       console.log(`ArgentKeyringController first account: ${hexAccount}`)

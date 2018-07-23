@@ -20,10 +20,10 @@ exposed to the MetaMask controller.
 
 ## txMeta's & txParams
 
-A txMeta is the "meta" object it has all the random bits of info we need about a transaction on it. txParams are sacred every thing on txParams gets signed so it must
+A txMeta is the "meta" object it has all the random bits of info we need about a transaction on it. txParams are sacred, everything on txParams gets signed so it must
 be a valid key and be hex prefixed except for the network number. Extra stuff must go on the txMeta!
 
-Here is a txMeta too look at:
+Here is a txMeta to look at:
 
 ```js
 txMeta = {
@@ -31,7 +31,7 @@ txMeta = {
   "time": 1524094064821, // time of creation
   "status": "confirmed",
   "metamaskNetworkId": "1524091532133", //the network id for the transaction
-  "loadingDefaults": false, // used to tell the ui when we are done calculatyig gass defaults
+  "loadingDefaults": false, // used to tell the ui when we are done calculatyig gas defaults
   "txParams": { // the txParams object
     "from": "0x8acce2391c0d510a6c5e5d8f819a678f79b7e675",
     "to": "0x8acce2391c0d510a6c5e5d8f819a678f79b7e675",

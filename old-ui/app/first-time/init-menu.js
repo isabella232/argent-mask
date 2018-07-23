@@ -230,16 +230,16 @@ InitializeMenuScreen.prototype.createNewVault = function () {
 
   // TODO: Add validations on ens here
 
-  // if (password.length < 8) {
-  //   this.warning = 'password not long enough'
-  //   this.props.dispatch(actions.displayWarning(this.warning))
-  //   return
-  // }
-  // if (password !== passwordConfirm) {
-  //   this.warning = 'passwords don\'t match'
-  //   this.props.dispatch(actions.displayWarning(this.warning))
-  //   return
-  // }
+  if (password.length < 8) {
+    this.warning = 'password not long enough'
+    this.props.dispatch(actions.displayWarning(this.warning))
+    return
+  }
+  if (password !== passwordConfirm) {
+    this.warning = 'passwords don\'t match'
+    this.props.dispatch(actions.displayWarning(this.warning))
+    return
+  }
   // ens = 'olivier'
   // password = 'azerty123'
 

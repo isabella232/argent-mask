@@ -196,6 +196,7 @@ var actions = {
   gasLoadingFinished,
   // app messages
   confirmSeedWords: confirmSeedWords,
+  confirmBrowserKey: confirmBrowserKey,
   showAccountDetail: showAccountDetail,
   BACK_TO_ACCOUNT_DETAIL: 'BACK_TO_ACCOUNT_DETAIL',
   backToAccountDetail: backToAccountDetail,
@@ -383,6 +384,27 @@ function confirmSeedWords () {
   }
 }
 
+function confirmBrowserKey () {
+  return dispatch => {
+    dispatch(actions.showLoadingIndication())
+    log.debug(`background.clearBrowserKeyCache`)
+    return new Promise((resolve, reject) => {
+      background.clearBrowserKeyCache((err) => {
+        dispatch(actions.hideLoadingIndication())
+        if (err) {
+          dispatch(actions.displayWarning(err.message))
+          return reject(err)
+        }
+
+        log.info('Browser key cache cleared. ')
+        // dispatch(actions.showAccountsPage())
+        forceUpdateMetamaskState(dispatch)
+        resolve()
+      })
+    })
+  }
+}
+
 function createNewVaultAndRestore (password, seed) {
   return (dispatch) => {
     dispatch(actions.showLoadingIndication())
@@ -446,11 +468,20 @@ function createNewVault (ens, password) {
 
     return new Promise((resolve, reject) => {
       background.createNewVault(ens, password, err => {
+
         if (err) {
           dispatch(actions.displayWarning(err.message))
           return reject(err)
         }
-        resolve()
+
+        log.debug(`background.placeBrowserKey`)
+        background.placeBrowserKey((err) => {
+          if (err) {
+            dispatch(actions.displayWarning(err.message))
+            return reject(err)
+          }
+          resolve()
+        })
       })
     })
       .then(() => forceUpdateMetamaskState(dispatch))

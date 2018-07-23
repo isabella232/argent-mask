@@ -124,7 +124,6 @@ class ArgentKeyring extends EventEmitter {
         }
 
         const resolvedWalletAddress = await ensResolver.addrPromise(this._namehash(ens))
-        console.log("ArgentKeyring: resolvedWalletAddress", resolvedWalletAddress)
         return [resolvedWalletAddress]
     }
 

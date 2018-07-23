@@ -158,7 +158,7 @@ async function initialize () {
   const initLangCode = await getFirstPreferredLangCode()
   await setupController(initState, initLangCode)
   log.debug('MetaMask initialization complete.')
-  ipfsContent(initState.NetworkController.provider)
+  // ipfsContent(initState.NetworkController.provider)
 }
 
 //
