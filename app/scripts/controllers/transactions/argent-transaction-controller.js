@@ -2,7 +2,7 @@ const TransactionController = require('../transactions')
 const ArgentPendingTransactionTracker = require('./argent-pending-tx-tracker')
 const leftPad = require('left-pad')
 const web3Abi = require('web3-eth-abi')
-// const ethUtil = require('ethereumjs-util')
+const ethUtil = require('ethereumjs-util')
 const Prom = require('bluebird')
 const callETHContractJson = require('../../lib/contracts/argent/argentWallet').find(f => f.name === "callETHContract")
 const Web3 = require('web3')
@@ -65,10 +65,14 @@ class ArgentTransactionController extends TransactionController {
       // sign and relay transaction
       const txParams = txMeta.txParams
 
-      txParams.data = txParams.data || "0x0"
-      console.log('ATC: will encode', txParams)
+      txParams.data = txParams.data || "0x"
+      if (ethUtil.stripHexPrefix(txParams.data).length % 2 == 1) {
+        txParams.data = "0x0" + ethUtil.stripHexPrefix(txParams.data)
+      }
+
+      // console.log('ATC: will encode', txParams)
       const callETHContractAbi = await web3Abi.encodeFunctionCall(callETHContractJson, [txParams.to, txParams.value, txParams.data])
-      console.log('ATC: did encode, callETHContractAbi=', callETHContractAbi)
+      // console.log('ATC: did encode, callETHContractAbi=', callETHContractAbi)
       const nonceForRelay = await this.getNonceForRelay()
 
       txMeta.relayParams = {
@@ -81,13 +85,13 @@ class ArgentTransactionController extends TransactionController {
       }
 
       // sign transaction
-      console.log('ATC: will sign', txId)
+      // console.log('ATC: will sign', txId)
       await this.signTransaction(txId)
-      console.log('ATC: did sign')
-      console.log('nonceForRelay', nonceForRelay, 'signature', txMeta.relayParams.signatures)
-      console.log('ATC: will publish')
+      // console.log('ATC: did sign')
+      // console.log('nonceForRelay', nonceForRelay, 'signature', txMeta.relayParams.signatures)
+      // console.log('ATC: will publish')
       await this.publishToRelayer(txId)
-      console.log('ATC: did publish')
+      // console.log('ATC: did publish')
 
       // must set transaction to submitted/failed before releasing lock
       // nonceLock.releaseLock()
