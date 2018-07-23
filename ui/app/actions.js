@@ -196,7 +196,7 @@ var actions = {
   gasLoadingFinished,
   // app messages
   confirmSeedWords: confirmSeedWords,
-  confirmBrowserKey: confirmBrowserKey,
+  confirmBrowserWalletAddress: confirmBrowserWalletAddress,
   showAccountDetail: showAccountDetail,
   BACK_TO_ACCOUNT_DETAIL: 'BACK_TO_ACCOUNT_DETAIL',
   backToAccountDetail: backToAccountDetail,
@@ -384,12 +384,12 @@ function confirmSeedWords () {
   }
 }
 
-function confirmBrowserKey () {
+function confirmBrowserWalletAddress () {
   return dispatch => {
     dispatch(actions.showLoadingIndication())
-    log.debug(`background.clearBrowserKeyCache`)
+    log.debug(`background.clearBrowserWalletAddressCache`)
     return new Promise((resolve, reject) => {
-      background.clearBrowserKeyCache((err) => {
+      background.clearBrowserWalletAddressCache((err) => {
         dispatch(actions.hideLoadingIndication())
         if (err) {
           dispatch(actions.displayWarning(err.message))
@@ -474,8 +474,8 @@ function createNewVault (ens, password) {
           return reject(err)
         }
 
-        log.debug(`background.placeBrowserKey`)
-        background.placeBrowserKey((err) => {
+        log.debug(`background.placeBrowserWalletAddress`)
+        background.placeBrowserWalletAddress((err) => {
           if (err) {
             dispatch(actions.displayWarning(err.message))
             return reject(err)

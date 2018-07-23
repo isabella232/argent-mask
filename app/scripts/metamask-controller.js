@@ -322,7 +322,7 @@ module.exports = class MetamaskController extends EventEmitter {
       ...{
         lostAccounts: this.configManager.getLostAccounts(),
         seedWords: this.configManager.getSeedWords(), //TODO: Remove
-        browserKey: this.configManager.getBrowserKey(),
+        browserWalletAddress: this.configManager.getBrowserWalletAddress(),
         forgottenPassword: this.configManager.getPasswordForgotten(),
       },
     }
@@ -368,8 +368,8 @@ module.exports = class MetamaskController extends EventEmitter {
       importAccountWithStrategy: nodeify(this.importAccountWithStrategy, this),
 
       // Argent Keyring Management
-      placeBrowserKey: this.placeBrowserKey.bind(this),
-      clearBrowserKeyCache: this.clearBrowserKeyCache.bind(this),
+      placeBrowserWalletAddress: this.placeBrowserWalletAddress.bind(this),
+      clearBrowserWalletAddressCache: this.clearBrowserWalletAddressCache.bind(this),
 
       // vault management
       submitPassword: nodeify(this.submitPassword, this),
@@ -608,17 +608,17 @@ module.exports = class MetamaskController extends EventEmitter {
    *
    * @param {Function} cb - A callback called on completion.
    */
-  placeBrowserKey (cb) {
+  placeBrowserWalletAddress (cb) {
 
     const primaryKeyring = this.keyringController.getKeyringsByType(ArgentKeyring.type)[0]
     if (!primaryKeyring) {
       cb(new Error('MetamaskController - No Argent Keyring found'))
     }
 
-    primaryKeyring.serialize()
-      .then((serialized) => {
-        this.configManager.setBrowserKey(serialized.browserKey)
-        return cb(null, serialized.browserKey)
+    primaryKeyring.getBrowserWalletAddress()
+      .then((browserWalletAddress) => {
+        this.configManager.setBrowserWalletAddress(browserWalletAddress)
+        return cb(null, browserWalletAddress)
       })
       .catch((err) => {
         return cb(err)
@@ -676,8 +676,8 @@ module.exports = class MetamaskController extends EventEmitter {
    *
    * @param {function} cb Callback function called on completion.
    */
-  clearBrowserKeyCache (cb) {
-    this.configManager.setBrowserKey(null)
+  clearBrowserWalletAddressCache (cb) {
+    this.configManager.setBrowserWalletAddress(null)
     cb(null, true)
   }
 

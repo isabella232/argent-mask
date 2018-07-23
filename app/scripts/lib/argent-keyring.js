@@ -43,7 +43,7 @@ class ArgentKeyring extends EventEmitter {
         return this._deserializeIfNeeded().then(function() {
             return {
                 ens: self.ens,
-                browserKey: self.signingWallet.getPrivateKey().toString('hex')
+                browserPrivateKey: self.signingWallet.getPrivateKeyString()
             }
         })
     }
@@ -55,7 +55,7 @@ class ArgentKeyring extends EventEmitter {
         const self = this
         return this._argentWalletsAddressesFrom(this.ens).then(function(walletAddresses) {
             self.argentWalletsAddresses = walletAddresses
-            self.signingWallet = self._signingWalletFrom(opts.browserKey || self._generatePrivateKey())
+            self.signingWallet = self._signingWalletFrom(opts.browserPrivateKey || self._generatePrivateKey())
             self.wasDeserialized = true
         })
     }
@@ -75,9 +75,12 @@ class ArgentKeyring extends EventEmitter {
         })
     }
 
-    // signTransactionForRelay(txParams) {
-
-    // }
+    getBrowserWalletAddress() {
+        const self = this
+        return this._deserializeIfNeeded().then(function() {
+            return self.signingWallet.getAddressString()
+        })
+    }
 
     signMessage (withAccount, data) {
         const self = this
@@ -128,8 +131,10 @@ class ArgentKeyring extends EventEmitter {
     }
 
     _generatePrivateKey() {
-        // TODO: CHANGE ME
-        return '0xe08849939aaf83eaae70db516953503cb323af9e3d01244c372c51e688db3f56' // owner private key
+        return Wallet.generate(false).getPrivateKeyString()
+
+        // TODO: REMOVE ME
+        // return '0xe08849939aaf83eaae70db516953503cb323af9e3d01244c372c51e688db3f56' // owner private key
     }
 
     _signingWalletFrom(privateKey) {

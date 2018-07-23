@@ -4,23 +4,23 @@ const connect = require('react-redux').connect
 const h = require('react-hyperscript')
 const actions = require('../../../../ui/app/actions')
 
-module.exports = connect(mapStateToProps)(CreateBrowserKeyCompleteScreen)
+module.exports = connect(mapStateToProps)(CreateBrowserWalletCompleteScreen)
 
-inherits(CreateBrowserKeyCompleteScreen, Component)
-function CreateBrowserKeyCompleteScreen () {
+inherits(CreateBrowserWalletCompleteScreen, Component)
+function CreateBrowserWalletCompleteScreen () {
   Component.call(this)
 }
 
 function mapStateToProps (state) {
   return {
-    browserKey: state.appState.currentView.browserKey,
-    cachedBrowserKey: state.metamask.browserKey,
+    browserWalletAddress: state.appState.currentView.browserWalletAddress,
+    cachedBrowserWalletAddress: state.metamask.browserWalletAddress,
   }
 }
 
-CreateBrowserKeyCompleteScreen.prototype.render = function () {
+CreateBrowserWalletCompleteScreen.prototype.render = function () {
   var state = this.props
-  var browserKey = state.browserKey || state.cachedBrowserKey || ''
+  var browserWalletAddress = state.browserWalletAddress || state.cachedBrowserWalletAddress || ''
 
   return (
 
@@ -57,10 +57,10 @@ CreateBrowserKeyCompleteScreen.prototype.render = function () {
 
       // h('textarea.twelve-word-phrase', {
       //   readOnly: true,
-      //   value: browserKey,
+      //   value: browserWalletAddress,
       // }),
       h('img', {
-        src: `https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=${browserKey}`
+        src: `https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=${browserWalletAddress}`
       }),
 
       h('button.primary', {
@@ -76,6 +76,6 @@ CreateBrowserKeyCompleteScreen.prototype.render = function () {
   )
 }
 
-CreateBrowserKeyCompleteScreen.prototype.confirmSeedWords = function () {
-  return this.props.dispatch(actions.confirmBrowserKey())
+CreateBrowserWalletCompleteScreen.prototype.confirmSeedWords = function () {
+  return this.props.dispatch(actions.confirmBrowserWalletAddress())
 }

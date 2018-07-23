@@ -64,17 +64,13 @@ class ArgentTransactionController extends TransactionController {
       // ARGENT CONNECT
       // sign and relay transaction
       const txParams = txMeta.txParams
-      // const walletAddress = '0x8649904801ca2aad824662a926d308fc3e7c6c35'
-      // const walletInstance = await web3.eth.contract(walletAbi).at(walletAddress)
-      // console.log('walletInstance', walletInstance)
-      // const ownerPrivateKey = '0xe08849939aaf83eaae70db516953503cb323af9e3d01244c372c51e688db3f56'
+
       txParams.data = txParams.data || "0x0"
       console.log('ATC: will encode', txParams)
       const callETHContractAbi = await web3Abi.encodeFunctionCall(callETHContractJson, [txParams.to, txParams.value, txParams.data])
       console.log('ATC: did encode, callETHContractAbi=', callETHContractAbi)
       const nonceForRelay = await this.getNonceForRelay()
-      // const signatures0 = await signOffchainV3([ownerPrivateKey], walletAddress, walletAddress, 0, callETHContractAbi, nonceForRelay, 0);
-      
+
       txMeta.relayParams = {
         from: walletAddress,
         to: walletAddress,

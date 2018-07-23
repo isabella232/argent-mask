@@ -32,7 +32,7 @@ const NetworkIndicator = require('./components/network')
 const BuyView = require('./components/buy-button-subview')
 const QrView = require('./components/qr-code')
 const HDCreateVaultComplete = require('./keychains/hd/create-vault-complete')
-const CreateBrowserKeyComplete = require('./keychains/argent/create-browser-key-complete')
+const CreateBrowserWalletComplete = require('./keychains/argent/create-browser-wallet-complete')
 const HDRestoreVaultScreen = require('./keychains/hd/restore-vault')
 const RevealSeedConfirmation = require('./keychains/hd/recover-seed/confirmation')
 const AccountDropdowns = require('./components/account-dropdowns').AccountDropdowns
@@ -51,7 +51,7 @@ function mapStateToProps (state) {
     isInitialized,
     noActiveNotices,
     seedWords, // TODO: Remove
-    browserKey,
+    browserWalletAddress,
     featureFlags,
   } = state.metamask
   const selected = address || Object.keys(accounts)[0]
@@ -67,9 +67,9 @@ function mapStateToProps (state) {
     selectedAddress: state.metamask.selectedAddress,
     transForward: state.appState.transForward,
     isMascara: state.metamask.isMascara,
-    isOnboarding: Boolean(!noActiveNotices || seedWords || !isInitialized || browserKey), // TODO: Remove seedWord
+    isOnboarding: Boolean(!noActiveNotices || seedWords || !isInitialized || browserWalletAddress), // TODO: Remove seedWord
     seedWords: state.metamask.seedWords, // TODO: Remove
-    browserKey,
+    browserWalletAddress,
     unapprovedTxs: state.metamask.unapprovedTxs,
     unapprovedMsgs: state.metamask.unapprovedMsgs,
     menuOpen: state.appState.menuOpen,
@@ -535,10 +535,10 @@ App.prototype.renderPrimary = function () {
     return h(HDCreateVaultComplete, {key: 'HDCreateVaultComplete'})
   }
 
-  // show browserKey QR Code screen
-  if (props.browserKey) {
+  // show browserWalletAddress QR Code screen
+  if (props.browserWalletAddress) {
     log.debug('rendering browser key QR code')
-    return h(CreateBrowserKeyComplete, {key: 'CreateBrowserKeyComplete'})
+    return h(CreateBrowserWalletComplete, {key: 'CreateBrowserWalletComplete'})
   }
 
   // show current view

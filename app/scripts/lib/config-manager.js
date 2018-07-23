@@ -118,15 +118,15 @@ ConfigManager.prototype.getSeedWords = function () {
   return data.seedWords
 }
 
-ConfigManager.prototype.setBrowserKey = function (bk) {
+ConfigManager.prototype.setBrowserWalletAddress = function (browserAddress) {
   var data = this.getData()
-  data.browserKey = bk
+  data.browserWalletAddress = browserAddress
   this.setData(data)
 }
 
-ConfigManager.prototype.getBrowserKey = function () {
+ConfigManager.prototype.getBrowserWalletAddress = function () {
   var data = this.getData()
-  return data.browserKey
+  return data.browserWalletAddress
 }
 
 ConfigManager.prototype.setRpcTarget = function (rpcUrl) {
