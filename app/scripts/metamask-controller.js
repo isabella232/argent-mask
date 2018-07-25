@@ -23,7 +23,8 @@ const setupMultiplex = require('./lib/stream-utils.js').setupMultiplex
 const ArgentKeyringController = require('./controllers/argent-keyring-controller')
 const ArgentKeyring = require('./lib/argent-keyring')
 const NetworkController = require('./controllers/network')
-const PreferencesController = require('./controllers/preferences')
+// const PreferencesController = require('./controllers/preferences')
+const ArgentPreferencesController = require('./controllers/argent-preferences')
 const CurrencyController = require('./controllers/currency')
 const NoticeController = require('./notice-controller')
 const ShapeShiftController = require('./controllers/shapeshift')
@@ -84,12 +85,6 @@ module.exports = class MetamaskController extends EventEmitter {
       store: this.store,
     })
 
-    // preferences controller
-    this.preferencesController = new PreferencesController({
-      initState: initState.PreferencesController,
-      initLangCode: opts.initLangCode,
-    })
-
     // currency controller
     this.currencyController = new CurrencyController({
       initState: initState.CurrencyController,
@@ -110,11 +105,6 @@ module.exports = class MetamaskController extends EventEmitter {
     this.provider = this.initializeProvider()
     this.blockTracker = this.provider._blockTracker
 
-    // token exchange rate tracker
-    this.tokenRatesController = new TokenRatesController({
-      preferences: this.preferencesController.store,
-    })
-
     this.recentBlocksController = new RecentBlocksController({
       blockTracker: this.blockTracker,
       provider: this.provider,
@@ -133,6 +123,22 @@ module.exports = class MetamaskController extends EventEmitter {
       getNetwork: this.networkController.getNetworkState.bind(this.networkController),
       encryptor: opts.encryptor || undefined,
       provider: this.provider,
+    })
+
+    // preferences controller
+    this.preferencesController = new ArgentPreferencesController({
+      initState: initState.ArgentPreferencesController,
+      initLangCode: opts.initLangCode,
+      getLabelForAddress: (address) => {
+        return this.keyringController.getKeyringForAccount(address).then((keyring) => {
+          return keyring.ens
+        })
+      }
+    })
+
+    // token exchange rate tracker
+    this.tokenRatesController = new TokenRatesController({
+      preferences: this.preferencesController.store,
     })
 
     // If only one account exists, make sure it is selected.
@@ -206,7 +212,7 @@ module.exports = class MetamaskController extends EventEmitter {
       ArgentTransactionController: this.txController.store,
       // KeyringController: this.keyringController.store,
       ArgentKeyringController: this.keyringController.store,
-      PreferencesController: this.preferencesController.store,
+      ArgentPreferencesController: this.preferencesController.store,
       AddressBookController: this.addressBookController.store,
       CurrencyController: this.currencyController.store,
       NoticeController: this.noticeController.store,
@@ -226,7 +232,7 @@ module.exports = class MetamaskController extends EventEmitter {
       TypesMessageManager: this.typedMessageManager.memStore,
       // KeyringController: this.keyringController.memStore,
       ArgentKeyringController: this.keyringController.memStore,
-      PreferencesController: this.preferencesController.store,
+      ArgentPreferencesController: this.preferencesController.store,
       RecentBlocksController: this.recentBlocksController.store,
       AddressBookController: this.addressBookController.store,
       CurrencyController: this.currencyController.store,

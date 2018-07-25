@@ -96,7 +96,7 @@ AccountDetailScreen.prototype.render = function () {
             }, [
 
               // What is shown when not editing + edit text:
-              h('label.editing-label', [h('.edit-text', 'edit')]),
+              // h('label.editing-label', [h('.edit-text', 'edit')]),
               h(
                 'div',
                 {

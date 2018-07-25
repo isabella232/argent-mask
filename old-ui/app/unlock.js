@@ -33,8 +33,18 @@ UnlockScreen.prototype.render = function () {
     }, [
       h('.unlock-screen.flex-column.flex-center.flex-grow', [
 
-        h(Mascot, {
-          animationEventEmitter: this.animationEventEmitter,
+        // h(Mascot, {
+        //   animationEventEmitter: this.animationEventEmitter,
+        // }),
+
+        h('img', {
+          height: 128,
+          width: 128,
+          src: './images/argent.png',
+          style: {
+            marginBottom: 20,
+            marginTop: 30,
+          }
         }),
 
         h('h1', {
@@ -42,8 +52,11 @@ UnlockScreen.prototype.render = function () {
             fontSize: '1.4em',
             textTransform: 'uppercase',
             color: '#7F8082',
+            marginBottom: 20,
+            marginTop: 20,
           },
-        }, 'MetaMask'),
+        // }, 'MetaMask'),
+      }, 'Argent-Connect'),
 
         h('input.large-input', {
           type: 'password',
@@ -74,13 +87,15 @@ UnlockScreen.prototype.render = function () {
 
       h('.flex-row.flex-center.flex-grow', [
         h('p.pointer', {
-          onClick: () => this.props.dispatch(actions.forgotPassword()),
+          // onClick: () => this.props.dispatch(actions.forgotPassword()),
+          onClick: () => {},
           style: {
             fontSize: '0.8em',
             color: 'rgb(247, 134, 28)',
             textDecoration: 'underline',
           },
-        }, 'Restore from seed phrase'),
+        // }, 'Restore from seed phrase'),
+        }, 'Generate new browser key'),
       ]),
     ])
   )
