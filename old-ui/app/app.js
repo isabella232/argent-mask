@@ -108,7 +108,7 @@ App.prototype.render = function () {
 
       // app bar
       this.renderAppBar(),
-      this.renderNetworkDropdown(),
+      // this.renderNetworkDropdown(),
       this.renderDropdown(),
 
       this.renderLoadingIndicator({ isLoading, isLoadingNetwork, loadMessage }),
@@ -170,22 +170,22 @@ App.prototype.renderAppBar = function () {
           },
         }, [
 
-          // mini logo
-          h('img', {
-            height: 24,
-            width: 24,
-            src: './images/icon-128.png',
-          }),
+          // // mini logo
+          // h('img', {
+          //   height: 24,
+          //   width: 24,
+          //   src: './images/icon-128.png',
+          // }),
 
-          h(NetworkIndicator, {
-            network: this.props.network,
-            provider: this.props.provider,
-            onClick: (event) => {
-              event.preventDefault()
-              event.stopPropagation()
-              this.setState({ isNetworkMenuOpen: !isNetworkMenuOpen })
-            },
-          }),
+          // h(NetworkIndicator, {
+          //   network: this.props.network,
+          //   provider: this.props.provider,
+          //   onClick: (event) => {
+          //     event.preventDefault()
+          //     event.stopPropagation()
+          //     this.setState({ isNetworkMenuOpen: !isNetworkMenuOpen })
+          //   },
+          // }),
 
         ]),
 
@@ -197,14 +197,14 @@ App.prototype.renderAppBar = function () {
           },
         }, [
 
-          props.isUnlocked && h(AccountDropdowns, {
-            style: {},
-            enableAccountsSelector: true,
-            identities: this.props.identities,
-            selected: this.props.selectedAddress,
-            network: this.props.network,
-            keyrings: this.props.keyrings,
-          }, []),
+          // props.isUnlocked && h(AccountDropdowns, {
+          //   style: {},
+          //   enableAccountsSelector: true,
+          //   identities: this.props.identities,
+          //   selected: this.props.selectedAddress,
+          //   network: this.props.network,
+          //   keyrings: this.props.keyrings,
+          // }, []),
 
           // hamburger
           props.isUnlocked && h(SandwichExpando, {

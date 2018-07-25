@@ -328,18 +328,18 @@ function tryUnlockMetamask (password) {
         dispatch(actions.unlockSucceeded())
         return forceUpdateMetamaskState(dispatch)
       })
-      .then(() => {
-        return new Promise((resolve, reject) => {
-          background.verifySeedPhrase(err => {
-            if (err) {
-              dispatch(actions.displayWarning(err.message))
-              return reject(err)
-            }
+      // .then(() => {
+      //   return new Promise((resolve, reject) => {
+      //     background.verifySeedPhrase(err => {
+      //       if (err) {
+      //         dispatch(actions.displayWarning(err.message))
+      //         return reject(err)
+      //       }
 
-            resolve()
-          })
-        })
-      })
+      //       resolve()
+      //     })
+      //   })
+      // })
       .then(() => {
         dispatch(actions.transitionForward())
         dispatch(actions.hideLoadingIndication())

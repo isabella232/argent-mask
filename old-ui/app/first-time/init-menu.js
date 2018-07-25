@@ -228,20 +228,22 @@ InitializeMenuScreen.prototype.createNewVault = function () {
   var passwordConfirmBox = document.getElementById('password-box-confirm')
   var passwordConfirm = passwordConfirmBox.value
 
-  // TODO: Add validations on ens here
+  // TODO: Add validations of ens here and remove default 'olivier' ens
+  ens = ens || 'olivier'
 
-  if (password.length < 8) {
-    this.warning = 'password not long enough'
-    this.props.dispatch(actions.displayWarning(this.warning))
-    return
-  }
-  if (password !== passwordConfirm) {
-    this.warning = 'passwords don\'t match'
-    this.props.dispatch(actions.displayWarning(this.warning))
-    return
-  }
-  // ens = 'olivier'
-  // password = 'azerty123'
+  // TODO: Uncomment this:
+  
+  // if (password.length < 8) {
+  //   this.warning = 'password not long enough'
+  //   this.props.dispatch(actions.displayWarning(this.warning))
+  //   return
+  // }
+  // if (password !== passwordConfirm) {
+  //   this.warning = 'passwords don\'t match'
+  //   this.props.dispatch(actions.displayWarning(this.warning))
+  //   return
+  // }
+
 
   this.props.dispatch(actions.createNewVault(ens, password))
 }

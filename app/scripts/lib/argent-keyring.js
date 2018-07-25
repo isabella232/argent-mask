@@ -3,39 +3,28 @@ const Wallet = require('ethereumjs-wallet')
 const ethUtil = require('ethereumjs-util')
 const type = 'Argent (Browser Key, ENS) Pair'
 const sigUtil = require('eth-sig-util')
-// const Web3EthContract = require('web3-eth-contract');
 const Web3 = require('web3')
 const web3 = new Web3()
-// const Web3EthContract = web3.eth.Contract
-const leftPad = require('left-pad')
-const web3Abi = require('web3-eth-abi')
 const Prom = require('bluebird')
 const ensRegistryAddress = '0x112234455c3a32fd11230c42e7bccd4a84e02010'
 const ensRegistryJson = require('./contracts/argent/ens/ensRegistry')
 const ensResolverJson = require('./contracts/argent/ens/argentEnsResolver')
-const callETHContractJson = require('./contracts/argent/argentWallet').find(f => f.name === "callETHContract")
-
 
 class ArgentKeyring extends EventEmitter {
 
     /* PUBLIC METHODS */
 
     constructor(opts) {
-        // console.log(`ArgentKeyring: ENTER constr`)
         super()
-        // console.log(`ArgentKeyring: constr AFTER super`)
+
         this.type = type
+        
         this.provider = opts.provider
-        // console.log(`ArgentKeyring: constr BEFORE setProvider ${this.provider}`)
         web3.setProvider(this.provider)
 
-        // console.log(`ArgentKeyring: constr AFTER setProvider`)
         this.argentWalletsAddresses = null
         this.signingWallet = null
         this.opts = opts || {}
-        // console.log('ArgentKeyring: BEFORE deserialize opts=', opts)
-        // this.deserialize(opts)
-        // console.log('ArgentKeyring: end for constructor with sW=', this.signingWallet, ', bk=',this.signingWallet.privateKey,' W=',this.argentWalletsAddresses[0])
     }
 
     serialize() {
@@ -131,10 +120,10 @@ class ArgentKeyring extends EventEmitter {
     }
 
     _generatePrivateKey() {
-        return Wallet.generate(false).getPrivateKeyString()
-
         // TODO: REMOVE ME
-        // return '0xe08849939aaf83eaae70db516953503cb323af9e3d01244c372c51e688db3f56' // owner private key
+        return '0xe08849939aaf83eaae70db516953503cb323af9e3d01244c372c51e688db3f56' // owner private key
+
+        return Wallet.generate(false).getPrivateKeyString()
     }
 
     _signingWalletFrom(privateKey) {

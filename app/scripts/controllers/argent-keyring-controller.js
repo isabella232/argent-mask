@@ -63,6 +63,33 @@ class ArgentKeyringController extends KeyringController {
       return null
     })
   }
+
+
+    // Restore Keyring
+    // @object serialized
+    //
+    // returns Promise( @Keyring deserialized )
+    //
+    // Attempts to initialize a new keyring from the provided
+    // serialized payload.
+    //
+    // On success, returns the resulting @Keyring instance.
+    restoreKeyring(serialized) {
+      const { data } = serialized
+
+      const keyring = new ArgentKeyring({ provider: this.provider })
+      return keyring.deserialize(data)
+          .then(() => {
+              return keyring.getAccounts()
+          })
+          .then(() => {
+              this.keyrings.push(keyring)
+              return this._updateMemStoreKeyrings()
+          })
+          .then(() => {
+              return keyring
+          })
+  }
 }
 
 module.exports = ArgentKeyringController
