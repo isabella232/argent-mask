@@ -66,122 +66,122 @@ ConfigScreen.prototype.render = function () {
           },
         }, [
 
-          currentProviderDisplay(metamaskState),
+          // currentProviderDisplay(metamaskState),
 
-          h('div', { style: {display: 'flex'} }, [
-            h('input#new_rpc', {
-              placeholder: 'New RPC URL',
-              style: {
-                width: 'inherit',
-                flex: '1 0 auto',
-                height: '30px',
-                margin: '8px',
-              },
-              onKeyPress (event) {
-                if (event.key === 'Enter') {
-                  var element = event.target
-                  var newRpc = element.value
-                  rpcValidation(newRpc, state)
-                }
-              },
-            }),
-            h('button', {
-              style: {
-                alignSelf: 'center',
-              },
-              onClick (event) {
-                event.preventDefault()
-                var element = document.querySelector('input#new_rpc')
-                var newRpc = element.value
-                rpcValidation(newRpc, state)
-              },
-            }, 'Save'),
-          ]),
+          // h('div', { style: {display: 'flex'} }, [
+          //   h('input#new_rpc', {
+          //     placeholder: 'New RPC URL',
+          //     style: {
+          //       width: 'inherit',
+          //       flex: '1 0 auto',
+          //       height: '30px',
+          //       margin: '8px',
+          //     },
+          //     onKeyPress (event) {
+          //       if (event.key === 'Enter') {
+          //         var element = event.target
+          //         var newRpc = element.value
+          //         rpcValidation(newRpc, state)
+          //       }
+          //     },
+          //   }),
+          //   h('button', {
+          //     style: {
+          //       alignSelf: 'center',
+          //     },
+          //     onClick (event) {
+          //       event.preventDefault()
+          //       var element = document.querySelector('input#new_rpc')
+          //       var newRpc = element.value
+          //       rpcValidation(newRpc, state)
+          //     },
+          //   }, 'Save'),
+          // ]),
 
-          h('hr.horizontal-line'),
+          // h('hr.horizontal-line'),
 
           currentConversionInformation(metamaskState, state),
 
-          h('hr.horizontal-line'),
+          // h('hr.horizontal-line'),
 
-          h('div', {
-            style: {
-              marginTop: '20px',
-            },
-          }, [
-            h('p', {
-              style: {
-                fontFamily: 'Montserrat Light',
-                fontSize: '13px',
-              },
-            }, `State logs contain your public account addresses and sent transactions.`),
-            h('br'),
-            h('button', {
-              style: {
-                alignSelf: 'center',
-              },
-              onClick (event) {
-                window.logStateString((err, result) => {
-                  if (err) {
-                    state.dispatch(actions.displayWarning('Error in retrieving state logs.'))
-                  } else {
-                    exportAsFile('MetaMask State Logs.json', result)
-                  }
-                })
-              },
-            }, 'Download State Logs'),
-          ]),
+          // h('div', {
+          //   style: {
+          //     marginTop: '20px',
+          //   },
+          // }, [
+          //   h('p', {
+          //     style: {
+          //       fontFamily: 'Montserrat Light',
+          //       fontSize: '13px',
+          //     },
+          //   }, `State logs contain your public account addresses and sent transactions.`),
+          //   h('br'),
+          //   h('button', {
+          //     style: {
+          //       alignSelf: 'center',
+          //     },
+          //     onClick (event) {
+          //       window.logStateString((err, result) => {
+          //         if (err) {
+          //           state.dispatch(actions.displayWarning('Error in retrieving state logs.'))
+          //         } else {
+          //           exportAsFile('MetaMask State Logs.json', result)
+          //         }
+          //       })
+          //     },
+          //   }, 'Download State Logs'),
+          // ]),
 
-          h('hr.horizontal-line'),
+          // h('hr.horizontal-line'),
 
-          h('div', {
-            style: {
-              marginTop: '20px',
-            },
-          }, [
-            h('button', {
-              style: {
-                alignSelf: 'center',
-              },
-              onClick (event) {
-                event.preventDefault()
-                state.dispatch(actions.revealSeedConfirmation())
-              },
-            }, 'Reveal Seed Words'),
-          ]),
+          // h('div', {
+          //   style: {
+          //     marginTop: '20px',
+          //   },
+          // }, [
+          //   h('button', {
+          //     style: {
+          //       alignSelf: 'center',
+          //     },
+          //     onClick (event) {
+          //       event.preventDefault()
+          //       state.dispatch(actions.revealSeedConfirmation())
+          //     },
+          //   }, 'Reveal Seed Words'),
+          // ]),
 
-          h('hr.horizontal-line'),
+          // h('hr.horizontal-line'),
 
-          h('div', {
-            style: {
-              marginTop: '20px',
-            },
-          }, [
+          // h('div', {
+          //   style: {
+          //     marginTop: '20px',
+          //   },
+          // }, [
 
-            h('p', {
-              style: {
-                fontFamily: 'Montserrat Light',
-                fontSize: '13px',
-              },
-            }, [
-              'Resetting is for developer use only. ',
-              h('a', {
-                href: 'http://metamask.helpscoutdocs.com/article/36-resetting-an-account',
-                target: '_blank',
-              }, 'Read more.'),
-            ]),
-            h('br'),
+          //   h('p', {
+          //     style: {
+          //       fontFamily: 'Montserrat Light',
+          //       fontSize: '13px',
+          //     },
+          //   }, [
+          //     'Resetting is for developer use only. ',
+          //     h('a', {
+          //       href: 'http://metamask.helpscoutdocs.com/article/36-resetting-an-account',
+          //       target: '_blank',
+          //     }, 'Read more.'),
+          //   ]),
+          //   h('br'),
 
-            h('button', {
-              style: {
-                alignSelf: 'center',
-              },
-              onClick (event) {
-                event.preventDefault()
-                state.dispatch(actions.resetAccount())
-              },
-            }, 'Reset Account'),
-          ]),
+          //   h('button', {
+          //     style: {
+          //       alignSelf: 'center',
+          //     },
+          //     onClick (event) {
+          //       event.preventDefault()
+          //       state.dispatch(actions.resetAccount())
+          //     },
+          //   }, 'Reset Account'),
+          // ]),
 
         ]),
       ]),
@@ -189,18 +189,18 @@ ConfigScreen.prototype.render = function () {
   )
 }
 
-function rpcValidation (newRpc, state) {
-  if (validUrl.isWebUri(newRpc)) {
-    state.dispatch(actions.setRpcTarget(newRpc))
-  } else {
-    var appendedRpc = `http://${newRpc}`
-    if (validUrl.isWebUri(appendedRpc)) {
-      state.dispatch(actions.displayWarning('URIs require the appropriate HTTP/HTTPS prefix.'))
-    } else {
-      state.dispatch(actions.displayWarning('Invalid RPC URI'))
-    }
-  }
-}
+// function rpcValidation (newRpc, state) {
+//   if (validUrl.isWebUri(newRpc)) {
+//     state.dispatch(actions.setRpcTarget(newRpc))
+//   } else {
+//     var appendedRpc = `http://${newRpc}`
+//     if (validUrl.isWebUri(appendedRpc)) {
+//       state.dispatch(actions.displayWarning('URIs require the appropriate HTTP/HTTPS prefix.'))
+//     } else {
+//       state.dispatch(actions.displayWarning('Invalid RPC URI'))
+//     }
+//   }
+// }
 
 function currentConversionInformation (metamaskState, state) {
   var currentCurrency = metamaskState.currentCurrency
@@ -223,39 +223,39 @@ function currentConversionInformation (metamaskState, state) {
   ])
 }
 
-function currentProviderDisplay (metamaskState) {
-  var provider = metamaskState.provider
-  var title, value
+// function currentProviderDisplay (metamaskState) {
+//   var provider = metamaskState.provider
+//   var title, value
 
-  switch (provider.type) {
+//   switch (provider.type) {
 
-    case 'mainnet':
-      title = 'Current Network'
-      value = 'Main Ethereum Network'
-      break
+//     case 'mainnet':
+//       title = 'Current Network'
+//       value = 'Main Ethereum Network'
+//       break
 
-    case 'ropsten':
-      title = 'Current Network'
-      value = 'Ropsten Test Network'
-      break
+//     case 'ropsten':
+//       title = 'Current Network'
+//       value = 'Ropsten Test Network'
+//       break
 
-    case 'kovan':
-      title = 'Current Network'
-      value = 'Kovan Test Network'
-      break
+//     case 'kovan':
+//       title = 'Current Network'
+//       value = 'Kovan Test Network'
+//       break
 
-    case 'rinkeby':
-      title = 'Current Network'
-      value = 'Rinkeby Test Network'
-      break
+//     case 'rinkeby':
+//       title = 'Current Network'
+//       value = 'Rinkeby Test Network'
+//       break
 
-    default:
-      title = 'Current RPC'
-      value = metamaskState.provider.rpcTarget
-  }
+//     default:
+//       title = 'Current RPC'
+//       value = metamaskState.provider.rpcTarget
+//   }
 
-  return h('div', [
-    h('span', {style: { fontWeight: 'bold', paddingRight: '10px'}}, title),
-    h('span', value),
-  ])
-}
+//   return h('div', [
+//     h('span', {style: { fontWeight: 'bold', paddingRight: '10px'}}, title),
+//     h('span', value),
+//   ])
+// }

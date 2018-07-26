@@ -35,7 +35,7 @@ const HDCreateVaultComplete = require('./keychains/hd/create-vault-complete')
 const CreateBrowserWalletComplete = require('./keychains/argent/create-browser-wallet-complete')
 const HDRestoreVaultScreen = require('./keychains/hd/restore-vault')
 const RevealSeedConfirmation = require('./keychains/hd/recover-seed/confirmation')
-const AccountDropdowns = require('./components/account-dropdowns').AccountDropdowns
+// const AccountDropdowns = require('./components/account-dropdowns').AccountDropdowns
 
 module.exports = connect(mapStateToProps)(App)
 
@@ -170,12 +170,13 @@ App.prototype.renderAppBar = function () {
           },
         }, [
 
-          // // mini logo
-          // h('img', {
-          //   height: 24,
-          //   width: 24,
-          //   src: './images/icon-128.png',
-          // }),
+          // mini logo
+          h('img', {
+            height: 24,
+            width: 24,
+            // src: './images/icon-128.png',
+            src: './images/argent-icon.png',
+          }),
 
           // h(NetworkIndicator, {
           //   network: this.props.network,
@@ -403,17 +404,17 @@ App.prototype.renderDropdown = function () {
       onClick: () => { this.props.dispatch(actions.lockMetamask()) },
     }, 'Log Out'),
 
-    h(DropdownMenuItem, {
-      closeMenu: () => this.setState({ isMainMenuOpen: !isOpen }),
-      onClick: () => { this.props.dispatch(actions.showInfoPage()) },
-    }, 'Info/Help'),
+    // h(DropdownMenuItem, {
+    //   closeMenu: () => this.setState({ isMainMenuOpen: !isOpen }),
+    //   onClick: () => { this.props.dispatch(actions.showInfoPage()) },
+    // }, 'Info/Help'),
 
-    h(DropdownMenuItem, {
-      closeMenu: () => this.setState({ isMainMenuOpen: !isOpen }),
-      onClick: () => {
-        this.props.dispatch(actions.setFeatureFlag('betaUI', true, 'BETA_UI_NOTIFICATION_MODAL'))
-      },
-    }, 'Try Beta!'),
+    // h(DropdownMenuItem, {
+    //   closeMenu: () => this.setState({ isMainMenuOpen: !isOpen }),
+    //   onClick: () => {
+    //     this.props.dispatch(actions.setFeatureFlag('betaUI', true, 'BETA_UI_NOTIFICATION_MODAL'))
+    //   },
+    // }, 'Try Beta!'),
   ])
 }
 

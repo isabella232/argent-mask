@@ -17,7 +17,7 @@ class AccountDropdowns extends Component {
       accountSelectorActive: false,
       optionsMenuActive: false,
     }
-    this.accountSelectorToggleClassName = 'accounts-selector'
+    // this.accountSelectorToggleClassName = 'accounts-selector'
     this.optionsMenuToggleClassName = 'fa-ellipsis-h'
   }
 
@@ -84,83 +84,83 @@ class AccountDropdowns extends Component {
     } catch (e) { return }
   }
 
-  renderAccountSelector () {
-    const { actions } = this.props
-    const { accountSelectorActive } = this.state
+  // renderAccountSelector () {
+  //   const { actions } = this.props
+  //   const { accountSelectorActive } = this.state
 
-    return h(
-      Dropdown,
-      {
-        useCssTransition: true, // Hardcoded because account selector is temporarily in app-header
-        style: {
-          marginLeft: '-238px',
-          marginTop: '38px',
-          minWidth: '180px',
-          overflowY: 'auto',
-          maxHeight: '300px',
-          width: '300px',
-        },
-        innerStyle: {
-          padding: '8px 25px',
-        },
-        isOpen: accountSelectorActive,
-        onClickOutside: (event) => {
-          const { classList } = event.target
-          const isNotToggleElement = !classList.contains(this.accountSelectorToggleClassName)
-          if (accountSelectorActive && isNotToggleElement) {
-            this.setState({ accountSelectorActive: false })
-          }
-        },
-      },
-      [
-        ...this.renderAccounts(),
-        h(
-          DropdownMenuItem,
-          {
-            closeMenu: () => {},
-            onClick: () => actions.addNewAccount(),
-          },
-          [
-            h(
-              Identicon,
-              {
-                style: {
-                  marginLeft: '10px',
-                },
-                diameter: 32,
-              },
-            ),
-            h('span', { style: { marginLeft: '20px', fontSize: '24px' } }, 'Create Account'),
-          ],
-        ),
-        h(
-          DropdownMenuItem,
-          {
-            closeMenu: () => {},
-            onClick: () => actions.showImportPage(),
-          },
-          [
-            h(
-              Identicon,
-              {
-                style: {
-                  marginLeft: '10px',
-                },
-                diameter: 32,
-              },
-            ),
-            h('span', {
-              style: {
-                marginLeft: '20px',
-                fontSize: '24px',
-                marginBottom: '5px',
-              },
-            }, 'Import Account'),
-          ]
-        ),
-      ]
-    )
-  }
+  //   return h(
+  //     Dropdown,
+  //     {
+  //       useCssTransition: true, // Hardcoded because account selector is temporarily in app-header
+  //       style: {
+  //         marginLeft: '-238px',
+  //         marginTop: '38px',
+  //         minWidth: '180px',
+  //         overflowY: 'auto',
+  //         maxHeight: '300px',
+  //         width: '300px',
+  //       },
+  //       innerStyle: {
+  //         padding: '8px 25px',
+  //       },
+  //       isOpen: accountSelectorActive,
+  //       onClickOutside: (event) => {
+  //         const { classList } = event.target
+  //         const isNotToggleElement = !classList.contains(this.accountSelectorToggleClassName)
+  //         if (accountSelectorActive && isNotToggleElement) {
+  //           this.setState({ accountSelectorActive: false })
+  //         }
+  //       },
+  //     },
+  //     [
+  //       ...this.renderAccounts(),
+  //       h(
+  //         DropdownMenuItem,
+  //         {
+  //           closeMenu: () => {},
+  //           onClick: () => actions.addNewAccount(),
+  //         },
+  //         [
+  //           h(
+  //             Identicon,
+  //             {
+  //               style: {
+  //                 marginLeft: '10px',
+  //               },
+  //               diameter: 32,
+  //             },
+  //           ),
+  //           h('span', { style: { marginLeft: '20px', fontSize: '24px' } }, 'Create Account'),
+  //         ],
+  //       ),
+  //       h(
+  //         DropdownMenuItem,
+  //         {
+  //           closeMenu: () => {},
+  //           onClick: () => actions.showImportPage(),
+  //         },
+  //         [
+  //           h(
+  //             Identicon,
+  //             {
+  //               style: {
+  //                 marginLeft: '10px',
+  //               },
+  //               diameter: 32,
+  //             },
+  //           ),
+  //           h('span', {
+  //             style: {
+  //               marginLeft: '20px',
+  //               fontSize: '24px',
+  //               marginBottom: '5px',
+  //             },
+  //           }, 'Import Account'),
+  //         ]
+  //       ),
+  //     ]
+  //   )
+  // }
 
   renderAccountOptions () {
     const { actions } = this.props
@@ -219,16 +219,16 @@ class AccountDropdowns extends Component {
           },
           'Copy Address to clipboard',
         ),
-        h(
-          DropdownMenuItem,
-          {
-            closeMenu: () => {},
-            onClick: () => {
-              actions.requestAccountExport()
-            },
-          },
-          'Export Private Key',
-        ),
+        // h(
+        //   DropdownMenuItem,
+        //   {
+        //     closeMenu: () => {},
+        //     onClick: () => {
+        //       actions.requestAccountExport()
+        //     },
+        //   },
+        //   'Export Private Key',
+        // ),
       ]
     )
   }
@@ -243,28 +243,28 @@ class AccountDropdowns extends Component {
         style: style,
       },
       [
-        enableAccountsSelector && h(
-          // 'i.fa.fa-angle-down',
-          'div.cursor-pointer.color-orange.accounts-selector',
-          {
-            style: {
-              // fontSize: '1.8em',
-              background: 'url(images/switch_acc.svg) white center center no-repeat',
-              height: '25px',
-              width: '25px',
-              transform: 'scale(0.75)',
-              marginRight: '3px',
-            },
-            onClick: (event) => {
-              event.stopPropagation()
-              this.setState({
-                accountSelectorActive: !accountSelectorActive,
-                optionsMenuActive: false,
-              })
-            },
-          },
-          this.renderAccountSelector(),
-        ),
+        // enableAccountsSelector && h(
+        //   // 'i.fa.fa-angle-down',
+        //   'div.cursor-pointer.color-orange.accounts-selector',
+        //   {
+        //     style: {
+        //       // fontSize: '1.8em',
+        //       background: 'url(images/switch_acc.svg) white center center no-repeat',
+        //       height: '25px',
+        //       width: '25px',
+        //       transform: 'scale(0.75)',
+        //       marginRight: '3px',
+        //     },
+        //     onClick: (event) => {
+        //       event.stopPropagation()
+        //       this.setState({
+        //         accountSelectorActive: !accountSelectorActive,
+        //         optionsMenuActive: false,
+        //       })
+        //     },
+        //   },
+        //   this.renderAccountSelector(),
+        // ),
         enableAccountOptions && h(
           'i.fa.fa-ellipsis-h',
           {

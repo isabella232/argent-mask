@@ -40,7 +40,7 @@ UnlockScreen.prototype.render = function () {
         h('img', {
           height: 128,
           width: 128,
-          src: './images/argent.png',
+          src: './images/argent-icon.png',
           style: {
             marginBottom: 20,
             marginTop: 30,

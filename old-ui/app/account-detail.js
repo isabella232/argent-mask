@@ -72,12 +72,12 @@ AccountDetailScreen.prototype.render = function () {
         }, [
 
           // large identicon and addresses
-          h('.identicon-wrapper.select-none', [
-            h(Identicon, {
-              diameter: 62,
-              address: selected,
-            }),
-          ]),
+          // h('.identicon-wrapper.select-none', [
+          //   h(Identicon, {
+          //     diameter: 62,
+          //     address: selected,
+          //   }),
+          // ]),
           h('flex-column', {
             style: {
               lineHeight: '10px',
@@ -85,14 +85,15 @@ AccountDetailScreen.prototype.render = function () {
               width: '100%',
             },
           }, [
-            h(EditableLabel, {
-              textValue: identity ? identity.name : '',
-              state: {
-                isEditingLabel: false,
-              },
-              saveText: (text) => {
-                props.dispatch(actions.setAccountLabel(selected, text))
-              },
+            // h(EditableLabel, {
+            //   textValue: identity ? identity.name : '',
+            //   state: {
+            //     isEditingLabel: false,
+            //   },
+            //   saveText: (text) => {
+            //     props.dispatch(actions.setAccountLabel(selected, text))
+            //   },
+            h('div', {
             }, [
 
               // What is shown when not editing + edit text:
@@ -128,7 +129,7 @@ AccountDetailScreen.prototype.render = function () {
                       ]),
                     ]
                   ),
-                  h(
+                  h( //span
                     AccountDropdowns,
                     {
                       style: {
@@ -171,7 +172,7 @@ AccountDetailScreen.prototype.render = function () {
               }, checksumAddress),
             ]),
 
-            // account ballence
+            // account balance
 
           ]),
         ]),

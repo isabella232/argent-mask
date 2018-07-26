@@ -51,10 +51,10 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
       h('img', {
         height: 128,
         width: 128,
-        src: './images/argent.png',
+        src: './images/argent-icon.png',
         style: {
-          marginBottom: 20,
-          marginTop: 30,
+          marginBottom: 5,
+          marginTop: 10,
         }
       }),
 
@@ -63,8 +63,8 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
           fontSize: '1.3em',
           textTransform: 'uppercase',
           color: '#7F8082',
-          marginBottom: 20,
-          marginTop: 20,
+          marginBottom: 30,
+          marginTop: 5,
         },
       // }, 'MetaMask'),
       }, 'Argent-Connect'),
