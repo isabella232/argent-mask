@@ -4,7 +4,7 @@ const leftPad = require('left-pad')
 const web3Abi = require('web3-eth-abi')
 const ethUtil = require('ethereumjs-util')
 const Prom = require('bluebird')
-const callETHContractJson = require('../../lib/contracts/argent/argentWallet').find(f => f.name === "callETHContract")
+const utils = require('../../lib/argent-utils')
 const Web3 = require('web3')
 const web3 = new Web3()
 
@@ -70,28 +70,40 @@ class ArgentTransactionController extends TransactionController {
         txParams.data = "0x0" + ethUtil.stripHexPrefix(txParams.data)
       }
 
-      // console.log('ATC: will encode', txParams)
-      const callETHContractAbi = await web3Abi.encodeFunctionCall(callETHContractJson, [txParams.to, txParams.value, txParams.data])
-      // console.log('ATC: did encode, callETHContractAbi=', callETHContractAbi)
+      let methodAbi, decodedMethodParams
+      // if the user is calling an Argent Wallet's method,
+      // do not wrap this call in a call to callETHContract()
+      if (txParams.to === walletAddress) { // call to Argent wallet contract
+        const methodId = txParams.data.slice(0, 10)
+        methodAbi = utils.methodAbiFromArgentWallet(methodId)
+        const encodedMethodParams = txParams.data.substr(10)
+        decodedMethodParams = Object.entries(web3Abi.decodeParameters(methodAbi.inputs, encodedMethodParams))
+          .filter(pair => parseInt(pair[0]) >= 0)
+          .map(pair => pair[1])
+        // console.log('INTERNAL -- methodId:', methodId, 'decodedMethodParams:', decodedMethodParams)
+      } else { // call to third-party contract or ETH transfer
+        methodAbi = utils.methodAbiFromArgentWallet('callETHContract')
+        decodedMethodParams = [txParams.to, txParams.value, txParams.data]
+        // console.log('EXTERNAL -- methodAbi:', methodAbi, 'decodedMethodParams:', decodedMethodParams)
+      }
+      const relayedData = web3Abi.encodeFunctionCall(methodAbi, decodedMethodParams)
+      // console.log('relayedData:', relayedData, 'txParams:', txParams)
+
       const nonceForRelay = await this.getNonceForRelay()
 
       txMeta.relayParams = {
         from: walletAddress,
         to: walletAddress,
         value: "0x0", 
-        data: callETHContractAbi,
+        data: relayedData,
         nonce: nonceForRelay,
         gasPrice: "0x0",
       }
 
       // sign transaction
-      // console.log('ATC: will sign', txId)
       await this.signTransaction(txId)
-      // console.log('ATC: did sign')
       // console.log('nonceForRelay', nonceForRelay, 'signature', txMeta.relayParams.signatures)
-      // console.log('ATC: will publish')
       await this.publishToRelayer(txId)
-      // console.log('ATC: did publish')
 
       // must set transaction to submitted/failed before releasing lock
       // nonceLock.releaseLock()

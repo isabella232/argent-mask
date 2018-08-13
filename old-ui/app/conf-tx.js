@@ -78,10 +78,10 @@ ConfirmTxScreen.prototype.render = function () {
           onClick: this.goHome.bind(this),
         }) : null,
         h('h2.page-subtitle', 'Confirm Transaction'),
-        isNotification ? h(NetworkIndicator, {
+        /*isNotification ? h(NetworkIndicator, {
           network: network,
           provider: provider,
-        }) : null,
+        }) :*/ null,
       ]),
 
       h('h3', {

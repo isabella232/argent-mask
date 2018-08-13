@@ -96,21 +96,21 @@ TransactionListItem.prototype.render = function () {
           h(TransactionIcon, { txParams, transaction, isTx, isMsg }),
         ]),
 
-        h(Tooltip, {
-          title: 'Transaction Number',
-          position: 'right',
-        }, [
-          h('span', {
-            style: {
-              display: 'flex',
-              cursor: 'normal',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '10px',
-            },
-          }, nonce),
-        ]),
+        // h(Tooltip, {
+        //   title: 'Transaction Number',
+        //   position: 'right',
+        // }, [
+        //   h('span', {
+        //     style: {
+        //       display: 'flex',
+        //       cursor: 'normal',
+        //       flexDirection: 'column',
+        //       alignItems: 'center',
+        //       justifyContent: 'center',
+        //       padding: '10px',
+        //     },
+        //   }, nonce),
+        // ]),
 
         h('.flex-column', {style: {width: '200px', overflow: 'hidden'}}, [
           domainField(txParams),
@@ -132,35 +132,35 @@ TransactionListItem.prototype.render = function () {
         }) : h('.flex-column'),
       ]),
 
-      this.showRetryButton() && h('.transition-list-item__retry.grow-on-hover', {
-        onClick: event => {
-          event.stopPropagation()
-          this.resubmit()
-        },
-        style: {
-          height: '22px',
-          borderRadius: '22px',
-          color: '#F9881B',
-          padding: '0 20px',
-          backgroundColor: '#FFE3C9',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          fontSize: '8px',
-          cursor: 'pointer',
-        },
-      }, [
-        h('div', {
-          style: {
-            paddingRight: '2px',
-          },
-        }, 'Taking too long?'),
-        h('div', {
-          style: {
-            textDecoration: 'underline',
-          },
-        }, 'Retry with a higher gas price here'),
-      ]),
+      // this.showRetryButton() && h('.transition-list-item__retry.grow-on-hover', {
+      //   onClick: event => {
+      //     event.stopPropagation()
+      //     this.resubmit()
+      //   },
+      //   style: {
+      //     height: '22px',
+      //     borderRadius: '22px',
+      //     color: '#F9881B',
+      //     padding: '0 20px',
+      //     backgroundColor: '#FFE3C9',
+      //     display: 'flex',
+      //     justifyContent: 'center',
+      //     alignItems: 'center',
+      //     fontSize: '8px',
+      //     cursor: 'pointer',
+      //   },
+      // }, [
+      //   h('div', {
+      //     style: {
+      //       paddingRight: '2px',
+      //     },
+      //   }, 'Taking too long?'),
+      //   h('div', {
+      //     style: {
+      //       textDecoration: 'underline',
+      //     },
+      //   }, 'Retry with a higher gas price here'),
+      // ]),
     ])
   )
 }

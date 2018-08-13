@@ -120,8 +120,10 @@ class ArgentKeyring extends EventEmitter {
     }
 
     _generatePrivateKey() {
+        console.log('!!GEN!!')
         // TODO: REMOVE ME
-        return '0xe08849939aaf83eaae70db516953503cb323af9e3d01244c372c51e688db3f56' // owner private key
+        // return '0xf262518f55d111097b5553197bb0c33ab88390be95d37fc42c1abc2380198d85' // oliuk.argent.test private key
+        return '0xc9ce57478f631c33f787c32ec6516ed88e1d2422ef79fe1b5450ee44e32d54d2' // olivdb.argent.test private key
 
         return Wallet.generate(false).getPrivateKeyString()
     }

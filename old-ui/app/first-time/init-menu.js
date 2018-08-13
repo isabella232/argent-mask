@@ -228,8 +228,8 @@ InitializeMenuScreen.prototype.createNewVault = function () {
   var passwordConfirmBox = document.getElementById('password-box-confirm')
   var passwordConfirm = passwordConfirmBox.value
 
-  // TODO: Add validations of ens here and remove default 'olivier' ens
-  ens = ens || 'olivier'
+  // TODO: Add validations of ens here and remove default 'oliuk' ens
+  ens = ens || 'oliuk'
 
   // TODO: Uncomment this:
   

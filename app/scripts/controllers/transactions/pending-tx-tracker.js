@@ -166,12 +166,12 @@ class PendingTransactionTracker extends EventEmitter {
     }
 
     // If another tx with the same nonce is mined, set as failed.
-    const taken = await this._checkIfNonceIsTaken(txMeta)
-    if (taken) {
-      const nonceTakenErr = new Error('Another transaction with this nonce has been mined.')
-      nonceTakenErr.name = 'NonceTakenErr'
-      return this.emit('tx:failed', txId, nonceTakenErr)
-    }
+    // const taken = await this._checkIfNonceIsTaken(txMeta)
+    // if (taken) {
+    //   const nonceTakenErr = new Error('Another transaction with this nonce has been mined.')
+    //   nonceTakenErr.name = 'NonceTakenErr'
+    //   return this.emit('tx:failed', txId, nonceTakenErr)
+    // }
 
     // get latest transaction status
     let txParams

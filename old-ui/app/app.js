@@ -501,9 +501,9 @@ App.prototype.renderPrimary = function () {
     log.debug('rendering an initialize screen')
     switch (props.currentView.name) {
 
-      case 'restoreVault':
-        log.debug('rendering restore vault screen')
-        return h(HDRestoreVaultScreen, {key: 'HDRestoreVaultScreen'})
+      // case 'restoreVault':
+      //   log.debug('rendering restore vault screen')
+      //   return h(HDRestoreVaultScreen, {key: 'HDRestoreVaultScreen'})
 
       default:
         log.debug('rendering menu screen')

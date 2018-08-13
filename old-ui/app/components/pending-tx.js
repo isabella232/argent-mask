@@ -169,63 +169,63 @@ PendingTx.prototype.render = function () {
             // Ether Value
             // Currently not customizable, but easily modified
             // in the way that gas and gasLimit currently are.
-            h('.row', [
-              h('.cell.label', 'Amount'),
-              h(EthBalance, { value: txParams.value, currentCurrency, conversionRate }),
-            ]),
+            // h('.row', [
+            //   h('.cell.label', 'Amount'),
+            //   h(EthBalance, { value: txParams.value, currentCurrency, conversionRate }),
+            // ]),
 
-            // Gas Limit (customizable)
-            h('.cell.row', [
-              h('.cell.label', 'Gas Limit'),
-              h('.cell.value', {
-              }, [
-                h(BNInput, {
-                  name: 'Gas Limit',
-                  value: gasBn,
-                  precision: 0,
-                  scale: 0,
-                  // The hard lower limit for gas.
-                  min: MIN_GAS_LIMIT_BN,
-                  max: safeGasLimit,
-                  suffix: 'UNITS',
-                  style: {
-                    position: 'relative',
-                    top: '5px',
-                  },
-                  onChange: this.gasLimitChanged.bind(this),
+            // // Gas Limit (customizable)
+            // h('.cell.row', [
+            //   h('.cell.label', 'Gas Limit'),
+            //   h('.cell.value', {
+            //   }, [
+            //     h(BNInput, {
+            //       name: 'Gas Limit',
+            //       value: gasBn,
+            //       precision: 0,
+            //       scale: 0,
+            //       // The hard lower limit for gas.
+            //       min: MIN_GAS_LIMIT_BN,
+            //       max: safeGasLimit,
+            //       suffix: 'UNITS',
+            //       style: {
+            //         position: 'relative',
+            //         top: '5px',
+            //       },
+            //       onChange: this.gasLimitChanged.bind(this),
 
-                  ref: (hexInput) => { this.inputs.push(hexInput) },
-                }),
-              ]),
-            ]),
+            //       ref: (hexInput) => { this.inputs.push(hexInput) },
+            //     }),
+            //   ]),
+            // ]),
 
-            // Gas Price (customizable)
-            h('.cell.row', [
-              h('.cell.label', 'Gas Price'),
-              h('.cell.value', {
-              }, [
-                h(BNInput, {
-                  name: 'Gas Price',
-                  value: gasPriceBn,
-                  precision: 9,
-                  scale: 9,
-                  suffix: 'GWEI',
-                  min: forceGasMin || MIN_GAS_PRICE_BN,
-                  style: {
-                    position: 'relative',
-                    top: '5px',
-                  },
-                  onChange: this.gasPriceChanged.bind(this),
-                  ref: (hexInput) => { this.inputs.push(hexInput) },
-                }),
-              ]),
-            ]),
+            // // Gas Price (customizable)
+            // h('.cell.row', [
+            //   h('.cell.label', 'Gas Price'),
+            //   h('.cell.value', {
+            //   }, [
+            //     h(BNInput, {
+            //       name: 'Gas Price',
+            //       value: gasPriceBn,
+            //       precision: 9,
+            //       scale: 9,
+            //       suffix: 'GWEI',
+            //       min: forceGasMin || MIN_GAS_PRICE_BN,
+            //       style: {
+            //         position: 'relative',
+            //         top: '5px',
+            //       },
+            //       onChange: this.gasPriceChanged.bind(this),
+            //       ref: (hexInput) => { this.inputs.push(hexInput) },
+            //     }),
+            //   ]),
+            // ]),
 
-            // Max Transaction Fee (calculated)
-            h('.cell.row', [
-              h('.cell.label', 'Max Transaction Fee'),
-              h(EthBalance, { value: txFeeBn.toString(16), currentCurrency, conversionRate }),
-            ]),
+            // // Max Transaction Fee (calculated)
+            // h('.cell.row', [
+            //   h('.cell.label', 'Max Transaction Fee'),
+            //   h(EthBalance, { value: txFeeBn.toString(16), currentCurrency, conversionRate }),
+            // ]),
 
             h('.cell.row', {
               style: {
@@ -234,15 +234,17 @@ PendingTx.prototype.render = function () {
                 padding: '10px 25px',
               },
             }, [
-              h('.cell.label', 'Max Total'),
+              // h('.cell.label', 'Max Total'),
+              h('.cell.label', 'Amount'),
               h('.cell.value', {
                 style: {
                   display: 'flex',
                   alignItems: 'center',
                 },
               }, [
-                h(EthBalance, {
-                  value: maxCost.toString(16),
+                h(EthBalance, { 
+                  value: txParams.value, 
+                  // value: maxCost.toString(16),
                   currentCurrency,
                   conversionRate,
                   inline: true,
@@ -253,20 +255,20 @@ PendingTx.prototype.render = function () {
             ]),
 
             // Data size row:
-            h('.cell.row', {
-              style: {
-                background: '#f7f7f7',
-                paddingBottom: '0px',
-              },
-            }, [
-              h('.cell.label'),
-              h('.cell.value', {
-                style: {
-                  fontFamily: 'Montserrat Light',
-                  fontSize: '11px',
-                },
-              }, `Data included: ${dataLength} bytes`),
-            ]),
+            // h('.cell.row', {
+            //   style: {
+            //     background: '#f7f7f7',
+            //     paddingBottom: '0px',
+            //   },
+            // }, [
+            //   h('.cell.label'),
+            //   h('.cell.value', {
+            //     style: {
+            //       fontFamily: 'Montserrat Light',
+            //       fontSize: '11px',
+            //     },
+            //   }, `Data included: ${dataLength} bytes`),
+            // ]),
           ]), // End of Table
 
         ]),
@@ -324,12 +326,12 @@ PendingTx.prototype.render = function () {
             margin: '14px 25px',
           },
         }, [
-          h('button', {
-            onClick: (event) => {
-              this.resetGasFields()
-              event.preventDefault()
-            },
-          }, 'Reset'),
+          // h('button', {
+          //   onClick: (event) => {
+          //     this.resetGasFields()
+          //     event.preventDefault()
+          //   },
+          // }, 'Reset'),
 
           // Accept Button or Buy Button
           insufficientBalance ? h('button.btn-green', { onClick: props.buyEth }, 'Buy Ether') :

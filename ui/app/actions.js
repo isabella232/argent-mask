@@ -484,6 +484,7 @@ function createNewVault (ens, password) {
         })
       })
     })
+      .then(() => dispatch(actions.unMarkPasswordForgotten()))
       .then(() => forceUpdateMetamaskState(dispatch))
       .then(() => dispatch(actions.hideLoadingIndication()))
       .catch(() => dispatch(actions.hideLoadingIndication()))
@@ -979,10 +980,8 @@ function updateTransaction (txData) {
 
 function updateAndApproveTx (txData) {
   log.info('actions: updateAndApproveTx: ' + JSON.stringify(txData))
-  console.log('actions: updateAndApproveTx: ' + JSON.stringify(txData))
   return (dispatch) => {
     log.debug(`actions calling background.updateAndApproveTx`)
-    console.log('actions calling background.updateAndApproveTx')
 
     return new Promise((resolve, reject) => {
       background.updateAndApproveTransaction(txData, err => {
@@ -994,11 +993,9 @@ function updateAndApproveTx (txData) {
           dispatch(actions.txError(err))
           dispatch(actions.goHome())
           log.error(err.message)
-          // console.log('actions.updateAndApproveTx will-reject-error', err.message)
           reject(err)
         } else { // note: this was not wrapped in an else in MetaMask
           dispatch(actions.completedTx(txData.id))
-          // console.log('actions.updateAndApproveTx will-resolve-txData', txData)
           resolve(txData)
         }
       })

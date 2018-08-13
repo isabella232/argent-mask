@@ -474,15 +474,15 @@ module.exports = class MetamaskController extends EventEmitter {
     const releaseLock = await this.createVaultMutex.acquire()
     try {
       let vault
+      // const accounts = await this.keyringController.getAccounts()
+      // if (accounts.length > 0) {
+      //   vault = await this.keyringController.fullUpdate()
+      // } else {
+      vault = await this.keyringController.createNewVault(ens, password)
       const accounts = await this.keyringController.getAccounts()
-      if (accounts.length > 0) {
-        vault = await this.keyringController.fullUpdate()
-      } else {
-        vault = await this.keyringController.createNewVault(ens, password)
-        const accounts = await this.keyringController.getAccounts()
-        this.preferencesController.setAddresses(accounts)
-        this.selectFirstIdentity()
-      }
+      this.preferencesController.setAddresses(accounts)
+      this.selectFirstIdentity()
+      // }
       releaseLock()
       return vault
     } catch (err) {
@@ -615,7 +615,6 @@ module.exports = class MetamaskController extends EventEmitter {
    * @param {Function} cb - A callback called on completion.
    */
   placeBrowserWalletAddress (cb) {
-
     const primaryKeyring = this.keyringController.getKeyringsByType(ArgentKeyring.type)[0]
     if (!primaryKeyring) {
       cb(new Error('MetamaskController - No Argent Keyring found'))
