@@ -6,28 +6,23 @@ const ensResolverJson = require('./contracts/argent/ens/argentEnsResolver')
 
 const Web3 = require('web3')
 const web3 = new Web3()
-const Prom = require('bluebird')
+const Promisifier = require('bluebird')
 
 class EnsResolver {
 
     constructor(opts) {
-        this.provider = opts.provider
-        web3.setProvider(this.provider)
+        this.provider = opts.provider;
+        web3.setProvider(this.provider);
+
+        const ensInstance = web3.eth.contract(ensRegistryJson).at(ensRegistryAddress);
+        this.resolver = Promisifier.promisify(ensInstance.resolver);
     }
 
     async addressFromEns(ens) {
-        const ensInstance = web3.eth.contract(ensRegistryJson).at(ensRegistryAddress);
-        if (typeof ensInstance.resolverPromise === 'undefined') {
-            Prom.promisifyAll(ensInstance, { suffix: 'Promise' });
-        }
-        const ensResolverAddress = await ensInstance.resolverPromise(this._namehash(ens)) // 0xc5463256e1c0c24e1eca9cc1072343f0e5617037
-        const ensResolver = web3.eth.contract(ensResolverJson).at(ensResolverAddress)
-        if (typeof ensResolver.addrPromise === 'undefined') {
-            Prom.promisifyAll(ensResolver, { suffix: 'Promise' });
-        }
-
-        const resolvedWalletAddress = await ensResolver.addrPromise(this._namehash(ens))
-        return resolvedWalletAddress
+        const ensResolverAddress = await this.resolver(this._namehash(ens)); // 0xc5463256e1c0c24e1eca9cc1072343f0e5617037
+        const ensResolver = web3.eth.contract(ensResolverJson).at(ensResolverAddress);
+        const addr = Promisifier.promisify(ensResolver.addr);
+        return await addr(this._namehash(ens));
     }
 
     /* PRIVATE METHODS */
