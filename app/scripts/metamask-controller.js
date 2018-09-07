@@ -121,6 +121,7 @@ module.exports = class MetamaskController extends EventEmitter {
     // this.keyringController = new KeyringController({
     const ensResolver = new EnsResolver({
       provider: this.provider,
+      getProviderConfig: this.networkController.getProviderConfig.bind(this.networkController),
     })
     this.keyringController = new ArgentKeyringController({
       initState: initState.ArgentKeyringController,

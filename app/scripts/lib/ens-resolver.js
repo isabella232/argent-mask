@@ -1,6 +1,11 @@
-// const ensRegistryAddress = '0x112234455c3a32fd11230c42e7bccd4a84e02010' // ROPSTEN
-const ensRegistryAddress = '0xe87988b3a4f651b37025879c0233050eac87cf0b' // ROPSTEN (our own)
-// const ensRegistryAddress = '0xe7410170f87102df0055eb195163a03b7f2bff4a' // RINKEBY
+
+const ensRegistries = {
+    ropsten: '0xe87988b3a4f651b37025879c0233050eac87cf0b', // our own ens registry
+    // ropsten: '0x112234455c3a32fd11230c42e7bccd4a84e02010', // official ropsten ens registry
+    rinkeby: '0xe7410170f87102df0055eb195163a03b7f2bff4a', // our own ens registry
+    mainnet: '0x314159265dd8dbb310642f98f50c066173c1259b',
+}
+
 const ensRegistryJson = require('./contracts/argent/ens/ensRegistry')
 const ensResolverJson = require('./contracts/argent/ens/argentEnsResolver')
 
@@ -14,6 +19,7 @@ class EnsResolver {
         this.provider = opts.provider;
         web3.setProvider(this.provider);
 
+        const ensRegistryAddress = ensRegistries[opts.getProviderConfig().type];
         const ensInstance = web3.eth.contract(ensRegistryJson).at(ensRegistryAddress);
         this.resolver = Promisifier.promisify(ensInstance.resolver);
     }
