@@ -176,6 +176,8 @@ AccountDetailScreen.prototype.render = function () {
 
           ]),
         ]),
+
+        // account balance (ETH & USD) + BUY + SEND
         h('.flex-row', {
           style: {
             justifyContent: 'space-between',
@@ -208,6 +210,24 @@ AccountDetailScreen.prototype.render = function () {
             },
           }, 'SEND'),
 
+        ]),
+
+        h('.flex-row', {
+          style: {
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            color: ' #AEAEAE',
+            fontSize: '12px',
+          },
+        }, [ 
+          // h('div.w3-red.w3-tiny', {}, [
+          //   h('div.w3-container.w3-green.w3-center', {
+          //     style: {
+          //       width: '25%'
+          //     }
+          //   }, '25%')
+          // ])
+          // 'Usage: 0.34 ETH / 1 ETH daily limit (24%)'
         ]),
       ]),
 

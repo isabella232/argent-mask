@@ -8,7 +8,7 @@ const normalizeAddress = sigUtil.normalize
 class ArgentKeyringController extends KeyringController {
   constructor (opts) {
     super(opts)
-    const initState = opts.initState || {}
+
     this.keyringTypes = [...this.keyringTypes, ArgentKeyring]
     this.memStore = new ObservableStore({
       isUnlocked: false,
@@ -16,6 +16,7 @@ class ArgentKeyringController extends KeyringController {
       keyrings: [],
     })
     this.provider = opts.provider
+    this.addressFromEns = opts.addressFromEns
   }
 
   // Create New Vault
@@ -49,7 +50,8 @@ class ArgentKeyringController extends KeyringController {
     this.clearKeyrings()
     return this.addNewKeyring(ArgentKeyring.type, { 
       ens: ens,
-      provider: this.provider
+      provider: this.provider,
+      addressFromEns: this.addressFromEns,
     })
     .then((keyring) => {
       return keyring.getAccounts()
@@ -77,7 +79,10 @@ class ArgentKeyringController extends KeyringController {
     restoreKeyring(serialized) {
       const { data } = serialized
 
-      const keyring = new ArgentKeyring({ provider: this.provider })
+      const keyring = new ArgentKeyring({ 
+        provider: this.provider,
+        addressFromEns: this.addressFromEns,
+      })
       return keyring.deserialize(data)
           .then(() => {
               return keyring.getAccounts()

@@ -39,14 +39,14 @@ PendingTx.prototype.render = function () {
   const txParams = txMeta.txParams || {}
 
   // Allow retry txs
-  const { lastGasPrice } = txMeta
-  let forceGasMin
-  if (lastGasPrice) {
-    const stripped = ethUtil.stripHexPrefix(lastGasPrice)
-    const lastGas = new BN(stripped, 16)
-    const priceBump = lastGas.divn('10')
-    forceGasMin = lastGas.add(priceBump)
-  }
+  // const { lastGasPrice } = txMeta
+  // let forceGasMin
+  // if (lastGasPrice) {
+    // const stripped = ethUtil.stripHexPrefix(lastGasPrice)
+    // const lastGas = new BN(stripped, 16)
+    // const priceBump = lastGas.divn('10')
+    // forceGasMin = lastGas.add(priceBump)
+  // }
 
   // Account Details
   const address = txParams.from || props.selectedAddress
@@ -58,28 +58,29 @@ PendingTx.prototype.render = function () {
   const isValidAddress = !txParams.to || util.isValidAddress(txParams.to)
 
   // Gas
-  const gas = txParams.gas
-  const gasBn = hexToBn(gas)
+  // const gas = txParams.gas
+  // const gasBn = hexToBn(gas)
   // default to 8MM gas limit
-  const gasLimit = new BN(parseInt(blockGasLimit) || '8000000')
-  const safeGasLimitBN = this.bnMultiplyByFraction(gasLimit, 99, 100)
-  const saferGasLimitBN = this.bnMultiplyByFraction(gasLimit, 98, 100)
-  const safeGasLimit = safeGasLimitBN.toString(10)
+  // const gasLimit = new BN(parseInt(blockGasLimit) || '8000000')
+  // const safeGasLimitBN = this.bnMultiplyByFraction(gasLimit, 99, 100)
+  // const saferGasLimitBN = this.bnMultiplyByFraction(gasLimit, 98, 100)
+  // const safeGasLimit = safeGasLimitBN.toString(10)
 
   // Gas Price
-  const gasPrice = txParams.gasPrice || MIN_GAS_PRICE_BN.toString(16)
-  const gasPriceBn = hexToBn(gasPrice)
+  // const gasPrice = txParams.gasPrice || MIN_GAS_PRICE_BN.toString(16)
+  // const gasPriceBn = hexToBn(gasPrice)
 
-  const txFeeBn = gasBn.mul(gasPriceBn)
+  // const txFeeBn = gasBn.mul(gasPriceBn)
   const valueBn = hexToBn(txParams.value)
-  const maxCost = txFeeBn.add(valueBn)
+  // const maxCost = txFeeBn.add(valueBn)
 
-  const dataLength = txParams.data ? (txParams.data.length - 2) / 2 : 0
+  // const dataLength = txParams.data ? (txParams.data.length - 2) / 2 : 0
 
   const balanceBn = hexToBn(balance)
-  const insufficientBalance = balanceBn.lt(maxCost)
-  const dangerousGasLimit = gasBn.gte(saferGasLimitBN)
-  const gasLimitSpecified = txMeta.gasLimitSpecified
+  // const insufficientBalance = balanceBn.lt(maxCost)
+  const insufficientBalance = balanceBn.lt(valueBn)
+  // const dangerousGasLimit = gasBn.gte(saferGasLimitBN)
+  // const gasLimitSpecified = txMeta.gasLimitSpecified
   const buyDisabled = insufficientBalance || !this.state.valid || !isValidAddress || this.state.submitting
   const showRejectAll = props.unconfTxListLength > 1
 
@@ -308,13 +309,13 @@ PendingTx.prototype.render = function () {
             }, 'Insufficient balance for transaction')
           : null,
 
-          (dangerousGasLimit && !gasLimitSpecified) ?
-            h('span.error', {
-              style: {
-                fontSize: '0.9em',
-              },
-            }, 'Gas limit set dangerously high. Approving this transaction is liable to fail.')
-          : null,
+          // (dangerousGasLimit && !gasLimitSpecified) ?
+          //   h('span.error', {
+          //     style: {
+          //       fontSize: '0.9em',
+          //     },
+          //   }, 'Gas limit set dangerously high. Approving this transaction is liable to fail.')
+          // : null,
         ]),
 
 

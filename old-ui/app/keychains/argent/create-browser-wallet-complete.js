@@ -3,6 +3,7 @@ const Component = require('react').Component
 const connect = require('react-redux').connect
 const h = require('react-hyperscript')
 const actions = require('../../../../ui/app/actions')
+const CopyButton = require('../../components/copyButton')
 
 module.exports = connect(mapStateToProps)(CreateBrowserWalletCompleteScreen)
 
@@ -49,6 +50,7 @@ CreateBrowserWalletCompleteScreen.prototype.render = function () {
         style: {
           fontSize: '1em',
           marginTop: '10px',
+          marginBottom: '10px',
           textAlign: 'center',
         },
       }, [
@@ -62,6 +64,17 @@ CreateBrowserWalletCompleteScreen.prototype.render = function () {
       h('img', {
         src: `https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=${browserWalletAddress}`
       }),
+
+      h('.flex-row', [
+        h('h3.ellip-address', {
+          style: {
+            width: '247px',
+          },
+        }, browserWalletAddress),
+        h(CopyButton, {
+          value: browserWalletAddress,
+        }),
+      ]),
 
       h('button.primary', {
         onClick: () => this.confirmSeedWords(),

@@ -37,6 +37,7 @@ const PersonalMessageManager = require('./lib/personal-message-manager')
 const TypedMessageManager = require('./lib/typed-message-manager')
 // const TransactionController = require('./controllers/transactions')
 const ArgentTransactionController = require('./controllers/transactions/argent-transaction-controller')
+const EnsResolver = require('./lib/ens-resolver')
 const BalancesController = require('./controllers/computed-balances')
 const TokenRatesController = require('./controllers/token-rates')
 const ConfigManager = require('./lib/config-manager')
@@ -118,11 +119,15 @@ module.exports = class MetamaskController extends EventEmitter {
 
     // key mgmt
     // this.keyringController = new KeyringController({
+    const ensResolver = new EnsResolver({
+      provider: this.provider,
+    })
     this.keyringController = new ArgentKeyringController({
       initState: initState.ArgentKeyringController,
       getNetwork: this.networkController.getNetworkState.bind(this.networkController),
       encryptor: opts.encryptor || undefined,
       provider: this.provider,
+      addressFromEns: ensResolver.addressFromEns.bind(ensResolver)
     })
 
     // preferences controller

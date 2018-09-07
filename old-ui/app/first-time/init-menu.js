@@ -97,7 +97,7 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
       h('input.large-input.letter-spacey', {
         type: 'text',
         id: 'ens-box',
-        placeholder: 'olivier.argent.test',
+        placeholder: 'olivier.argentx.eth',
         onInput: this.inputChanged.bind(this),
         style: {
           width: 260,

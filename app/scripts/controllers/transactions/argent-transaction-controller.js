@@ -60,14 +60,14 @@ class ArgentTransactionController extends TransactionController {
       // txMeta.nonceDetails = nonceLock.nonceDetails
       this.txStateManager.updateTx(txMeta, 'transactions#approveTransaction')
 
-
+      
       // ARGENT CONNECT
       // sign and relay transaction
       const txParams = txMeta.txParams
 
-      txParams.data = txParams.data || "0x"
+      txParams.data = txParams.data || '0x'
       if (ethUtil.stripHexPrefix(txParams.data).length % 2 == 1) {
-        txParams.data = "0x0" + ethUtil.stripHexPrefix(txParams.data)
+        txParams.data = '0x0' + ethUtil.stripHexPrefix(txParams.data)
       }
 
       let methodAbi, decodedMethodParams
@@ -75,15 +75,29 @@ class ArgentTransactionController extends TransactionController {
       // do not wrap this call in a call to callETHContract()
       if (txParams.to === walletAddress) { // call to Argent wallet contract
         const methodId = txParams.data.slice(0, 10)
-        methodAbi = utils.methodAbiFromArgentWallet(methodId)
-        const encodedMethodParams = txParams.data.substr(10)
-        decodedMethodParams = Object.entries(web3Abi.decodeParameters(methodAbi.inputs, encodedMethodParams))
-          .filter(pair => parseInt(pair[0]) >= 0)
-          .map(pair => pair[1])
-        // console.log('INTERNAL -- methodId:', methodId, 'decodedMethodParams:', decodedMethodParams)
+
+        methodAbi = await utils.methodAbiFromArgentWallet(methodId)
+        if (!methodAbi) {
+          // The data passed is either empty or not a valid WalletLibrary call.
+          // We ignore it and execute a transfer from the wallet to itself
+          methodAbi = await utils.methodAbiFromArgentWallet('transferETH')
+          decodedMethodParams = [txParams.to, txParams.value]
+        } else {
+          // console.log('ATC: methodId', methodId, 'methodAbi', methodAbi)
+          const encodedMethodParams = txParams.data.substr(10)
+          decodedMethodParams = Object.entries(web3Abi.decodeParameters(methodAbi.inputs, encodedMethodParams))
+            .filter(pair => parseInt(pair[0]) >= 0)
+            .map(pair => pair[1])
+          // console.log('INTERNAL -- methodId:', methodId, 'decodedMethodParams:', decodedMethodParams)
+        }
       } else { // call to third-party contract or ETH transfer
-        methodAbi = utils.methodAbiFromArgentWallet('callETHContract')
-        decodedMethodParams = [txParams.to, txParams.value, txParams.data]
+        if (txParams.data === '0x') {
+          methodAbi = await utils.methodAbiFromArgentWallet('transferETH')
+          decodedMethodParams = [txParams.to, txParams.value]
+        } else {
+          methodAbi = await utils.methodAbiFromArgentWallet('callETHContract')
+          decodedMethodParams = [txParams.to, txParams.value, txParams.data]
+        }
         // console.log('EXTERNAL -- methodAbi:', methodAbi, 'decodedMethodParams:', decodedMethodParams)
       }
       const relayedData = web3Abi.encodeFunctionCall(methodAbi, decodedMethodParams)
@@ -169,6 +183,7 @@ class ArgentTransactionController extends TransactionController {
 
   async relayTransaction(relayParams) {
     const relayerProvider = new web3.providers.HttpProvider('https://relay.argent.im:443')
+    // const relayerProvider = new web3.providers.HttpProvider('https://rinkeby-relay.argent.im:443')
     const payload = {
       id: 0,
       jsonrpc: '2.0',

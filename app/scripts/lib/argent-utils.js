@@ -1,10 +1,11 @@
-const web3Abi = require('web3-eth-abi')
+const web3Abi = require('web3-eth-abi');
 
 /**
  * Helper methods.
  * @type {Object}
  */
 module.exports = {
+
     methodAbiFromMethodName(abi, methodName) {
         return abi.find(f => f.name === methodName);
     },
@@ -18,9 +19,10 @@ module.exports = {
             return this.methodAbiFromMethodId(abi, method);
         }
         return this.methodAbiFromMethodName(abi, method);
-    }, 
+    },
 
-    methodAbiFromArgentWallet(method) {
-        return this.methodAbiFrom(require('./contracts/argent/argentWallet'), method);
+    async methodAbiFromArgentWallet(method) {
+        const abi = require('./contracts/argent/argentWallet');
+        return this.methodAbiFrom(abi, method);
     }
 }
