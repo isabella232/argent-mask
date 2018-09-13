@@ -30,6 +30,7 @@ function mapStateToProps (state) {
   result.account = result.accounts[result.address]
   result.identity = result.identities[result.address]
   result.balance = result.account ? numericBalance(result.account.balance) : null
+  result.dailyUnspent = result.account ? numericBalance(result.account.dailyUnspent) : null
 
   return result
 }
@@ -267,9 +268,15 @@ SendTransactionScreen.prototype.onSubmit = function () {
   const value = util.normalizeEthStringToWei(input)
   const txData = document.querySelector('input[name="txData"]').value
   const balance = this.props.balance
+  const dailyUnspent = this.props.dailyUnspent
 
   if (value.gt(balance)) {
     message = 'Insufficient funds.'
+    return this.props.dispatch(actions.displayWarning(message))
+  }
+
+  if (value.gt(dailyUnspent)) {
+    message = 'Exceeds daily limit for ArgentConnect.'
     return this.props.dispatch(actions.displayWarning(message))
   }
 

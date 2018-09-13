@@ -296,7 +296,7 @@ PendingTx.prototype.render = function () {
               style: {
                 fontSize: '0.9em',
               },
-            }, 'Transaction Error. Exception thrown in contract code.')
+            }, 'Transaction Error. Exception thrown in contract code. ')
           : null,
 
           !isValidAddress ?
@@ -304,7 +304,7 @@ PendingTx.prototype.render = function () {
               style: {
                 fontSize: '0.9em',
               },
-            }, 'Recipient address is invalid. Sending this transaction will result in a loss of ETH.')
+            }, 'Recipient address is invalid. Sending this transaction will result in a loss of ETH. ')
           : null,
 
           insufficientBalance ?
@@ -312,7 +312,7 @@ PendingTx.prototype.render = function () {
               style: {
                 fontSize: '0.9em',
               },
-            }, 'Insufficient balance for transaction')
+            }, 'Insufficient balance for transaction. ')
           : null,
 
           exceedsDailyLimit ?
