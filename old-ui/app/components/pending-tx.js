@@ -14,10 +14,10 @@ const Copyable = require('./copyable')
 const EthBalance = require('./eth-balance')
 const addressSummary = util.addressSummary
 const nameForAddress = require('../../lib/contract-namer')
-const BNInput = require('./bn-as-decimal-input')
+// const BNInput = require('./bn-as-decimal-input')
 
-const MIN_GAS_PRICE_BN = new BN('0')
-const MIN_GAS_LIMIT_BN = new BN('21000')
+// const MIN_GAS_PRICE_BN = new BN('0')
+// const MIN_GAS_LIMIT_BN = new BN('21000')
 
 module.exports = PendingTx
 inherits(PendingTx, Component)
@@ -32,7 +32,8 @@ function PendingTx () {
 
 PendingTx.prototype.render = function () {
   const props = this.props
-  const { currentCurrency, blockGasLimit } = props
+  // const { currentCurrency, blockGasLimit } = props
+  const { currentCurrency } = props
 
   const conversionRate = props.conversionRate
   const txMeta = this.gatherTxMeta()
@@ -53,6 +54,7 @@ PendingTx.prototype.render = function () {
   const identity = props.identities[address] || { address: address }
   const account = props.accounts[address]
   const balance = account ? account.balance : '0x0'
+  const dailyUnspent = account ? account.dailyUnspent : '0x0'
 
   // recipient check
   const isValidAddress = !txParams.to || util.isValidAddress(txParams.to)
@@ -79,9 +81,13 @@ PendingTx.prototype.render = function () {
   const balanceBn = hexToBn(balance)
   // const insufficientBalance = balanceBn.lt(maxCost)
   const insufficientBalance = balanceBn.lt(valueBn)
+
+  const dailyUnspentBn = hexToBn(dailyUnspent)
+  const exceedsDailyLimit = dailyUnspentBn.lt(valueBn)
+
   // const dangerousGasLimit = gasBn.gte(saferGasLimitBN)
   // const gasLimitSpecified = txMeta.gasLimitSpecified
-  const buyDisabled = insufficientBalance || !this.state.valid || !isValidAddress || this.state.submitting
+  const buyDisabled = insufficientBalance || exceedsDailyLimit || !this.state.valid || !isValidAddress || this.state.submitting
   const showRejectAll = props.unconfTxListLength > 1
 
   this.inputs = []
@@ -307,6 +313,14 @@ PendingTx.prototype.render = function () {
                 fontSize: '0.9em',
               },
             }, 'Insufficient balance for transaction')
+          : null,
+
+          exceedsDailyLimit ?
+            h('span.error', {
+              style: {
+                fontSize: '0.9em',
+              },
+            }, 'Exceeds the daily limit set for your ArgentConnect key.')
           : null,
 
           // (dangerousGasLimit && !gasLimitSpecified) ?

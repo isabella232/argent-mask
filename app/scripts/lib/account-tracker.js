@@ -182,6 +182,10 @@ class AccountTracker extends EventEmitter {
     const query = this._query
     async.parallel({
       balance: query.getBalance.bind(query, address),
+      dailyUnspent: query.call.bind(query, {
+        to: address,
+        data: '0x7cb8f8ba' // web3.eth.abi.encodeFunctionSignature('getDailyUnspent(address)')
+      })
     }, cb)
   }
 
