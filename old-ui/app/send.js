@@ -31,6 +31,7 @@ function mapStateToProps (state) {
   result.identity = result.identities[result.address]
   result.balance = result.account ? numericBalance(result.account.balance) : null
   result.dailyUnspent = result.account ? numericBalance(result.account.dailyUnspent) : null
+  result.lockReleaseTime = result.account ? numericBalance(result.account.lockReleaseTime) : null
 
   return result
 }
@@ -269,9 +270,15 @@ SendTransactionScreen.prototype.onSubmit = function () {
   const txData = document.querySelector('input[name="txData"]').value
   const balance = this.props.balance
   const dailyUnspent = this.props.dailyUnspent
+  const isLocked = this.props.lockReleaseTime.gt(new ethUtil.BN(Math.floor(Date.now() / 1000)))
 
   if (value.gt(balance)) {
     message = 'Insufficient funds.'
+    return this.props.dispatch(actions.displayWarning(message))
+  }
+
+  if (isLocked) {
+    message = 'Wallet locked.'
     return this.props.dispatch(actions.displayWarning(message))
   }
 

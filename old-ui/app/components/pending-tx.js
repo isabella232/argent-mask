@@ -21,7 +21,7 @@ const nameForAddress = require('../../lib/contract-namer')
 
 module.exports = PendingTx
 inherits(PendingTx, Component)
-function PendingTx () {
+function PendingTx() {
   Component.call(this)
   this.state = {
     valid: true,
@@ -43,10 +43,10 @@ PendingTx.prototype.render = function () {
   // const { lastGasPrice } = txMeta
   // let forceGasMin
   // if (lastGasPrice) {
-    // const stripped = ethUtil.stripHexPrefix(lastGasPrice)
-    // const lastGas = new BN(stripped, 16)
-    // const priceBump = lastGas.divn('10')
-    // forceGasMin = lastGas.add(priceBump)
+  // const stripped = ethUtil.stripHexPrefix(lastGasPrice)
+  // const lastGas = new BN(stripped, 16)
+  // const priceBump = lastGas.divn('10')
+  // forceGasMin = lastGas.add(priceBump)
   // }
 
   // Account Details
@@ -55,6 +55,7 @@ PendingTx.prototype.render = function () {
   const account = props.accounts[address]
   const balance = account ? account.balance : '0x0'
   const dailyUnspent = account ? account.dailyUnspent : '0x0'
+  const lockReleaseTime = account ? account.lockReleaseTime : '0x0'
 
   // recipient check
   const isValidAddress = !txParams.to || util.isValidAddress(txParams.to)
@@ -85,9 +86,12 @@ PendingTx.prototype.render = function () {
   const dailyUnspentBn = hexToBn(dailyUnspent)
   const exceedsDailyLimit = dailyUnspentBn.lt(valueBn)
 
+  const lockReleaseTimeBn = hexToBn(lockReleaseTime)
+  const isLocked = lockReleaseTimeBn.gt(new ethUtil.BN(Math.floor(Date.now() / 1000)))
+
   // const dangerousGasLimit = gasBn.gte(saferGasLimitBN)
   // const gasLimitSpecified = txMeta.gasLimitSpecified
-  const buyDisabled = insufficientBalance || exceedsDailyLimit || !this.state.valid || !isValidAddress || this.state.submitting
+  const buyDisabled = insufficientBalance || isLocked || exceedsDailyLimit || !this.state.valid || !isValidAddress || this.state.submitting
   const showRejectAll = props.unconfTxListLength > 1
 
   this.inputs = []
@@ -98,61 +102,61 @@ PendingTx.prototype.render = function () {
       key: txMeta.id,
     }, [
 
-      h('form#pending-tx-form', {
-        onSubmit: this.onSubmit.bind(this),
+        h('form#pending-tx-form', {
+          onSubmit: this.onSubmit.bind(this),
 
-      }, [
+        }, [
 
-        // tx info
-        h('div', [
+            // tx info
+            h('div', [
 
-          h('.flex-row.flex-center', {
-            style: {
-              maxWidth: '100%',
-            },
-          }, [
-
-            h(MiniAccountPanel, {
-              imageSeed: address,
-              picOrder: 'right',
-            }, [
-              h('span.font-small', {
+              h('.flex-row.flex-center', {
                 style: {
-                  fontFamily: 'Montserrat Bold, Montserrat, sans-serif',
-                },
-              }, identity.name),
-
-              h(Copyable, {
-                value: ethUtil.toChecksumAddress(address),
-              }, [
-                h('span.font-small', {
-                  style: {
-                    fontFamily: 'Montserrat Light, Montserrat, sans-serif',
-                  },
-                }, addressSummary(address, 6, 4, false)),
-              ]),
-
-              h('span.font-small', {
-                style: {
-                  fontFamily: 'Montserrat Light, Montserrat, sans-serif',
+                  maxWidth: '100%',
                 },
               }, [
-                h(EthBalance, {
-                  value: balance,
-                  conversionRate,
-                  currentCurrency,
-                  inline: true,
-                  labelColor: '#F7861C',
-                }),
-              ]),
-            ]),
 
-            forwardCarrat(),
+                  h(MiniAccountPanel, {
+                    imageSeed: address,
+                    picOrder: 'right',
+                  }, [
+                      h('span.font-small', {
+                        style: {
+                          fontFamily: 'Montserrat Bold, Montserrat, sans-serif',
+                        },
+                      }, identity.name),
 
-            this.miniAccountPanelForRecipient(),
-          ]),
+                      h(Copyable, {
+                        value: ethUtil.toChecksumAddress(address),
+                      }, [
+                          h('span.font-small', {
+                            style: {
+                              fontFamily: 'Montserrat Light, Montserrat, sans-serif',
+                            },
+                          }, addressSummary(address, 6, 4, false)),
+                        ]),
 
-          h('style', `
+                      h('span.font-small', {
+                        style: {
+                          fontFamily: 'Montserrat Light, Montserrat, sans-serif',
+                        },
+                      }, [
+                          h(EthBalance, {
+                            value: balance,
+                            conversionRate,
+                            currentCurrency,
+                            inline: true,
+                            labelColor: '#F7861C',
+                          }),
+                        ]),
+                    ]),
+
+                  forwardCarrat(),
+
+                  this.miniAccountPanelForRecipient(),
+                ]),
+
+              h('style', `
             .table-box {
               margin: 7px 0px 0px 0px;
               width: 100%;
@@ -171,209 +175,217 @@ PendingTx.prototype.render = function () {
             }
           `),
 
-          h('.table-box', [
+              h('.table-box', [
 
-            // Ether Value
-            // Currently not customizable, but easily modified
-            // in the way that gas and gasLimit currently are.
-            // h('.row', [
-            //   h('.cell.label', 'Amount'),
-            //   h(EthBalance, { value: txParams.value, currentCurrency, conversionRate }),
-            // ]),
+                // Ether Value
+                // Currently not customizable, but easily modified
+                // in the way that gas and gasLimit currently are.
+                // h('.row', [
+                //   h('.cell.label', 'Amount'),
+                //   h(EthBalance, { value: txParams.value, currentCurrency, conversionRate }),
+                // ]),
 
-            // // Gas Limit (customizable)
-            // h('.cell.row', [
-            //   h('.cell.label', 'Gas Limit'),
-            //   h('.cell.value', {
-            //   }, [
-            //     h(BNInput, {
-            //       name: 'Gas Limit',
-            //       value: gasBn,
-            //       precision: 0,
-            //       scale: 0,
-            //       // The hard lower limit for gas.
-            //       min: MIN_GAS_LIMIT_BN,
-            //       max: safeGasLimit,
-            //       suffix: 'UNITS',
-            //       style: {
-            //         position: 'relative',
-            //         top: '5px',
-            //       },
-            //       onChange: this.gasLimitChanged.bind(this),
+                // // Gas Limit (customizable)
+                // h('.cell.row', [
+                //   h('.cell.label', 'Gas Limit'),
+                //   h('.cell.value', {
+                //   }, [
+                //     h(BNInput, {
+                //       name: 'Gas Limit',
+                //       value: gasBn,
+                //       precision: 0,
+                //       scale: 0,
+                //       // The hard lower limit for gas.
+                //       min: MIN_GAS_LIMIT_BN,
+                //       max: safeGasLimit,
+                //       suffix: 'UNITS',
+                //       style: {
+                //         position: 'relative',
+                //         top: '5px',
+                //       },
+                //       onChange: this.gasLimitChanged.bind(this),
 
-            //       ref: (hexInput) => { this.inputs.push(hexInput) },
-            //     }),
-            //   ]),
-            // ]),
+                //       ref: (hexInput) => { this.inputs.push(hexInput) },
+                //     }),
+                //   ]),
+                // ]),
 
-            // // Gas Price (customizable)
-            // h('.cell.row', [
-            //   h('.cell.label', 'Gas Price'),
-            //   h('.cell.value', {
-            //   }, [
-            //     h(BNInput, {
-            //       name: 'Gas Price',
-            //       value: gasPriceBn,
-            //       precision: 9,
-            //       scale: 9,
-            //       suffix: 'GWEI',
-            //       min: forceGasMin || MIN_GAS_PRICE_BN,
-            //       style: {
-            //         position: 'relative',
-            //         top: '5px',
-            //       },
-            //       onChange: this.gasPriceChanged.bind(this),
-            //       ref: (hexInput) => { this.inputs.push(hexInput) },
-            //     }),
-            //   ]),
-            // ]),
+                // // Gas Price (customizable)
+                // h('.cell.row', [
+                //   h('.cell.label', 'Gas Price'),
+                //   h('.cell.value', {
+                //   }, [
+                //     h(BNInput, {
+                //       name: 'Gas Price',
+                //       value: gasPriceBn,
+                //       precision: 9,
+                //       scale: 9,
+                //       suffix: 'GWEI',
+                //       min: forceGasMin || MIN_GAS_PRICE_BN,
+                //       style: {
+                //         position: 'relative',
+                //         top: '5px',
+                //       },
+                //       onChange: this.gasPriceChanged.bind(this),
+                //       ref: (hexInput) => { this.inputs.push(hexInput) },
+                //     }),
+                //   ]),
+                // ]),
 
-            // // Max Transaction Fee (calculated)
-            // h('.cell.row', [
-            //   h('.cell.label', 'Max Transaction Fee'),
-            //   h(EthBalance, { value: txFeeBn.toString(16), currentCurrency, conversionRate }),
-            // ]),
+                // // Max Transaction Fee (calculated)
+                // h('.cell.row', [
+                //   h('.cell.label', 'Max Transaction Fee'),
+                //   h(EthBalance, { value: txFeeBn.toString(16), currentCurrency, conversionRate }),
+                // ]),
 
-            h('.cell.row', {
-              style: {
-                fontFamily: 'Montserrat Regular',
-                background: 'white',
-                padding: '10px 25px',
-              },
-            }, [
-              // h('.cell.label', 'Max Total'),
-              h('.cell.label', 'Amount'),
-              h('.cell.value', {
-                style: {
-                  display: 'flex',
-                  alignItems: 'center',
-                },
-              }, [
-                h(EthBalance, { 
-                  value: txParams.value, 
-                  // value: maxCost.toString(16),
-                  currentCurrency,
-                  conversionRate,
-                  inline: true,
-                  labelColor: 'black',
-                  fontSize: '16px',
-                }),
-              ]),
+                h('.cell.row', {
+                  style: {
+                    fontFamily: 'Montserrat Regular',
+                    background: 'white',
+                    padding: '10px 25px',
+                  },
+                }, [
+                    // h('.cell.label', 'Max Total'),
+                    h('.cell.label', 'Amount'),
+                    h('.cell.value', {
+                      style: {
+                        display: 'flex',
+                        alignItems: 'center',
+                      },
+                    }, [
+                        h(EthBalance, {
+                          value: txParams.value,
+                          // value: maxCost.toString(16),
+                          currentCurrency,
+                          conversionRate,
+                          inline: true,
+                          labelColor: 'black',
+                          fontSize: '16px',
+                        }),
+                      ]),
+                  ]),
+
+                // Data size row:
+                // h('.cell.row', {
+                //   style: {
+                //     background: '#f7f7f7',
+                //     paddingBottom: '0px',
+                //   },
+                // }, [
+                //   h('.cell.label'),
+                //   h('.cell.value', {
+                //     style: {
+                //       fontFamily: 'Montserrat Light',
+                //       fontSize: '11px',
+                //     },
+                //   }, `Data included: ${dataLength} bytes`),
+                // ]),
+              ]), // End of Table
+
             ]),
 
-            // Data size row:
-            // h('.cell.row', {
-            //   style: {
-            //     background: '#f7f7f7',
-            //     paddingBottom: '0px',
-            //   },
-            // }, [
-            //   h('.cell.label'),
-            //   h('.cell.value', {
-            //     style: {
-            //       fontFamily: 'Montserrat Light',
-            //       fontSize: '11px',
-            //     },
-            //   }, `Data included: ${dataLength} bytes`),
-            // ]),
-          ]), // End of Table
-
-        ]),
-
-        h('style', `
+            h('style', `
           .conf-buttons button {
             margin-left: 10px;
             text-transform: uppercase;
           }
         `),
-        h('.cell.row', {
-          style: {
-            textAlign: 'center',
-          },
-        }, [
-          txMeta.simulationFails ?
-            h('.error', {
+            h('.cell.row', {
               style: {
-                fontSize: '0.9em',
+                textAlign: 'center',
               },
-            }, 'Transaction Error. Exception thrown in contract code. ')
-          : null,
+            }, [
+                txMeta.simulationFails ?
+                  h('.error', {
+                    style: {
+                      fontSize: '0.9em',
+                    },
+                  }, 'Transaction Error. Exception thrown in contract code. ')
+                  : null,
 
-          !isValidAddress ?
-            h('.error', {
+                !isValidAddress ?
+                  h('.error', {
+                    style: {
+                      fontSize: '0.9em',
+                    },
+                  }, 'Recipient address is invalid. Sending this transaction will result in a loss of ETH. ')
+                  : null,
+
+                isLocked ?
+                  h('span.error', {
+                    style: {
+                      fontSize: '0.9em',
+                    },
+                  }, 'Your Argent Wallet is Locked. ')
+                  : null,
+
+                exceedsDailyLimit ?
+                  h('span.error', {
+                    style: {
+                      fontSize: '0.9em',
+                    },
+                  }, 'Exceeds the daily limit set for your ArgentConnect key. ')
+                  : null,
+
+                insufficientBalance ?
+                  h('span.error', {
+                    style: {
+                      fontSize: '0.9em',
+                    },
+                  }, 'Insufficient balance for transaction. ')
+                  : null,
+
+                // (dangerousGasLimit && !gasLimitSpecified) ?
+                //   h('span.error', {
+                //     style: {
+                //       fontSize: '0.9em',
+                //     },
+                //   }, 'Gas limit set dangerously high. Approving this transaction is liable to fail.')
+                // : null,
+              ]),
+
+
+            // send + cancel
+            h('.flex-row.flex-space-around.conf-buttons', {
               style: {
-                fontSize: '0.9em',
+                display: 'flex',
+                justifyContent: 'flex-end',
+                margin: '14px 25px',
               },
-            }, 'Recipient address is invalid. Sending this transaction will result in a loss of ETH. ')
-          : null,
+            }, [
+                // h('button', {
+                //   onClick: (event) => {
+                //     this.resetGasFields()
+                //     event.preventDefault()
+                //   },
+                // }, 'Reset'),
 
-          insufficientBalance ?
-            h('span.error', {
+                // Accept Button or Buy Button
+                insufficientBalance ? h('button.btn-green', { onClick: props.buyEth }, 'Buy Ether') :
+                  h('input.confirm.btn-green', {
+                    type: 'submit',
+                    value: 'SUBMIT',
+                    style: { marginLeft: '10px' },
+                    disabled: buyDisabled,
+                  }),
+
+                h('button.cancel.btn-red', {
+                  onClick: props.cancelTransaction,
+                }, 'Reject'),
+              ]),
+            showRejectAll ? h('.flex-row.flex-space-around.conf-buttons', {
               style: {
-                fontSize: '0.9em',
+                display: 'flex',
+                justifyContent: 'flex-end',
+                margin: '14px 25px',
               },
-            }, 'Insufficient balance for transaction. ')
-          : null,
-
-          exceedsDailyLimit ?
-            h('span.error', {
-              style: {
-                fontSize: '0.9em',
-              },
-            }, 'Exceeds the daily limit set for your ArgentConnect key.')
-          : null,
-
-          // (dangerousGasLimit && !gasLimitSpecified) ?
-          //   h('span.error', {
-          //     style: {
-          //       fontSize: '0.9em',
-          //     },
-          //   }, 'Gas limit set dangerously high. Approving this transaction is liable to fail.')
-          // : null,
-        ]),
-
-
-        // send + cancel
-        h('.flex-row.flex-space-around.conf-buttons', {
-          style: {
-            display: 'flex',
-            justifyContent: 'flex-end',
-            margin: '14px 25px',
-          },
-        }, [
-          // h('button', {
-          //   onClick: (event) => {
-          //     this.resetGasFields()
-          //     event.preventDefault()
-          //   },
-          // }, 'Reset'),
-
-          // Accept Button or Buy Button
-          insufficientBalance ? h('button.btn-green', { onClick: props.buyEth }, 'Buy Ether') :
-            h('input.confirm.btn-green', {
-              type: 'submit',
-              value: 'SUBMIT',
-              style: { marginLeft: '10px' },
-              disabled: buyDisabled,
-            }),
-
-          h('button.cancel.btn-red', {
-            onClick: props.cancelTransaction,
-          }, 'Reject'),
-        ]),
-        showRejectAll ? h('.flex-row.flex-space-around.conf-buttons', {
-          style: {
-            display: 'flex',
-            justifyContent: 'flex-end',
-            margin: '14px 25px',
-          },
-        }, [
-          h('button.cancel.btn-red', {
-            onClick: props.cancelAllTransactions,
-          }, 'Reject All'),
-        ]) : null,
-      ]),
-    ])
+            }, [
+                h('button.cancel.btn-red', {
+                  onClick: props.cancelAllTransactions,
+                }, 'Reject All'),
+              ]) : null,
+          ]),
+      ])
   )
 }
 
@@ -390,35 +402,35 @@ PendingTx.prototype.miniAccountPanelForRecipient = function () {
       picOrder: 'left',
     }, [
 
-      h('span.font-small', {
-        style: {
-          fontFamily: 'Montserrat Bold, Montserrat, sans-serif',
-        },
-      }, nameForAddress(txParams.to, props.identities)),
-
-      h(Copyable, {
-        value: ethUtil.toChecksumAddress(txParams.to),
-      }, [
         h('span.font-small', {
           style: {
-            fontFamily: 'Montserrat Light, Montserrat, sans-serif',
+            fontFamily: 'Montserrat Bold, Montserrat, sans-serif',
           },
-        }, addressSummary(txParams.to, 6, 4, false)),
-      ]),
+        }, nameForAddress(txParams.to, props.identities)),
 
-    ])
+        h(Copyable, {
+          value: ethUtil.toChecksumAddress(txParams.to),
+        }, [
+            h('span.font-small', {
+              style: {
+                fontFamily: 'Montserrat Light, Montserrat, sans-serif',
+              },
+            }, addressSummary(txParams.to, 6, 4, false)),
+          ]),
+
+      ])
   } else {
     return h(MiniAccountPanel, {
       picOrder: 'left',
     }, [
 
-      h('span.font-small', {
-        style: {
-          fontFamily: 'Montserrat Bold, Montserrat, sans-serif',
-        },
-      }, 'New Contract'),
+        h('span.font-small', {
+          style: {
+            fontFamily: 'Montserrat Bold, Montserrat, sans-serif',
+          },
+        }, 'New Contract'),
 
-    ])
+      ])
   }
 }
 
@@ -480,7 +492,7 @@ PendingTx.prototype.getFormEl = function () {
   const form = document.querySelector('form#pending-tx-form')
   // Stub out form for unit tests:
   if (!form) {
-    return { checkValidity () { return true } }
+    return { checkValidity() { return true } }
   }
   return form
 }
@@ -515,7 +527,7 @@ PendingTx.prototype.bnMultiplyByFraction = function (targetBN, numerator, denomi
   return targetBN.mul(numBN).div(denomBN)
 }
 
-function forwardCarrat () {
+function forwardCarrat() {
   return (
     h('img', {
       src: 'images/forward-carrat.svg',

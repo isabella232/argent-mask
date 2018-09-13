@@ -185,7 +185,11 @@ class AccountTracker extends EventEmitter {
       dailyUnspent: query.call.bind(query, {
         to: address,
         data: '0x7cb8f8ba' // web3.eth.abi.encodeFunctionSignature('getDailyUnspent(address)')
-      })
+      }),
+      lockReleaseTime: query.call.bind(query, {
+        to: address,
+        data: '0x7e5852d9' // web3.eth.abi.encodeFunctionSignature('getLock()')
+      }),
     }, cb)
   }
 
