@@ -99,9 +99,7 @@ class ArgentKeyring extends EventEmitter {
         })
     }
 
-
     /* PRIVATE METHODS */
-
 
     _generatePrivateKey() {
         return Wallet.generate(false).getPrivateKeyString()
@@ -120,7 +118,6 @@ class ArgentKeyring extends EventEmitter {
         }
         return Promise.resolve()
     }
-
 }
 
 ArgentKeyring.type = type

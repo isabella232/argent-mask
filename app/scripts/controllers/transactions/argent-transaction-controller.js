@@ -63,8 +63,8 @@ class ArgentTransactionController extends TransactionController {
   async signTransaction (txId) {
     const txMeta = this.txStateManager.getTx(txId)
 
-    const signature = await this.relayController.signatureForRelayedTx(txMeta.relayParams)
-    txMeta.relayParams.signatures = signature
+    // adding a 'signatures' field to txMeta.relayParams
+    await this.relayController.signRelayedTx(txMeta.relayParams)
 
     // set state to signed
     this.txStateManager.setTxStatusSigned(txMeta.id)
