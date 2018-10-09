@@ -1,7 +1,7 @@
 
 const ensRegistries = {
     ropsten: '0x112234455c3a32fd11230c42e7bccd4a84e02010', // official ropsten ens registry
-    rinkeby: '0xe7410170f87102df0055eb195163a03b7f2bff4a', // our own ens registry
+    rinkeby: '0x2e15B5F43561e13a344F392d062c178531D624d9', // our own ens registry
     mainnet: '0x314159265dd8dbb310642f98f50c066173c1259b',
 }
 
