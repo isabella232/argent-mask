@@ -115,6 +115,7 @@ module.exports = class MetamaskController extends EventEmitter {
     this.accountTracker = new AccountTracker({
       provider: this.provider,
       blockTracker: this.blockTracker,
+      getBrowserWalletAddress: this.getBrowserWalletAddress.bind(this),
     })
 
     // key mgmt

@@ -277,15 +277,15 @@ SendTransactionScreen.prototype.onSubmit = function () {
     return this.props.dispatch(actions.displayWarning(message))
   }
 
-  // if (isLocked) {
-  //   message = 'Wallet locked.'
-  //   return this.props.dispatch(actions.displayWarning(message))
-  // }
+  if (isLocked) {
+    message = 'Wallet locked.'
+    return this.props.dispatch(actions.displayWarning(message))
+  }
 
-  // if (value.gt(dailyUnspent)) {
-  //   message = 'Exceeds daily limit for ArgentConnect.'
-  //   return this.props.dispatch(actions.displayWarning(message))
-  // }
+  if (value.gt(dailyUnspent)) {
+    message = 'Exceeds daily limit for ArgentConnect.'
+    return this.props.dispatch(actions.displayWarning(message))
+  }
 
   if (input < 0) {
     message = 'Can not send negative amounts of ETH.'

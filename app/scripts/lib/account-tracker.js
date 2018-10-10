@@ -13,6 +13,11 @@ const ObservableStore = require('obs-store')
 const EventEmitter = require('events').EventEmitter
 function noop () {}
 
+const DAPP_MANAGER_MODULE_ADDRESS = '0x99ed02549F75D9324C98919d70eff6058bEd774c'
+const LOCK_MANAGER_MODULE_ADDRESS = '0x9e225589f2A6f1b42DB458b659B5949c28a2d77c'
+const web3Abi = require('web3-eth-abi')
+const getDailyUnspentAbi = require('./methods/argent/getDailyUnspent')
+const getLockAbi = require('./methods/argent/getLock')
 
 class AccountTracker extends EventEmitter {
 
@@ -45,6 +50,7 @@ class AccountTracker extends EventEmitter {
 
     this._provider = opts.provider
     this._query = new EthQuery(this._provider)
+    this._getBrowserWalletAddress = opts.getBrowserWalletAddress
     this._blockTracker = opts.blockTracker
     // subscribe to latest block
     this._blockTracker.on('block', this._updateForBlock.bind(this))
@@ -180,17 +186,24 @@ class AccountTracker extends EventEmitter {
    */
   _getAccount (address, cb = noop) {
     const query = this._query
-    async.parallel({
-      balance: query.getBalance.bind(query, address),
-      dailyUnspent: query.call.bind(query, {
-        to: address,
-        data: '0x7cb8f8ba' // web3.eth.abi.encodeFunctionSignature('getDailyUnspent(address)')
-      }),
-      lockReleaseTime: query.call.bind(query, {
-        to: address,
-        data: '0x7e5852d9' // web3.eth.abi.encodeFunctionSignature('getLock()')
-      }),
-    }, cb)
+    this._getBrowserWalletAddress().then((browserWalletAddress) => {
+      async.parallel({
+        balance: query.getBalance.bind(query, address),
+        dailyUnspent: query.call.bind(query, {
+          to: DAPP_MANAGER_MODULE_ADDRESS,
+          data: web3Abi.encodeFunctionCall(getDailyUnspentAbi, [
+            address, 
+            browserWalletAddress
+          ])
+        }),
+        lockReleaseTime: query.call.bind(query, {
+          to: LOCK_MANAGER_MODULE_ADDRESS,
+          data: web3Abi.encodeFunctionCall(getLockAbi, [
+            address
+          ])
+        }),
+      }, cb)
+    })
   }
 
 }
