@@ -84,10 +84,10 @@ PendingTx.prototype.render = function () {
   const insufficientBalance = balanceBn.lt(valueBn)
 
   const dailyUnspentBn = hexToBn(dailyUnspent)
-  const exceedsDailyLimit = dailyUnspentBn.lt(valueBn)
+  const exceedsDailyLimit = false //dailyUnspentBn.lt(valueBn)
 
   const lockReleaseTimeBn = hexToBn(lockReleaseTime)
-  const isLocked = lockReleaseTimeBn.gt(new ethUtil.BN(Math.floor(Date.now() / 1000)))
+  const isLocked = false //lockReleaseTimeBn.gt(new ethUtil.BN(Math.floor(Date.now() / 1000)))
 
   // const dangerousGasLimit = gasBn.gte(saferGasLimitBN)
   // const gasLimitSpecified = txMeta.gasLimitSpecified

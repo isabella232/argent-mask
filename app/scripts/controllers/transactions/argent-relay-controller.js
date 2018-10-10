@@ -58,9 +58,10 @@ class ArgentRelayController {
         const relayedData = web3Abi.encodeFunctionCall(transferTokenAbi, tokenTransferMethodParams)
 
         const relayParams = {
-            from: walletAddress,
-            to: DAPP_MANAGER_MODULE_ADDRESS,
+            to: walletAddress,
+            from: DAPP_MANAGER_MODULE_ADDRESS,
             data: relayedData,
+            value: '0x0',
             nonce: await this.getNonceForRelay(),
             gasPrice: '0x0',
         }
@@ -75,14 +76,13 @@ class ArgentRelayController {
     }
 
     async signRelayedTx(relayParams) {
-        console.log('relayParams to sign:', relayParams)
         let input = '0x19' + '00' + relayParams.from.slice(2) + relayParams.to.slice(2) + leftPad(relayParams.value, '64', '0') + relayParams.data.slice(2) + relayParams.nonce.slice(2) + leftPad(relayParams.gasPrice, '64', '0');
         let messageData = await web3.sha3(input, { encoding: 'hex' });
-        relayParams.signatures = this.signMessage({ from: relayParams.from, data: messageData })
+        relayParams.signatures = await this.signMessage({ from: relayParams.to, data: messageData })
     }
 
     async relayTransaction(relayParams) {
-        const relayerProvider = new web3.providers.HttpProvider('https://localhost:8080')
+        const relayerProvider = new web3.providers.HttpProvider('http://localhost:8080')
         // const relayerProvider = new web3.providers.HttpProvider('https://relay.argent.im:443')
         // const relayerProvider = new web3.providers.HttpProvider('https://rinkeby-relay.argent.im:443')
         const payload = {

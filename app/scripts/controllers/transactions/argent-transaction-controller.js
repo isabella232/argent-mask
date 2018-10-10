@@ -10,7 +10,8 @@ class ArgentTransactionController extends TransactionController {
     this.relayController = new ArgentRelayController({
       provider: this.provider,
       signMessage: opts.signMessage,
-      getWalletAddress: opts.getWalletAddress
+      getWalletAddress: opts.getWalletAddress,
+      getBrowserWalletAddress: opts.getBrowserWalletAddress
     })
 
     this.pendingTxTracker = new ArgentPendingTransactionTracker({

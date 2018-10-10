@@ -167,6 +167,9 @@ module.exports = class MetamaskController extends EventEmitter {
       preferencesStore: this.preferencesController.store,
     })
 
+    // tx mgmt
+    const getAccounts = this.keyringController.getAccounts.bind(this.keyringController)
+  
     // this.txController = new TransactionController({
     this.txController = new ArgentTransactionController({
       initState: initState.ArgentTransactionController || initState.TransactionManager,
@@ -176,7 +179,8 @@ module.exports = class MetamaskController extends EventEmitter {
       getNetwork: this.networkController.getNetworkState.bind(this),
       // signTransaction: this.keyringController.signTransaction.bind(this.keyringController),
       signMessage: this.keyringController.signMessage.bind(this.keyringController),
-      getWalletAddress: this.getBrowserWalletAddress.bind(this),
+      getBrowserWalletAddress: this.getBrowserWalletAddress.bind(this),
+      getWalletAddress: () => getAccounts().then(accounts => accounts[0]),
       provider: this.provider,
       blockTracker: this.blockTracker,
       getGasPrice: this.getGasPrice.bind(this),

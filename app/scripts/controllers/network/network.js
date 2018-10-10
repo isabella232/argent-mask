@@ -24,7 +24,7 @@ const METAMASK_DEBUG = process.env.METAMASK_DEBUG
 const testMode = (METAMASK_DEBUG || env === 'test')
 
 const defaultProviderConfig = {
-  type: testMode ? ROPSTEN : MAINNET,
+  type: testMode ? RINKEBY : MAINNET,
 }
 
 module.exports = class NetworkController extends EventEmitter {
