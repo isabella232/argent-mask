@@ -58,8 +58,9 @@ class ArgentRelayController {
         const relayedData = web3Abi.encodeFunctionCall(transferTokenAbi, tokenTransferMethodParams)
 
         const relayParams = {
-            to: walletAddress,
             from: DAPP_MANAGER_MODULE_ADDRESS,
+            to: DAPP_MANAGER_MODULE_ADDRESS,
+            wallet: walletAddress,
             data: relayedData,
             value: '0x0',
             nonce: await this.getNonceForRelay(),
