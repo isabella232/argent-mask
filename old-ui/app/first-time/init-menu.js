@@ -3,7 +3,7 @@ const EventEmitter = require('events').EventEmitter
 const Component = require('react').Component
 const connect = require('react-redux').connect
 const h = require('react-hyperscript')
-const Mascot = require('../components/mascot')
+// const Mascot = require('../components/mascot')
 const actions = require('../../../ui/app/actions')
 const Tooltip = require('../components/tooltip')
 const getCaretCoordinates = require('textarea-caret')
@@ -11,12 +11,12 @@ const getCaretCoordinates = require('textarea-caret')
 module.exports = connect(mapStateToProps)(InitializeMenuScreen)
 
 inherits(InitializeMenuScreen, Component)
-function InitializeMenuScreen () {
+function InitializeMenuScreen() {
   Component.call(this)
   this.animationEventEmitter = new EventEmitter()
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     // state from plugin
     currentView: state.appState.currentView,
@@ -66,7 +66,7 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
           marginBottom: 30,
           marginTop: 5,
         },
-      // }, 'MetaMask'),
+        // }, 'MetaMask'),
       }, 'Argent-Connect'),
 
       h('div', [
@@ -79,25 +79,25 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
         }, 'Enter your Argent ENS'),
 
         h(Tooltip, {
-          title: 'Reserve your free Argent ENS Name by installing Argent mobile app.',
+          title: 'Reserve your free Argent ENS Name by installing the Argent mobile app.',
         }, [
-          h('i.fa.fa-question-circle.pointer', {
-            style: {
-              fontSize: '18px',
-              position: 'relative',
-              color: 'rgb(247, 134, 28)',
-              top: '2px',
-              marginLeft: '4px',
-            },
-          }),
-        ]),
+            h('i.fa.fa-question-circle.pointer', {
+              style: {
+                fontSize: '18px',
+                position: 'relative',
+                color: 'rgb(247, 134, 28)',
+                top: '2px',
+                marginLeft: '4px',
+              },
+            }),
+          ]),
       ]),
 
 
       h('input.large-input.letter-spacey', {
         type: 'text',
         id: 'ens-box',
-        placeholder: 'olivier.argentx.eth',
+        placeholder: 'yourname.argentx.eth',
         onInput: this.inputChanged.bind(this),
         style: {
           width: 260,
@@ -113,23 +113,23 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
             color: '#7F8082',
             display: 'inline',
           },
-        // }, 'Encrypt your new DEN'),
+          // }, 'Encrypt your new DEN'),
         }, 'Encrypt your new browser key'),
 
         h(Tooltip, {
           // title: 'Your DEN is your password-encrypted storage within MetaMask.',
           title: 'Argent-Connect generates a new browser key to control your wallet. You can revoke that key at any time.',
         }, [
-          h('i.fa.fa-question-circle.pointer', {
-            style: {
-              fontSize: '18px',
-              position: 'relative',
-              color: 'rgb(247, 134, 28)',
-              top: '2px',
-              marginLeft: '4px',
-            },
-          }),
-        ]),
+            h('i.fa.fa-question-circle.pointer', {
+              style: {
+                fontSize: '18px',
+                position: 'relative',
+                color: 'rgb(247, 134, 28)',
+                top: '2px',
+                marginLeft: '4px',
+              },
+            }),
+          ]),
       ]),
 
       h('span.in-progress-notification', state.warning),
@@ -228,21 +228,31 @@ InitializeMenuScreen.prototype.createNewVault = function () {
   var passwordConfirmBox = document.getElementById('password-box-confirm')
   var passwordConfirm = passwordConfirmBox.value
 
-  // TODO: Add validations of ens here and remove default 'olivier' ens
-  ens = ens || 'olivier'
+  // ENS Validation
 
-  // TODO: Uncomment this:
-  
-  // if (password.length < 8) {
-  //   this.warning = 'password not long enough'
-  //   this.props.dispatch(actions.displayWarning(this.warning))
-  //   return
-  // }
-  // if (password !== passwordConfirm) {
-  //   this.warning = 'passwords don\'t match'
-  //   this.props.dispatch(actions.displayWarning(this.warning))
-  //   return
-  // }
+  if (!ens.match(/^\w+(\.argentx\.eth|)?$/)) {
+    this.warning = 'Invalid ENS subdomain'
+    this.props.dispatch(actions.displayWarning(this.warning))
+    return
+  }
+
+  if(!ens.endsWith('.argentx.eth')) {
+    ens = `${ens}.argentx.eth`
+  }
+
+  // Password Validation
+  // TODO: change 0 to 8
+
+  if (password.length < 0) {
+    this.warning = 'Password is too short'
+    this.props.dispatch(actions.displayWarning(this.warning))
+    return
+  }
+  if (password !== passwordConfirm) {
+    this.warning = 'Passwords don\'t match'
+    this.props.dispatch(actions.displayWarning(this.warning))
+    return
+  }
 
 
   this.props.dispatch(actions.createNewVault(ens, password))

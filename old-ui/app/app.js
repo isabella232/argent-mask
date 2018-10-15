@@ -507,7 +507,9 @@ App.prototype.renderPrimary = function () {
 
       default:
         log.debug('rendering menu screen')
-        return h(InitializeMenuScreen, {key: 'menuScreenInit'})
+        return h(InitializeMenuScreen, {
+          key: 'menuScreenInit'
+        })
     }
   }
 

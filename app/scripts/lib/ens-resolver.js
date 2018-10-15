@@ -24,11 +24,9 @@ class EnsResolver {
     }
 
     async addressFromEns(ens) {
-        console.log('1: ens:', ens)
         const ensResolverAddress = await this.resolver(this._namehash(ens)); // 0xc5463256e1c0c24e1eca9cc1072343f0e5617037
         const ensResolver = web3.eth.contract(ensResolverJson).at(ensResolverAddress);
         const addr = Promisifier.promisify(ensResolver.addr);
-        console.log('2: addr:', await addr(this._namehash(ens)))
         return await addr(this._namehash(ens));
     }
 
