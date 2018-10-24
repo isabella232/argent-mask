@@ -11,12 +11,13 @@ const Mascot = require('./components/mascot')
 module.exports = connect(mapStateToProps)(UnlockScreen)
 
 inherits(UnlockScreen, Component)
-function UnlockScreen () {
+
+function UnlockScreen() {
   Component.call(this)
   this.animationEventEmitter = new EventEmitter()
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     warning: state.appState.warning,
   }
@@ -40,42 +41,34 @@ UnlockScreen.prototype.render = function () {
         h('img', {
           height: 128,
           width: 128,
-          src: './images/argent-icon.png',
+          src: './images/icon-128.png',
           style: {
             marginBottom: 20,
             marginTop: 30,
           }
         }),
 
-        h('h1', {
-          style: {
-            fontSize: '1.4em',
-            textTransform: 'uppercase',
-            color: '#7F8082',
-            marginBottom: 20,
-            marginTop: 20,
-          },
-        // }, 'MetaMask'),
-      }, 'Argent-Connect'),
+        h('h1', 'Argent Connect'),
 
-        h('input.large-input', {
-          type: 'password',
-          id: 'password-box',
-          placeholder: 'enter password',
-          style: {
+        h('div.form-group', [
 
-          },
-          onKeyPress: this.onKeyPress.bind(this),
-          onInput: this.inputChanged.bind(this),
-        }),
+          h('input.form-control', {
+            type: 'password',
+            id: 'password-box',
+            placeholder: 'enter password',
+            style: {},
+            onKeyPress: this.onKeyPress.bind(this),
+            onInput: this.inputChanged.bind(this),
+          }),
 
-        h('.error', {
-          style: {
-            display: warning ? 'block' : 'none',
-            padding: '0 20px',
-            textAlign: 'center',
-          },
-        }, warning),
+          h('.error', {
+            style: {
+              display: warning ? 'block' : 'none',
+              padding: '0 20px',
+              textAlign: 'center',
+            },
+          }, warning),
+        ]),
 
         h('button.primary.cursor-pointer', {
           onClick: this.onSubmit.bind(this),
@@ -94,7 +87,7 @@ UnlockScreen.prototype.render = function () {
             color: 'rgb(247, 134, 28)',
             textDecoration: 'underline',
           },
-        // }, 'Restore from seed phrase'),
+          // }, 'Restore from seed phrase'),
         }, 'Generate new browser key'),
       ]),
     ])

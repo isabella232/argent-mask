@@ -51,35 +51,19 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
       h('img', {
         height: 128,
         width: 128,
-        src: './images/argent-icon.png',
-        style: {
-          marginBottom: 5,
-          marginTop: 10,
-        }
+        src: './images/icon-128.png'
       }),
 
       h('h1', {
-        style: {
-          fontSize: '1.3em',
-          textTransform: 'uppercase',
-          color: '#7F8082',
-          marginBottom: 30,
-          marginTop: 5,
-        },
-      // }, 'MetaMask'),
-      }, 'Argent-Connect'),
+      }, 'Argent Connect'),
 
-      h('div', [
-        h('h3', {
-          style: {
-            fontSize: '0.8em',
-            color: '#7F8082',
-            display: 'inline',
-          },
+      h('div.form-group', [
+        h('label', {
+          htmlFor: 'ens-box'
         }, 'Enter your Argent ENS'),
 
         h(Tooltip, {
-          title: 'Reserve your free Argent ENS Name by installing Argent mobile app.',
+          title: 'Reserve your free Argent ENS by installing the Argent mobile app.',
         }, [
           h('i.fa.fa-question-circle.pointer', {
             style: {
@@ -91,34 +75,25 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
             },
           }),
         ]),
+
+        h('input.form-control', {
+          type: 'text',
+          id: 'ens-box',
+          placeholder: 'olivier.argentx.eth',
+          onInput: this.inputChanged.bind(this),
+        }),
       ]),
 
 
-      h('input.large-input.letter-spacey', {
-        type: 'text',
-        id: 'ens-box',
-        placeholder: 'olivier.argentx.eth',
-        onInput: this.inputChanged.bind(this),
-        style: {
-          width: 260,
-          marginTop: 12,
-          marginBottom: 20,
-        },
-      }),
 
-      h('div', [
-        h('h3', {
-          style: {
-            fontSize: '0.8em',
-            color: '#7F8082',
-            display: 'inline',
-          },
-        // }, 'Encrypt your new DEN'),
-        }, 'Encrypt your new browser key'),
+      h('div.form-group', [
+        h('label', {
+          htmlFor: 'password-box'
+        }, 'Enter your new browser key'),
 
         h(Tooltip, {
           // title: 'Your DEN is your password-encrypted storage within MetaMask.',
-          title: 'Argent-Connect generates a new browser key to control your wallet. You can revoke that key at any time.',
+          title: 'Argent Connect generates a new browser key to control your wallet. You can revoke that key at any time.',
         }, [
           h('i.fa.fa-question-circle.pointer', {
             style: {
@@ -130,34 +105,30 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
             },
           }),
         ]),
+
+        h('span.in-progress-notification', state.warning),
+
+        // password
+        h('input.form-control', {
+          type: 'password',
+          id: 'password-box',
+          placeholder: 'New Password (min 8 chars)',
+          onInput: this.inputChanged.bind(this),
+        }),
       ]),
 
-      h('span.in-progress-notification', state.warning),
 
-      // password
-      h('input.large-input.letter-spacey', {
-        type: 'password',
-        id: 'password-box',
-        placeholder: 'New Password (min 8 chars)',
-        onInput: this.inputChanged.bind(this),
-        style: {
-          width: 260,
-          marginTop: 12,
-        },
-      }),
+      h('div.form-group', [
+        // confirm password
+        h('input.form-control', {
+          type: 'password',
+          id: 'password-box-confirm',
+          placeholder: 'Confirm Password',
+          onKeyPress: this.createVaultOnEnter.bind(this),
+          onInput: this.inputChanged.bind(this),
+        }),
+      ]),
 
-      // confirm password
-      h('input.large-input.letter-spacey', {
-        type: 'password',
-        id: 'password-box-confirm',
-        placeholder: 'Confirm Password',
-        onKeyPress: this.createVaultOnEnter.bind(this),
-        onInput: this.inputChanged.bind(this),
-        style: {
-          width: 260,
-          marginTop: 16,
-        },
-      }),
 
 
       h('button.primary', {

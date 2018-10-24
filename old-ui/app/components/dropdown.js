@@ -8,14 +8,8 @@ const noop = () => {}
 
 class Dropdown extends Component {
   render () {
-    const { isOpen, onClickOutside, style, innerStyle, children, useCssTransition } = this.props
+    const { isOpen, onClickOutside, style, children, useCssTransition } = this.props
 
-    const innerStyleDefaults = extend({
-      borderRadius: '4px',
-      padding: '8px 16px',
-      background: 'rgba(0, 0, 0, 0.8)',
-      boxShadow: 'rgba(0, 0, 0, 0.15) 0px 2px 2px 2px',
-    }, innerStyle)
 
     return h(
       MenuDroppo,
@@ -25,16 +19,8 @@ class Dropdown extends Component {
         zIndex: 11,
         onClickOutside,
         style,
-        innerStyle: innerStyleDefaults,
       },
       [
-        h(
-          'style',
-          `
-          li.dropdown-menu-item:hover { color:rgb(225, 225, 225); }
-          li.dropdown-menu-item { color: rgb(185, 185, 185); position: relative }
-          `
-        ),
         ...children,
       ]
     )
@@ -53,7 +39,6 @@ Dropdown.propTypes = {
   children: PropTypes.node,
   style: PropTypes.object.isRequired,
   onClickOutside: PropTypes.func,
-  innerStyle: PropTypes.object,
   useCssTransition: PropTypes.bool,
 }
 
@@ -68,17 +53,6 @@ class DropdownMenuItem extends Component {
           onClick()
           closeMenu()
         },
-        style: Object.assign({
-          listStyle: 'none',
-          padding: '8px 0px 8px 0px',
-          fontSize: '18px',
-          fontStyle: 'normal',
-          fontFamily: 'Montserrat Regular',
-          cursor: 'pointer',
-          display: 'flex',
-          justifyContent: 'flex-start',
-          alignItems: 'center',
-        }, style),
       },
       children
     )

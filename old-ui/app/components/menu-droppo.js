@@ -18,39 +18,19 @@ MenuDroppoComponent.prototype.render = function () {
   const zIndex = ('zIndex' in this.props) ? this.props.zIndex : 0
 
   this.manageListeners()
-
+/*
   const style = this.props.style || {}
   if (!('position' in style)) {
     style.position = 'fixed'
   }
   style.zIndex = zIndex
-
+*/
   return (
-    h('.menu-droppo-container', {
+    h('.menu-droppo-container',
+      /*{
       style,
-    }, [
-      h('style', `
-        .menu-droppo-enter {
-          transition: transform ${speed} ease-in-out;
-          transform: translateY(-200%);
-        }
-
-        .menu-droppo-enter.menu-droppo-enter-active {
-          transition: transform ${speed} ease-in-out;
-          transform: translateY(0%);
-        }
-
-        .menu-droppo-leave {
-          transition: transform ${speed} ease-in-out;
-          transform: translateY(0%);
-        }
-
-        .menu-droppo-leave.menu-droppo-leave-active {
-          transition: transform ${speed} ease-in-out;
-          transform: translateY(-200%);
-        }
-      `),
-
+    }, */
+      [
       useCssTransition
         ? h(ReactCSSTransitionGroup, {
           className: 'css-transition-group',
@@ -72,7 +52,7 @@ MenuDroppoComponent.prototype.renderPrimary = function () {
   const innerStyle = this.props.innerStyle || {}
 
   return (
-    h('.menu-droppo', {
+    h('ul.menu-droppo.list-unstyled', {
       key: 'menu-droppo-drawer',
       style: innerStyle,
     },

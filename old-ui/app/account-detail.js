@@ -17,7 +17,7 @@ const AccountDropdowns = require('./components/account-dropdowns').AccountDropdo
 
 module.exports = connect(mapStateToProps)(AccountDetailScreen)
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     metamask: state.metamask,
     identities: state.metamask.identities,
@@ -37,7 +37,8 @@ function mapStateToProps (state) {
 }
 
 inherits(AccountDetailScreen, Component)
-function AccountDetailScreen () {
+
+function AccountDetailScreen() {
   Component.call(this)
 }
 
@@ -47,135 +48,41 @@ AccountDetailScreen.prototype.render = function () {
   var checksumAddress = selected && ethUtil.toChecksumAddress(selected)
   var identity = props.identities[selected]
   var account = props.accounts[selected]
-  const { network, conversionRate, currentCurrency } = props
+  const {network, conversionRate, currentCurrency} = props
 
   return (
 
     h('.account-detail-section.full-flex-height', [
 
-    // identicon, label, balance, etc
-      h('.account-data-subsection', {
-        style: {
-          margin: '0 20px',
-          flex: '1 0 auto',
-        },
-      }, [
+      // identicon, label, balance, etc
+      h('.account-data-subsection', [
 
         // header - identicon + nav
-        h('div', {
-          style: {
-            paddingTop: '20px',
-            display: 'flex',
-            justifyContent: 'flex-start',
-            alignItems: 'flex-start',
-          },
-        }, [
 
-          // large identicon and addresses
-          // h('.identicon-wrapper.select-none', [
-          //   h(Identicon, {
-          //     diameter: 62,
-          //     address: selected,
-          //   }),
-          // ]),
-          h('flex-column', {
-            style: {
-              lineHeight: '10px',
-              marginLeft: '15px',
-              width: '100%',
-            },
-          }, [
-            // h(EditableLabel, {
-            //   textValue: identity ? identity.name : '',
-            //   state: {
-            //     isEditingLabel: false,
-            //   },
-            //   saveText: (text) => {
-            //     props.dispatch(actions.setAccountLabel(selected, text))
-            //   },
-            h('div', {
-            }, [
+        h('div.active-account', {}, [
 
-              // What is shown when not editing + edit text:
-              // h('label.editing-label', [h('.edit-text', 'edit')]),
-              h(
-                'div',
-                {
-                  style: {
-                    display: 'flex',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
-                  },
-                },
-                [
-                  h(
-                    'div.font-medium.color-forest',
-                    {
-                      name: 'edit',
-                      style: {
-                      },
-                    },
-                    [
-                      h('h2', {
-                        style: {
-                          maxWidth: '180px',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          padding: '5px 0px',
-                          lineHeight: '25px',
-                        },
-                      }, [
-                        identity && identity.name,
-                      ]),
-                    ]
-                  ),
-                  h( //span
-                    AccountDropdowns,
-                    {
-                      style: {
-                        marginRight: '8px',
-                        marginLeft: 'auto',
-                        cursor: 'pointer',
-                      },
-                      selected,
-                      network,
-                      identities: props.identities,
-                      enableAccountOptions: true,
-                    },
-                  ),
-                ]
-              ),
-            ]),
-            h('.flex-row', {
-              style: {
-                width: '15em',
-                justifyContent: 'space-between',
-                alignItems: 'baseline',
-              },
-            }, [
-
-              // address
-
-              h('div', {
-                style: {
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  paddingTop: '3px',
-                  width: '5em',
-                  height: '15px',
-                  fontSize: '13px',
-                  fontFamily: 'Montserrat Light',
-                  textRendering: 'geometricPrecision',
-                  marginBottom: '15px',
-                  color: '#AEAEAE',
-                },
-              }, checksumAddress),
-            ]),
-
-            // account balance
-
+          // What is shown when not editing + edit text:
+          // h('label.editing-label', [h('.edit-text', 'edit')]),
+          h('h2.ens', [
+            identity && identity.name,
           ]),
+
+          h( //span
+            AccountDropdowns,
+            {
+              style: {
+                marginLeft: 'auto',
+                cursor: 'pointer',
+              },
+              selected,
+              network,
+              identities: props.identities,
+              enableAccountOptions: true,
+            },
+          ),
         ]),
+        h('.full-address', checksumAddress),
+
 
         // account balance (ETH & USD) + BUY + SEND
         h('.flex-row', {
@@ -199,7 +106,7 @@ AccountDetailScreen.prototype.render = function () {
 
           h('button', {
             onClick: () => props.dispatch(actions.buyEthView(selected)),
-            style: { marginRight: '10px' },
+            style: {marginRight: '10px'},
           }, 'BUY'),
 
           h('button', {
@@ -219,7 +126,7 @@ AccountDetailScreen.prototype.render = function () {
             color: ' #AEAEAE',
             fontSize: '12px',
           },
-        }, [ 
+        }, [
           // h('div.w3-red.w3-tiny', {}, [
           //   h('div.w3-container.w3-green.w3-center', {
           //     style: {
@@ -258,14 +165,14 @@ AccountDetailScreen.prototype.subview = function () {
 }
 
 AccountDetailScreen.prototype.tabSections = function () {
-  const { currentAccountTab } = this.props
+  const {currentAccountTab} = this.props
 
   return h('section.tabSection.full-flex-height.grow-tenx', [
 
     h(TabBar, {
       tabs: [
-        { content: 'Sent', key: 'history' },
-        { content: 'Tokens', key: 'tokens' },
+        {content: 'Sent', key: 'history'},
+        {content: 'Tokens', key: 'tokens'},
       ],
       defaultTab: currentAccountTab || 'history',
       tabSelected: (key) => {
@@ -279,8 +186,8 @@ AccountDetailScreen.prototype.tabSections = function () {
 
 AccountDetailScreen.prototype.tabSwitchView = function () {
   const props = this.props
-  const { address, network } = props
-  const { currentAccountTab, tokens } = this.props
+  const {address, network} = props
+  const {currentAccountTab, tokens} = this.props
 
   switch (currentAccountTab) {
     case 'tokens':
@@ -296,8 +203,10 @@ AccountDetailScreen.prototype.tabSwitchView = function () {
 }
 
 AccountDetailScreen.prototype.transactionList = function () {
-  const {transactions, unapprovedMsgs, address,
-    network, shapeShiftTxList, conversionRate } = this.props
+  const {
+    transactions, unapprovedMsgs, address,
+    network, shapeShiftTxList, conversionRate
+  } = this.props
 
   return h(TransactionList, {
     transactions: transactions.sort((a, b) => b.time - a.time),

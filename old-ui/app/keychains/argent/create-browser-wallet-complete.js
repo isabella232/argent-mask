@@ -66,11 +66,7 @@ CreateBrowserWalletCompleteScreen.prototype.render = function () {
       }),
 
       h('.flex-row', [
-        h('h3.ellip-address', {
-          style: {
-            width: '247px',
-          },
-        }, browserWalletAddress),
+        h('h3.full-address', browserWalletAddress),
         h(CopyButton, {
           value: browserWalletAddress,
         }),
