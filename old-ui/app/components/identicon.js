@@ -20,17 +20,8 @@ IdenticonComponent.prototype.render = function () {
   var props = this.props
   var diameter = props.diameter || this.defaultDiameter
   return (
-    h('div', {
+    h('div.identicon', {
       key: 'identicon-' + this.props.address,
-      style: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: diameter,
-        width: diameter,
-        borderRadius: diameter / 2,
-        overflow: 'hidden',
-      },
     })
   )
 }

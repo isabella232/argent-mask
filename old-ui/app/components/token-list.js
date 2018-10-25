@@ -102,7 +102,7 @@ TokenList.prototype.renderTokenStatusBar = function () {
     msg = `No tokens found`
   }
 
-  return h('div.add-token', [
+  return h('div.token-list-header', [
     h('span', msg),
     h('button', {
       key: 'reveal-account-bar',

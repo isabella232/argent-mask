@@ -34,16 +34,15 @@ AccountPanel.prototype.render = function () {
 
   return (
 
-    h('.identity-panel.flex-row.flex-space-between', {
+    h('.identity-panel', {
       style: {
-        flex: '1 0 auto',
         cursor: panelState.onClick ? 'pointer' : undefined,
       },
       onClick: panelState.onClick,
     }, [
 
       // account identicon
-      h('.identicon-wrapper.flex-column.select-none', [
+      h('.identicon-wrapper.select-none', [
         h(Identicon, {
           address: panelState.identiconKey,
           imageify: state.imageifyIdenticons,
@@ -52,13 +51,13 @@ AccountPanel.prototype.render = function () {
       ]),
 
       // account address, balance
-      h('.identity-data.flex-column.flex-justify-center.flex-grow.select-none', [
+      h('.identity-data.select-none', [
 
         panelState.attributes.map((attr) => {
           return h('.flex-row.flex-space-between', {
             key: '' + Math.round(Math.random() * 1000000),
           }, [
-            h('label.font-small.no-select', attr.key),
+            h('div.font-small.no-select', attr.key),
             h('span.font-small', attr.value),
           ])
         }),

@@ -237,6 +237,13 @@ class AccountDropdowns extends Component {
       'div.account-selector',
       {
         style: style,
+        onClick: (event) => {
+          event.stopPropagation()
+          this.setState({
+            accountSelectorActive: false,
+            optionsMenuActive: !optionsMenuActive,
+          })
+        },
       },
       [
         // enableAccountsSelector && h(
@@ -263,18 +270,7 @@ class AccountDropdowns extends Component {
         // ),
         enableAccountOptions && h(
           'i.fa.fa-ellipsis-h',
-          {
-            style: {
-              fontSize: '1.8em',
-            },
-            onClick: (event) => {
-              event.stopPropagation()
-              this.setState({
-                accountSelectorActive: false,
-                optionsMenuActive: !optionsMenuActive,
-              })
-            },
-          },
+          {},
           this.renderAccountOptions()
         ),
       ]

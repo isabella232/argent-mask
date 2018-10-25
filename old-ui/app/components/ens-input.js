@@ -41,10 +41,8 @@ EnsInput.prototype.render = function () {
   }
 
   return (
-    h('div', {
-      style: { width: '100%' },
-    }, [
-      h('input.large-input', {
+    h('div', [
+      h('input.form-control', {
         name: props.name,
         placeholder: props.placeholder,
         list: 'addresses',
