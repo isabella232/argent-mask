@@ -16,16 +16,9 @@ TabBar.prototype.render = function () {
   const { subview = defaultTab } = state
 
   return (
-    h('.flex-row.space-around.text-transform-uppercase', {
-      style: {
-        background: '#EBEBEB',
-        color: '#AEAEAE',
-        paddingTop: '4px',
-        minHeight: '30px',
-      },
-    }, tabs.map((tab) => {
+    h('ul.nav.nav-tabs', tabs.map((tab) => {
       const { key, content } = tab
-      return h(subview === key ? '.activeForm' : '.inactiveForm.pointer', {
+      return h(subview === key ? 'li.active' : 'li', {
         onClick: () => {
           this.setState({ subview: key })
           tabSelected(key)

@@ -11,6 +11,53 @@
   list-style: none;
 }
 
+.nav {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+}
+
+.nav-tabs {
+  border-bottom: 1px solid #dee2e6;
+}
+
+/*
+ * TODO: Fix MetaMask tabs so that the use correct markup (with focusable a tags etc)
+ * For now I have merged the Bootstrap styles for the li and a tags
+ */
+.nav-tabs > li {
+  margin-bottom: -1px;
+  display: block;
+  padding: .5rem 1rem;
+  border: 1px solid transparent;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+  cursor: pointer;
+  text-align: center;
+}
+
+.nav-tabs > li:hover {
+  border-color: #e9ecef #e9ecef #dee2e6;
+}
+
+.nav-tabs > li.active {
+  color: #495057;
+  background-color: #fff;
+  border-color: #dee2e6 #dee2e6 #fff;
+  cursor: default;
+}
+
+
+
+
+
+
+
+
 
 :root {
   /* Argent colour palette */
@@ -283,7 +330,27 @@ button:hover,
   padding: 32px;
 }
 
+.balance-buy-send {
+  display: flex;
+  justify-content: space-between;
+}
 
+
+.balance-buy-send .buy {
+  margin-left: auto;
+  margin-right: 10px
+}
+
+.token-list .add-token {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 32px;
+}
+
+.transactions-token-list .nav-tabs > li {
+  flex-grow: 1;
+}
 
 
 

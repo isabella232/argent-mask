@@ -85,37 +85,21 @@ AccountDetailScreen.prototype.render = function () {
 
 
         // account balance (ETH & USD) + BUY + SEND
-        h('.flex-row', {
-          style: {
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-          },
-        }, [
+        h('.balance-buy-send', [
 
           h(EthBalance, {
             value: account && account.balance,
             conversionRate,
             currentCurrency,
-            style: {
-              lineHeight: '7px',
-              marginTop: '10px',
-            },
           }),
 
-          h('.flex-grow'),
-
-          h('button', {
+          h('button.buy', {
             onClick: () => props.dispatch(actions.buyEthView(selected)),
-            style: {marginRight: '10px'},
-          }, 'BUY'),
+          }, 'Buy'),
 
-          h('button', {
+          h('button.send', {
             onClick: () => props.dispatch(actions.showSendPage()),
-            style: {
-              marginBottom: '20px',
-              marginRight: '8px',
-            },
-          }, 'SEND'),
+          }, 'Send'),
 
         ]),
 
@@ -167,7 +151,7 @@ AccountDetailScreen.prototype.subview = function () {
 AccountDetailScreen.prototype.tabSections = function () {
   const {currentAccountTab} = this.props
 
-  return h('section.tabSection.full-flex-height.grow-tenx', [
+  return h('div.transactions-token-list', [
 
     h(TabBar, {
       tabs: [
