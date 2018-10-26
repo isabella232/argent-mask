@@ -5,7 +5,6 @@ module.exports = bundleCss
 
 var cssFiles = {
   'fonts.css': fs.readFileSync(path.join(__dirname, '/app/css/fonts.css'), 'utf8'),
-  //'reset.css': fs.readFileSync(path.join(__dirname, '/app/css/reset.css'), 'utf8'),
   'bootstrap-reboot.css': fs.readFileSync(path.join(__dirname, '/app/css/bootstrap-reboot.css'), 'utf8'),
   'lib.css': fs.readFileSync(path.join(__dirname, '/app/css/lib.css'), 'utf8'),
   'index.css': fs.readFileSync(path.join(__dirname, '/app/css/index.css'), 'utf8'),
