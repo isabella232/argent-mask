@@ -52,7 +52,11 @@ AddTokenScreen.prototype.render = function () {
         h('h1', 'Add token'),
       ]),
 
-      h('.error', warning),
+      h('.error', {
+        style: {
+          display: warning ? 'block' : 'none',
+        },
+      }, warning),
 
       // conf view
       h('div.panel.add-token.select-none', [

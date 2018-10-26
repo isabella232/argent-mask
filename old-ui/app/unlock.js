@@ -33,9 +33,11 @@ UnlockScreen.prototype.render = function () {
         //   animationEventEmitter: this.animationEventEmitter,
         // }),
 
-        h('div.ren'),
-
-        h('h1', 'argent connect'),
+        h('.logo-stacked', [
+          h('div.ren'),
+          h('h1.text-wordmark', 'argent'),
+          h('div.powered-by', 'Powered by MetaMask'),
+        ]),
 
         h('div.form-group', [
 
@@ -51,8 +53,6 @@ UnlockScreen.prototype.render = function () {
           h('.error', {
             style: {
               display: warning ? 'block' : 'none',
-              padding: '0 20px',
-              textAlign: 'center',
             },
           }, warning),
         ]),

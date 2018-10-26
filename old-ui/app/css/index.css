@@ -175,26 +175,45 @@ button:hover,
 }
 
 
-.logo {
-  display: block;
-  width: 188px;
-  height: 55px;
-  background: url("../images/argent-logo.svg") no-repeat;
-  background-size: cover;
-  margin: 0;
-}
 
+/*
+ * Logo
+ */
 .ren {
   display: block;
   width: 104px;
   height: 104px;
 
-  background-image: url("/images/ren-orange.svg");
-  background-repeat: no-repeat;
+  background: url("/images/ren-orange.svg") no-repeat;
   background-size: cover;
 
   margin: 0;
 }
+
+.text-wordmark {
+  font-weight: 700;
+}
+
+.logo-stacked {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo-stacked .text-wordmark {
+  margin-bottom: 8px;
+  font-size: 2.8em;
+  line-height: 1em;
+}
+
+.powered-by {
+  font-size: 0.85em;
+  color: var(--argent-light-charcoal);
+}
+
+
+
+
 
 .inverted {
   color: #ffffff;
@@ -250,7 +269,7 @@ button:hover,
 }
 
 
-.screen-header h2 {
+.screen-header h1 {
   margin-bottom: 0;
 }
 
@@ -269,19 +288,12 @@ button:hover,
   padding: 32px;
 }
 
-.initialize-screen h1,
-.unlock-screen h1 {
-  max-width: 5em;
-  text-align: center;
-  line-height: 1em;
-}
-
 /* Init screen */
 .initialize-screen {
   padding-top: 40px;
 }
 
-.initialize-screen h1 {
+.initialize-screen .logo-stacked {
   margin-bottom: 32px;
 }
 
@@ -300,7 +312,7 @@ button:hover,
   padding-top: 80px;
 }
 
-.unlock-screen h1 {
+.unlock-screen .logo-stacked {
   margin-bottom: 80px;
 }
 

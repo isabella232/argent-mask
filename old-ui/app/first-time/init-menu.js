@@ -48,10 +48,11 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
       //   animationEventEmitter: this.animationEventEmitter,
       // }),
 
-      h('div.ren'),
-
-      h('h1', {
-      }, 'argent connect'),
+      h('.logo-stacked', [
+        h('div.ren'),
+        h('h1.text-wordmark', 'argent'),
+        h('div.powered-by', 'Powered by MetaMask'),
+      ]),
 
       h('div.form-group', [
         h('label', {
