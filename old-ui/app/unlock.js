@@ -27,24 +27,15 @@ UnlockScreen.prototype.render = function () {
   const state = this.props
   const warning = state.warning
   return (
-    h('.flex-column', [
       h('.unlock-screen.flex-column.flex-center.flex-grow', [
 
         // h(Mascot, {
         //   animationEventEmitter: this.animationEventEmitter,
         // }),
 
-        h('img', {
-          height: 128,
-          width: 128,
-          src: './images/icon-128.png',
-          style: {
-            marginBottom: 20,
-            marginTop: 30,
-          }
-        }),
+        h('div.ren'),
 
-        h('h1', 'Argent Connect'),
+        h('h1', 'argent connect'),
 
         h('div.form-group', [
 
@@ -66,27 +57,19 @@ UnlockScreen.prototype.render = function () {
           }, warning),
         ]),
 
-        h('button.primary.cursor-pointer', {
-          onClick: this.onSubmit.bind(this),
-          style: {
-            margin: 10,
-          },
-        }, 'Log In'),
-      ]),
 
-      h('.flex-row.flex-center.flex-grow', [
-        h('p.pointer', {
+        h('button.login', {
+          onClick: this.onSubmit.bind(this),
+        }, 'Log in'),
+
+
+        h('a.new-key', {
+          href: '#',
           // onClick: () => this.props.dispatch(actions.forgotPassword()),
           onClick: () => this.props.dispatch(actions.markPasswordForgotten()),
-          style: {
-            fontSize: '0.8em',
-            color: 'rgb(247, 134, 28)',
-            textDecoration: 'underline',
-          },
           // }, 'Restore from seed phrase'),
         }, 'Generate new browser key'),
-      ]),
-    ])
+      ])
   )
 }
 

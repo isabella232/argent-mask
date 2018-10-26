@@ -48,14 +48,10 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
       //   animationEventEmitter: this.animationEventEmitter,
       // }),
 
-      h('img', {
-        height: 128,
-        width: 128,
-        src: './images/icon-128.png'
-      }),
+      h('div.ren'),
 
       h('h1', {
-      }, 'Argent Connect'),
+      }, 'argent connect'),
 
       h('div.form-group', [
         h('label', {
@@ -65,21 +61,13 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
         h(Tooltip, {
           title: 'Reserve your free Argent ENS by installing the Argent mobile app.',
         }, [
-          h('i.fa.fa-question-circle.pointer', {
-            style: {
-              fontSize: '18px',
-              position: 'relative',
-              color: 'rgb(247, 134, 28)',
-              top: '2px',
-              marginLeft: '4px',
-            },
-          }),
+          h('i.fa.fa-question-circle.pointer'),
         ]),
 
         h('input.form-control', {
           type: 'text',
           id: 'ens-box',
-          placeholder: 'olivier.argentx.eth',
+          placeholder: 'yourname.argentx.eth',
           onInput: this.inputChanged.bind(this),
         }),
       ]),
@@ -95,15 +83,7 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
           // title: 'Your DEN is your password-encrypted storage within MetaMask.',
           title: 'Argent Connect generates a new browser key to control your wallet. You can revoke that key at any time.',
         }, [
-          h('i.fa.fa-question-circle.pointer', {
-            style: {
-              fontSize: '18px',
-              position: 'relative',
-              color: 'rgb(247, 134, 28)',
-              top: '2px',
-              marginLeft: '4px',
-            },
-          }),
+          h('i.fa.fa-question-circle.pointer'),
         ]),
 
         h('span.in-progress-notification', state.warning),
@@ -135,9 +115,6 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
         // onClick: this.createNewVaultAndKeychain.bind(this),
         // here is oldie
         onClick: this.createNewVault.bind(this),
-        style: {
-          margin: 12,
-        },
       }, 'Create'),
 
       // h('.flex-row.flex-center.flex-grow', [

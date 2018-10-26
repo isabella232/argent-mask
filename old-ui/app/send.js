@@ -61,7 +61,7 @@ SendTransactionScreen.prototype.render = function () {
 
     h('.send-screen', [
       // header bar (back button, label)
-      h('header.screen-header', [
+      h('header.panel.screen-header', [
         // back button
         h('i.fa.fa-arrow-left.fa-lg.cursor-pointer.color-orange', {
           onClick: this.back.bind(this),
@@ -73,7 +73,7 @@ SendTransactionScreen.prototype.render = function () {
       // Sender Profile
       //
 
-      h('.identity-panel', [
+      h('.panel.identity-panel', [
 
         // header - identicon + nav
 
@@ -112,7 +112,7 @@ SendTransactionScreen.prototype.render = function () {
       // error message
       props.error && h('span.error.flex-center', props.error),
 
-      h('div.recipient-panel', [
+      h('div.panel.recipient-panel', [
         // 'to' field
         h('div.form-group', [
           h(EnsInput, {

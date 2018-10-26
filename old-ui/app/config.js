@@ -4,15 +4,15 @@ const h = require('react-hyperscript')
 const connect = require('react-redux').connect
 const actions = require('../../ui/app/actions')
 const infuraCurrencies = require('./infura-conversion.json').objects.sort((a, b) => {
-      return a.quote.name.toLocaleLowerCase().localeCompare(b.quote.name.toLocaleLowerCase())
-    })
+  return a.quote.name.toLocaleLowerCase().localeCompare(b.quote.name.toLocaleLowerCase())
+})
 const validUrl = require('valid-url')
 const exportAsFile = require('./util').exportAsFile
 const Modal = require('../../ui/app/components/modals/index').Modal
 
 module.exports = connect(mapStateToProps)(ConfigScreen)
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     metamask: state.metamask,
     warning: state.appState.warning,
@@ -20,7 +20,8 @@ function mapStateToProps (state) {
 }
 
 inherits(ConfigScreen, Component)
-function ConfigScreen () {
+
+function ConfigScreen() {
   Component.call(this)
 }
 
@@ -30,18 +31,13 @@ ConfigScreen.prototype.render = function () {
   var warning = state.warning
 
   return (
-    h('.flex-column.flex-grow', {
-      style: {
-        maxHeight: '585px',
-        overflowY: 'auto',
-      },
-    }, [
+    h('.flex-column.flex-grow', [
 
       h(Modal, {}, []),
 
       // subtitle and nav
-      h('.section-title.flex-row.flex-center', [
-        h('i.fa.fa-arrow-left.fa-lg.cursor-pointer', {
+      h('header.panel.screen-header', [
+        h('i.fa.fa-arrow-left.fa-lg.cursor-pointer.color-orange', {
           onClick: () => {
             state.dispatch(actions.goHome())
           },
@@ -58,132 +54,125 @@ ConfigScreen.prototype.render = function () {
       }, warning),
 
       // conf view
-      h('.flex-column.flex-justify-center.flex-grow.select-none', [
-        h('.flex-space-around', {
-          style: {
-            padding: '20px',
-            overflow: 'auto',
-          },
-        }, [
+      h('.panel.currency-panel.select-none', [
 
-          // currentProviderDisplay(metamaskState),
+        // currentProviderDisplay(metamaskState),
 
-          // h('div', { style: {display: 'flex'} }, [
-          //   h('input#new_rpc', {
-          //     placeholder: 'New RPC URL',
-          //     style: {
-          //       width: 'inherit',
-          //       flex: '1 0 auto',
-          //       height: '30px',
-          //       margin: '8px',
-          //     },
-          //     onKeyPress (event) {
-          //       if (event.key === 'Enter') {
-          //         var element = event.target
-          //         var newRpc = element.value
-          //         rpcValidation(newRpc, state)
-          //       }
-          //     },
-          //   }),
-          //   h('button', {
-          //     style: {
-          //       alignSelf: 'center',
-          //     },
-          //     onClick (event) {
-          //       event.preventDefault()
-          //       var element = document.querySelector('input#new_rpc')
-          //       var newRpc = element.value
-          //       rpcValidation(newRpc, state)
-          //     },
-          //   }, 'Save'),
-          // ]),
+        // h('div', { style: {display: 'flex'} }, [
+        //   h('input#new_rpc', {
+        //     placeholder: 'New RPC URL',
+        //     style: {
+        //       width: 'inherit',
+        //       flex: '1 0 auto',
+        //       height: '30px',
+        //       margin: '8px',
+        //     },
+        //     onKeyPress (event) {
+        //       if (event.key === 'Enter') {
+        //         var element = event.target
+        //         var newRpc = element.value
+        //         rpcValidation(newRpc, state)
+        //       }
+        //     },
+        //   }),
+        //   h('button', {
+        //     style: {
+        //       alignSelf: 'center',
+        //     },
+        //     onClick (event) {
+        //       event.preventDefault()
+        //       var element = document.querySelector('input#new_rpc')
+        //       var newRpc = element.value
+        //       rpcValidation(newRpc, state)
+        //     },
+        //   }, 'Save'),
+        // ]),
 
-          // h('hr.horizontal-line'),
+        // h('hr.horizontal-line'),
 
-          currentConversionInformation(metamaskState, state),
+        currentConversionInformation(metamaskState, state),
 
-          // h('hr.horizontal-line'),
+        // h('hr.horizontal-line'),
 
-          // h('div', {
-          //   style: {
-          //     marginTop: '20px',
-          //   },
-          // }, [
-          //   h('p', {
-          //     style: {
-          //       fontFamily: 'Montserrat Light',
-          //       fontSize: '13px',
-          //     },
-          //   }, `State logs contain your public account addresses and sent transactions.`),
-          //   h('br'),
-          //   h('button', {
-          //     style: {
-          //       alignSelf: 'center',
-          //     },
-          //     onClick (event) {
-          //       window.logStateString((err, result) => {
-          //         if (err) {
-          //           state.dispatch(actions.displayWarning('Error in retrieving state logs.'))
-          //         } else {
-          //           exportAsFile('MetaMask State Logs.json', result)
-          //         }
-          //       })
-          //     },
-          //   }, 'Download State Logs'),
-          // ]),
+        // h('div', {
+        //   style: {
+        //     marginTop: '20px',
+        //   },
+        // }, [
+        //   h('p', {
+        //     style: {
+        //       fontFamily: 'Montserrat Light',
+        //       fontSize: '13px',
+        //     },
+        //   }, `State logs contain your public account addresses and sent transactions.`),
+        //   h('br'),
+        //   h('button', {
+        //     style: {
+        //       alignSelf: 'center',
+        //     },
+        //     onClick (event) {
+        //       window.logStateString((err, result) => {
+        //         if (err) {
+        //           state.dispatch(actions.displayWarning('Error in retrieving state logs.'))
+        //         } else {
+        //           exportAsFile('MetaMask State Logs.json', result)
+        //         }
+        //       })
+        //     },
+        //   }, 'Download State Logs'),
+        // ]),
 
-          // h('hr.horizontal-line'),
+        // h('hr.horizontal-line'),
 
-          // h('div', {
-          //   style: {
-          //     marginTop: '20px',
-          //   },
-          // }, [
-          //   h('button', {
-          //     style: {
-          //       alignSelf: 'center',
-          //     },
-          //     onClick (event) {
-          //       event.preventDefault()
-          //       state.dispatch(actions.revealSeedConfirmation())
-          //     },
-          //   }, 'Reveal Seed Words'),
-          // ]),
+        // h('div', {
+        //   style: {
+        //     marginTop: '20px',
+        //   },
+        // }, [
+        //   h('button', {
+        //     style: {
+        //       alignSelf: 'center',
+        //     },
+        //     onClick (event) {
+        //       event.preventDefault()
+        //       state.dispatch(actions.revealSeedConfirmation())
+        //     },
+        //   }, 'Reveal Seed Words'),
+        // ]),
 
-          // h('hr.horizontal-line'),
+        // h('hr.horizontal-line'),
 
-          // h('div', {
-          //   style: {
-          //     marginTop: '20px',
-          //   },
-          // }, [
+        // h('div', {
+        //   style: {
+        //     marginTop: '20px',
+        //   },
+        // }, [
 
-          //   h('p', {
-          //     style: {
-          //       fontFamily: 'Montserrat Light',
-          //       fontSize: '13px',
-          //     },
-          //   }, [
-          //     'Resetting is for developer use only. ',
-          //     h('a', {
-          //       href: 'http://metamask.helpscoutdocs.com/article/36-resetting-an-account',
-          //       target: '_blank',
-          //     }, 'Read more.'),
-          //   ]),
-          //   h('br'),
+        //   h('p', {
+        //     style: {
+        //       fontFamily: 'Montserrat Light',
+        //       fontSize: '13px',
+        //     },
+        //   }, [
+        //     'Resetting is for developer use only. ',
+        //     h('a', {
+        //       href: 'http://metamask.helpscoutdocs.com/article/36-resetting-an-account',
+        //       target: '_blank',
+        //     }, 'Read more.'),
+        //   ]),
+        //   h('br'),
 
-          //   h('button', {
-          //     style: {
-          //       alignSelf: 'center',
-          //     },
-          //     onClick (event) {
-          //       event.preventDefault()
-          //       state.dispatch(actions.resetAccount())
-          //     },
-          //   }, 'Reset Account'),
-          // ]),
+        //   h('button', {
+        //     style: {
+        //       alignSelf: 'center',
+        //     },
+        //     onClick (event) {
+        //       event.preventDefault()
+        //       state.dispatch(actions.resetAccount())
+        //     },
+        //   }, 'Reset Account'),
+        // ]),
 
-        ]),
       ]),
     ])
   )
@@ -202,24 +191,28 @@ ConfigScreen.prototype.render = function () {
 //   }
 // }
 
-function currentConversionInformation (metamaskState, state) {
+function currentConversionInformation(metamaskState, state) {
   var currentCurrency = metamaskState.currentCurrency
   var conversionDate = metamaskState.conversionDate
-  return h('div', [
-    h('span', {style: { fontWeight: 'bold', paddingRight: '10px'}}, 'Current Conversion'),
-    h('span', {style: { fontWeight: 'bold', paddingRight: '10px', fontSize: '13px'}}, `Updated ${Date(conversionDate)}`),
+  return h('div.currency-conversion', [
+    h('label', {htmlFor: 'currentCurrency'}, 'Current Conversion'),
     h('select#currentCurrency', {
-      onChange (event) {
-        event.preventDefault()
-        var element = document.getElementById('currentCurrency')
-        var newCurrency = element.value
-        state.dispatch(actions.setCurrentCurrency(newCurrency))
-      },
-      defaultValue: currentCurrency,
-    }, infuraCurrencies.map((currency) => {
-      return h('option', {key: currency.quote.code, value: currency.quote.code}, `${currency.quote.code.toUpperCase()} - ${currency.quote.name}`)
-    })
-  ),
+        onChange(event) {
+          event.preventDefault()
+          var element = document.getElementById('currentCurrency')
+          var newCurrency = element.value
+          state.dispatch(actions.setCurrentCurrency(newCurrency))
+        },
+        defaultValue: currentCurrency,
+      }, infuraCurrencies.map((currency) => {
+        return h('option', {
+          key: currency.quote.code,
+          value: currency.quote.code
+        }, `${currency.quote.code.toUpperCase()} - ${currency.quote.name}`)
+      })
+    ),
+    h('span', `Updated ${Date(conversionDate)}`),
+
   ])
 }
 

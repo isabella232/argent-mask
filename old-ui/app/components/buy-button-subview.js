@@ -33,7 +33,7 @@ function BuyButtonSubview() {
 
 BuyButtonSubview.prototype.render = function () {
   return (
-    h('div.get-ether', [
+    h('div.get-eth', [
       this.headerSubview(),
       this.primarySubview(),
     ])
@@ -45,10 +45,10 @@ BuyButtonSubview.prototype.headerSubview = function () {
   const isLoading = props.isSubLoading
   return (
 
-    h('.buy-ether', [
+    h('div.buy-eth', [
 
       // header bar (back button, label)
-      h('header.screen-header', [
+      h('header.panel.screen-header', [
         h('i.fa.fa-arrow-left.fa-lg.cursor-pointer.color-orange', {
           onClick: this.back.bind(this),
         }),
@@ -99,21 +99,15 @@ BuyButtonSubview.prototype.primarySubview = function () {
       const networkName = getNetworkDisplayName(network)
       const label = `${networkName} Test Faucet`
       return (
-        h('div.select-service-panel', [
+        h('div.panel.select-service-panel', [
           h('h3', 'Select service'),
           h('button', {
             onClick: () => this.props.dispatch(actions.buyEth({network})),
-            style: {
-              marginTop: '15px',
-            },
           }, label),
           // Kovan only: Dharma loans beta
           network === '42' ? (
             h('button', {
               onClick: () => this.navigateTo('https://borrow.dharma.io/'),
-              style: {
-                marginTop: '15px',
-              },
             }, 'Borrow With Dharma (Beta)')
           ) : null,
         ])

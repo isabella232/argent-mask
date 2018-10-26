@@ -70,12 +70,16 @@ hr {
   /* Argent colour palette */
   --argent-orange: rgb(255, 135, 91);
   --argent-orange-wcag: rgb(243, 106, 61);
+  --argent-green-wcag: rgb(2,187,168);
   --argent-black: rgb(51, 51, 50);
   --argent-black-transparent: rgba(51, 51, 50, 0.08);
   --argent-dark-charcoal: rgb(92, 91, 89);
   --argent-light-charcoal: rgb(143, 142, 140);
+  --argent-clay: rgb(194, 192, 190);
   --argent-sand: rgb(245, 243, 240);
   --argent-mayo: rgb(250, 248, 245);
+
+  --error: rgb(193, 32, 38);
 }
 
 
@@ -93,7 +97,7 @@ h1 {
 
 h1,
 h2 {
-  margin-bottom: 0;
+  margin-bottom: 0.5em;
 }
 
 a {
@@ -110,11 +114,8 @@ li {
   margin-bottom: 1em;
 }
 
-.flex-center > .form-group {
-  min-width: 230px;
-}
-
 .form-group {
+  min-width: 230px;
   margin-bottom: 1rem;
 }
 
@@ -185,32 +186,14 @@ button:hover,
 
 .ren {
   display: block;
-  width: 86px;
-  height: 86px;
+  width: 104px;
+  height: 104px;
 
-  background-image: url("../images/ren-white.svg");
+  background-image: url("/images/ren-orange.svg");
   background-repeat: no-repeat;
   background-size: cover;
 
-
-  /* SVG background recolouring is not widely supported yet
-  background: #ffffff;
-  -webkit-mask:  url("../images/ren-white.svg") no-repeat 50% 50%;
-  mask: url("../images/ren-white.svg") no-repeat 50% 50%;
-  -webkit-mask-size: cover;
-  mask-size: cover;
-  */
-
-
   margin: 0;
-}
-
-.ren-white {
-  background-image: url("../images/ren-white.svg");
-}
-
-.ren-orange {
-  background-image: url("../images/ren-orange.svg");
 }
 
 .inverted {
@@ -230,6 +213,7 @@ button:hover,
 .app-header {
   display: flex;
   width: 100%;
+  max-height: 56px;
   padding: 16px 32px;
   justify-content: space-between;
   align-items: center;
@@ -244,10 +228,27 @@ button:hover,
   z-index: 2;
 }
 
+.app-primary {
+  max-height: 544px;
+  overflow-y: scroll;
+}
 
-.screen-header {
+
+
+.error {
+  padding: 0 32px;
+  font-size: 0.85em;
+  text-align: center;
+  color: var(--error);
+}
+
+/*
+ * Panel defaults
+ */
+.panel {
   padding: 16px 32px;
 }
+
 
 .screen-header h2 {
   margin-bottom: 0;
@@ -257,10 +258,62 @@ button:hover,
 
 
 /*
- * Unlock screen
+ *  Initialize and unlock screens
  */
+.initialize-screen,
+.init-complete-screen,
+.unlock-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px;
+}
+
+.initialize-screen h1,
 .unlock-screen h1 {
-  margin-bottom: 1em
+  max-width: 5em;
+  text-align: center;
+  line-height: 1em;
+}
+
+/* Init screen */
+.initialize-screen {
+  padding-top: 40px;
+}
+
+.initialize-screen h1 {
+  margin-bottom: 32px;
+}
+
+
+
+/* Initialisation complete */
+.copy-full-address {
+  display: flex;
+  margin-bottom: 32px;
+}
+
+
+
+/* Unlock screen */
+.unlock-screen {
+  padding-top: 80px;
+}
+
+.unlock-screen h1 {
+  margin-bottom: 80px;
+}
+
+.new-key {
+  font-size: 0.85em;
+}
+
+.unlock-screen input[type="password"] {
+  text-align: center;
+}
+
+.unlock-screen button.login {
+  margin-bottom: 16px;
 }
 
 
@@ -319,10 +372,38 @@ button:hover,
 }
 
 
-.balance-buy-send .buy {
-  margin-left: auto;
-  margin-right: 10px
+.balance-buy-send .buy,
+.balance-buy-send .send {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  margin-bottom: 32px;
+  color: var(--argent-dark-charcoal);
 }
+
+.balance-buy-send .buy {
+  border-right: 1px solid var(--argent-clay);
+}
+
+.icon-buy,
+.icon-send {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.icon-buy {
+  background: var(--argent-green-wcag) url("/images/icon-exchange.svg") 50% 50% no-repeat;
+}
+
+.icon-send {
+  background: var(--argent-orange-wcag) url("/images/icon-send.svg") 50% 50% no-repeat;
+}
+
+
 
 .token-list .token-list-header {
   display: flex;
@@ -337,11 +418,20 @@ button:hover,
 
 
 
+
+.fa-question-circle {
+  font-size: 18px;
+  color: var(--argent-orange-wcag);
+  top: 2px;
+  margin-left: 4px;
+
+}
+
+
 /* Identity panel */
 .identity-panel {
   display: flex;
   justify-content: space-between;
-  padding: 16px 32px;
   align-items: center;
 }
 
@@ -401,23 +491,4 @@ button:hover,
 .menu-droppo-leave.menu-droppo-leave-active {
   transition: transform 300ms ease-in-out;
   transform: translateY(-200%);
-}
-
-
-
-
-/*
- * Add token screen
- */
-.add-token {
-  padding: 16px 32px;
-}
-
-
-.recipient-panel {
-  padding: 16px 32px;
-}
-
-.select-service-panel {
-  padding: 16px 32px;
 }

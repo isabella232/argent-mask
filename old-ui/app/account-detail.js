@@ -84,24 +84,11 @@ AccountDetailScreen.prototype.render = function () {
         h('.full-address', checksumAddress),
 
 
-        // account balance (ETH & USD) + BUY + SEND
-        h('.balance-buy-send', [
-
-          h(EthBalance, {
-            value: account && account.balance,
-            conversionRate,
-            currentCurrency,
-          }),
-
-          h('button.buy', {
-            onClick: () => props.dispatch(actions.buyEthView(selected)),
-          }, 'Buy'),
-
-          h('button.send', {
-            onClick: () => props.dispatch(actions.showSendPage()),
-          }, 'Send'),
-
-        ]),
+        h(EthBalance, {
+          value: account && account.balance,
+          conversionRate,
+          currentCurrency,
+        }),
 
         h('.flex-row', {
           style: {
@@ -121,6 +108,29 @@ AccountDetailScreen.prototype.render = function () {
           // 'Usage: 0.34 ETH / 1 ETH daily limit (24%)'
         ]),
       ]),
+
+      // account balance (ETH & USD) + BUY + SEND
+      h('.balance-buy-send', [
+
+        h('a.buy', {
+          href: '#',
+          onClick: () => props.dispatch(actions.buyEthView(selected)),
+        }, [
+          h('div.icon-buy'),
+          h('span', 'Buy'),
+        ]),
+
+        h('a.send', {
+          href: '#',
+          onClick: () => props.dispatch(actions.showSendPage()),
+        }, [
+          h('div.icon-send'),
+          h('span', 'Send'),
+        ]),
+
+      ]),
+
+
 
       // subview (tx history, pk export confirm, buy eth warning)
       this.subview(),

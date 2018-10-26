@@ -39,10 +39,10 @@ AddTokenScreen.prototype.render = function () {
   const {warning, symbol, decimals} = state
 
   return (
-    h('.flex-column.flex-grow', [
+    h('div.add-token-screen', [
 
       // header bar (back button, label)
-      h('header.screen-header', [
+      h('header.panel.screen-header', [
         // back button
         h('i.fa.fa-arrow-left.fa-lg.cursor-pointer.color-orange', {
           onClick: (event) => {
@@ -52,16 +52,10 @@ AddTokenScreen.prototype.render = function () {
         h('h1', 'Add token'),
       ]),
 
-      h('.error', {
-        style: {
-          display: warning ? 'block' : 'none',
-          padding: '0 20px',
-          textAlign: 'center',
-        },
-      }, warning),
+      h('.error', warning),
 
       // conf view
-      h('.add-token.select-none', [
+      h('div.panel.add-token.select-none', [
 
         h('div.form-group', [
           h('label', {
@@ -73,8 +67,7 @@ AddTokenScreen.prototype.render = function () {
             title: 'The contract of the actual token contract. Click for more info.',
           }, [
             h('a', {
-              style: {fontWeight: 'bold', paddingRight: '10px'},
-              href: 'https://support.metamask.io/kb/article/24-what-is-a-token-contract-address',
+              href: 'https://metamask.zendesk.com/hc/en-us/articles/360015488811-What-is-a-Token-Contract-Address-',
               target: '_blank',
             }, [
               h('i.fa.fa-question-circle'),
