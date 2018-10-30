@@ -37,7 +37,7 @@ class ArgentKeyring extends EventEmitter {
 
     deserialize(opts = {}) {
         this.opts = opts
-        this.ens = opts.ens.endsWith('.argentx.eth') ? opts.ens : `${opts.ens}.argentx.eth`
+        this.ens = opts.ens.endsWith('.argent.xyz') ? opts.ens : `${opts.ens}.argent.xyz`
 
         const self = this
 
