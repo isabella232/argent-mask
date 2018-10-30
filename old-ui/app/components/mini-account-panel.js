@@ -18,7 +18,7 @@ AccountPanel.prototype.render = function () {
 
   return (
 
-    h('.identity-panel.flex-row.flex-left', {
+    h('.identity-panel', {
       style: {
         cursor: props.onClick ? 'pointer' : undefined,
       },
@@ -27,14 +27,7 @@ AccountPanel.prototype.render = function () {
 
       this.genIcon(imageSeed, picOrder),
 
-      h('div.flex-column.flex-justify-center', {
-        style: {
-          lineHeight: '15px',
-          order: 2,
-          display: 'flex',
-          alignItems: picOrder === 'left' ? 'flex-begin' : 'flex-end',
-        },
-      }, this.props.children),
+      h('div.ens-and-balance', this.props.children),
     ])
   )
 }
@@ -45,10 +38,11 @@ AccountPanel.prototype.genIcon = function (seed, picOrder) {
   // When there is no seed value, this is a contract creation.
   // We then show the contract icon.
   if (!seed) {
-    return h('.identicon-wrapper.flex-column.select-none', {
+    return h('.identicon-wrapper.select-none', {
+      /*
       style: {
         order: picOrder === 'left' ? 1 : 3,
-      },
+      },*/
     }, [
       h('i.fa.fa-file-text-o.fa-lg', {
         style: {
@@ -60,10 +54,11 @@ AccountPanel.prototype.genIcon = function (seed, picOrder) {
   }
 
   // If there was a seed, we return an identicon for that address.
-  return h('.identicon-wrapper.flex-column.select-none', {
+  return h('.identicon-wrapper.select-none', {
+    /*
     style: {
       order: picOrder === 'left' ? 1 : 3,
-    },
+    },*/
   }, [
     h(Identicon, {
       address: seed,

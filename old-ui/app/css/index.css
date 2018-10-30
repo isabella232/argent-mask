@@ -85,19 +85,19 @@ hr {
 
 body {
   overflow-x: hidden;
-  font-family: 'Barlow', sans-serif;
+  font-family: 'Barlow Regular', sans-serif;
   color: var(--argent-black);
-}
-
-
-h1 {
-  font-size: 2em;
-  font-weight: 600;
 }
 
 h1,
 h2 {
+  font-family: 'Barlow Medium', sans-serif;
   margin-bottom: 0.5em;
+}
+
+h1 {
+  font-size: 2em;
+  font-weight: 600;
 }
 
 a {
@@ -159,6 +159,14 @@ button:hover,
   background-color: var(--argent-orange);
   outline: 0;
   transform: scale(1.02);
+}
+
+button.confirm {
+  background-color: var(--argent-green-wcag);
+}
+
+button.cancel {
+  background-color: var(--error);
 }
 
 
@@ -443,12 +451,74 @@ button:hover,
 /* Identity panel */
 .identity-panel {
   display: flex;
-  justify-content: space-between;
+  width: 100%;
   align-items: center;
 }
 
 .identicon-wrapper {
   margin-right: 16px;
+}
+
+.identity-data {
+
+}
+
+
+
+
+/* Balances */
+.ether-balance {
+  display: flex;
+}
+
+.currency-suffix {
+  color: var(--argent-light-charcoal);
+  margin-left: 5px;
+}
+
+
+
+
+/*
+ * Transaction info
+ */
+.transaction-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.transaction-info .identity-panel {
+  padding: 16px;
+  background: rgba(0,0,0,0.04);
+}
+
+
+#pending-tx-form .ether-balance {
+  text-align: right;
+}
+
+.table-box {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.table-box .row {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+  background: rgb(236,236,236);
+}
+
+
+
+/*
+ * Transaction confirmation screen
+ */
+.confirmation-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin: 16px auto;
 }
 
 

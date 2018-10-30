@@ -34,29 +34,9 @@ FiatValue.prototype.render = function () {
 
 function fiatDisplay (fiatDisplayNumber, fiatSuffix) {
   if (fiatDisplayNumber !== 'N/A') {
-    return h('.flex-row', {
-      style: {
-        alignItems: 'flex-end',
-        lineHeight: '13px',
-        fontFamily: 'Montserrat Light',
-        textRendering: 'geometricPrecision',
-      },
-    }, [
-      h('div', {
-        style: {
-          width: '100%',
-          textAlign: 'right',
-          fontSize: '12px',
-          color: '#333333',
-        },
-      }, fiatDisplayNumber),
-      h('div', {
-        style: {
-          color: '#AEAEAE',
-          marginLeft: '5px',
-          fontSize: '12px',
-        },
-      }, fiatSuffix),
+    return h('.fiat', [
+      h('span.fiat-value', fiatDisplayNumber),
+      h('span.currency-suffix', fiatSuffix),
     ])
   } else {
     return h('div')

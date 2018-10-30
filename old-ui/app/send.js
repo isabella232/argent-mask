@@ -94,13 +94,15 @@ SendTransactionScreen.prototype.render = function () {
         ]),
       ]),
 
-
-      // Ether balance
-      h(EthBalance, {
-        value: account && account.balance,
-        conversionRate,
-        currentCurrency,
-      }),
+      h('div.panel', [
+          // Ether balance
+          h(EthBalance, {
+            value: account && account.balance,
+            conversionRate,
+            currentCurrency,
+          }),
+        ]
+      ),
 
 
       //

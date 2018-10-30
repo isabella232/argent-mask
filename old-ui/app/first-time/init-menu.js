@@ -68,7 +68,7 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
         h('input.form-control', {
           type: 'text',
           id: 'ens-box',
-          placeholder: 'yourname.argentx.eth',
+          placeholder: 'yourname.argent.xyz',
           onInput: this.inputChanged.bind(this),
         }),
       ]),
@@ -87,7 +87,7 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
           h('i.fa.fa-question-circle.pointer'),
         ]),
 
-        h('span.in-progress-notification', state.warning),
+        h('div.error', state.warning),
 
         // password
         h('input.form-control', {
