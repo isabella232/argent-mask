@@ -11,12 +11,13 @@ const EventEmitter = require('events').EventEmitter
 module.exports = connect(mapStateToProps)(UnlockScreen)
 
 inherits(UnlockScreen, Component)
-function UnlockScreen () {
+
+function UnlockScreen() {
   Component.call(this)
   this.animationEventEmitter = new EventEmitter()
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     warning: state.appState.warning,
   }
@@ -26,78 +27,49 @@ UnlockScreen.prototype.render = function () {
   const state = this.props
   const warning = state.warning
   return (
-    h('.flex-column', {
-      style: {
-        width: 'inherit',
-      },
-    }, [
       h('.unlock-screen.flex-column.flex-center.flex-grow', [
 
         // h(Mascot, {
         //   animationEventEmitter: this.animationEventEmitter,
         // }),
 
-        h('img', {
-          height: 128,
-          width: 128,
-          src: './images/argent-icon.png',
-          style: {
-            marginBottom: 20,
-            marginTop: 30,
-          }
-        }),
+        h('.logo-stacked', [
+          h('div.ren'),
+          h('h1.text-wordmark', 'argent'),
+          h('div.powered-by', 'Powered by MetaMask'),
+        ]),
 
-        h('h1', {
-          style: {
-            fontSize: '1.4em',
-            textTransform: 'uppercase',
-            color: '#7F8082',
-            marginBottom: 20,
-            marginTop: 20,
-          },
-        // }, 'MetaMask'),
-      }, 'Argent-Connect'),
+        h('div.form-group', [
 
-        h('input.large-input', {
-          type: 'password',
-          id: 'password-box',
-          placeholder: 'enter password',
-          style: {
+          h('input.form-control', {
+            type: 'password',
+            id: 'password-box',
+            placeholder: 'enter password',
+            style: {},
+            onKeyPress: this.onKeyPress.bind(this),
+            onInput: this.inputChanged.bind(this),
+          }),
 
-          },
-          onKeyPress: this.onKeyPress.bind(this),
-          onInput: this.inputChanged.bind(this),
-        }),
+          h('.error', {
+            style: {
+              display: warning ? 'block' : 'none',
+            },
+          }, warning),
+        ]),
 
-        h('.error', {
-          style: {
-            display: warning ? 'block' : 'none',
-            padding: '0 20px',
-            textAlign: 'center',
-          },
-        }, warning),
 
-        h('button.primary.cursor-pointer', {
+        h('button.login', {
           onClick: this.onSubmit.bind(this),
-          style: {
-            margin: 10,
-          },
-        }, 'Log In'),
-      ]),
+        }, 'Log in'),
 
-      h('.flex-row.flex-center.flex-grow', [
-        h('p.pointer', {
+
+        h('a.new-key', {
+          href: '#',
           // onClick: () => this.props.dispatch(actions.forgotPassword()),
           onClick: () => this.props.dispatch(actions.markPasswordForgotten()),
-          style: {
-            fontSize: '0.8em',
-            color: 'rgb(247, 134, 28)',
-            textDecoration: 'underline',
-          },
-        // }, 'Restore from seed phrase'),
+          // }, 'Restore from seed phrase'),
         }, 'Generate new browser key'),
-      ]),
-    ])
+      ])
   )
 }
 

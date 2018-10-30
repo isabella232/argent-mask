@@ -169,10 +169,6 @@ class AccountDropdowns extends Component {
     return h(
       Dropdown,
       {
-        style: {
-          marginLeft: '-215px',
-          minWidth: '180px',
-        },
         isOpen: optionsMenuActive,
         onClickOutside: (event) => {
           const { classList } = event.target
@@ -238,9 +234,16 @@ class AccountDropdowns extends Component {
     const { optionsMenuActive, accountSelectorActive } = this.state
 
     return h(
-      'span',
+      'div.account-selector',
       {
         style: style,
+        onClick: (event) => {
+          event.stopPropagation()
+          this.setState({
+            accountSelectorActive: false,
+            optionsMenuActive: !optionsMenuActive,
+          })
+        },
       },
       [
         // enableAccountsSelector && h(
@@ -267,19 +270,7 @@ class AccountDropdowns extends Component {
         // ),
         enableAccountOptions && h(
           'i.fa.fa-ellipsis-h',
-          {
-            style: {
-              margin: '0.5em',
-              fontSize: '1.8em',
-            },
-            onClick: (event) => {
-              event.stopPropagation()
-              this.setState({
-                accountSelectorActive: false,
-                optionsMenuActive: !optionsMenuActive,
-              })
-            },
-          },
+          {},
           this.renderAccountOptions()
         ),
       ]

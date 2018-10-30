@@ -25,7 +25,7 @@ AccountPanel.prototype.render = function () {
     identiconLabel: identity.name || '',
     attributes: [
       {
-        key: 'ADDRESS',
+        key: 'Address',
         value: addressSummary(identity.address),
       },
       balanceOrFaucetingIndication(account, isFauceting),
@@ -34,31 +34,30 @@ AccountPanel.prototype.render = function () {
 
   return (
 
-    h('.identity-panel.flex-row.flex-space-between', {
+    h('.panel.identity-panel', {
       style: {
-        flex: '1 0 auto',
         cursor: panelState.onClick ? 'pointer' : undefined,
       },
       onClick: panelState.onClick,
     }, [
 
       // account identicon
-      h('.identicon-wrapper.flex-column.select-none', [
+      h('.identicon-wrapper.select-none', [
         h(Identicon, {
+          diameter: 62,
           address: panelState.identiconKey,
           imageify: state.imageifyIdenticons,
         }),
-        h('span.font-small', panelState.identiconLabel.substring(0, 7) + '...'),
       ]),
 
       // account address, balance
-      h('.identity-data.flex-column.flex-justify-center.flex-grow.select-none', [
-
+      h('.identity-data.select-none', [
+        h('h3.ens', panelState.identiconLabel),
         panelState.attributes.map((attr) => {
           return h('.flex-row.flex-space-between', {
             key: '' + Math.round(Math.random() * 1000000),
           }, [
-            h('label.font-small.no-select', attr.key),
+            h('div.font-small.no-select', attr.key),
             h('span.font-small', attr.value),
           ])
         }),
@@ -79,7 +78,7 @@ function balanceOrFaucetingIndication (account, isFauceting) {
     }
   } else {
     return {
-      key: 'BALANCE',
+      key: 'Balance',
       value: formatBalance(account.balance),
     }
   }

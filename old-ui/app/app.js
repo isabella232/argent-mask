@@ -40,9 +40,12 @@ const RevealSeedConfirmation = require('./keychains/hd/recover-seed/confirmation
 module.exports = connect(mapStateToProps)(App)
 
 inherits(App, Component)
-function App () { Component.call(this) }
 
-function mapStateToProps (state) {
+function App() {
+  Component.call(this)
+}
+
+function mapStateToProps(state) {
   const {
     identities,
     accounts,
@@ -90,19 +93,18 @@ function mapStateToProps (state) {
 
 App.prototype.render = function () {
   var props = this.props
-  const { isLoading, loadingMessage, transForward, network } = props
+  const {isLoading, loadingMessage, transForward, network} = props
   const isLoadingNetwork = network === 'loading' && props.currentView.name !== 'config'
   const loadMessage = loadingMessage || isLoadingNetwork ?
     `Connecting to ${this.getNetworkName()}` : null
   log.debug('Main ui render function')
 
   return (
-    h('.flex-column.full-height', {
+    h('div', {
       style: {
         // Windows was showing a vertical scroll bar:
         overflow: 'hidden',
-        position: 'relative',
-        alignItems: 'center',
+        position: 'relative'
       },
     }, [
 
@@ -111,14 +113,10 @@ App.prototype.render = function () {
       // this.renderNetworkDropdown(),
       this.renderDropdown(),
 
-      this.renderLoadingIndicator({ isLoading, isLoadingNetwork, loadMessage }),
+      this.renderLoadingIndicator({isLoading, isLoadingNetwork, loadMessage}),
 
       // panel content
-      h('.app-primary' + (transForward ? '.from-right' : '.from-left'), {
-        style: {
-          width: '100%',
-        },
-      }, [
+      h('.app-primary' + (transForward ? '.from-right' : '.from-left'), [
         this.renderPrimary(),
       ]),
     ])
@@ -146,82 +144,58 @@ App.prototype.renderAppBar = function () {
   }
 
   return (
-
-    h('.full-width', {
-      height: '38px',
+    h('header.app-header', {
+      style: {
+        visibility: props.isUnlocked ? 'visible' : 'none'
+      },
     }, [
 
-      h('.app-header.flex-row.flex-space-between', {
-        style: {
-          alignItems: 'center',
-          visibility: props.isUnlocked ? 'visible' : 'none',
-          background: props.isUnlocked ? 'white' : 'none',
-          height: '38px',
-          position: 'relative',
-          zIndex: 12,
-        },
-      }, [
+      h('div.left-menu-section', [
 
-        h('div.left-menu-section', {
-          style: {
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
+        // mini logo
+        h('img', {
+          height: 24,
+          width: 24,
+          src: './images/icon-128.png',
+        }),
+
+        // h(NetworkIndicator, {
+        //   network: this.props.network,
+        //   provider: this.props.provider,
+        //   onClick: (event) => {
+        //     event.preventDefault()
+        //     event.stopPropagation()
+        //     this.setState({ isNetworkMenuOpen: !isNetworkMenuOpen })
+        //   },
+        // }),
+
+      ]),
+
+      props.isUnlocked && h('div', [
+
+        // props.isUnlocked && h(AccountDropdowns, {
+        //   style: {},
+        //   enableAccountsSelector: true,
+        //   identities: this.props.identities,
+        //   selected: this.props.selectedAddress,
+        //   network: this.props.network,
+        //   keyrings: this.props.keyrings,
+        // }, []),
+
+        // hamburger
+        props.isUnlocked && h(SandwichExpando, {
+          className: 'sandwich-expando',
+          width: 16,
+          barHeight: 2,
+          padding: 0,
+          isOpen: state.isMainMenuOpen,
+          color: 'rgb(247,146,30)',
+          onClick: () => {
+            this.setState({
+              isMainMenuOpen: !state.isMainMenuOpen,
+            })
           },
-        }, [
-
-          // mini logo
-          h('img', {
-            height: 24,
-            width: 24,
-            // src: './images/icon-128.png',
-            src: './images/argent-icon.png',
-          }),
-
-          // h(NetworkIndicator, {
-          //   network: this.props.network,
-          //   provider: this.props.provider,
-          //   onClick: (event) => {
-          //     event.preventDefault()
-          //     event.stopPropagation()
-          //     this.setState({ isNetworkMenuOpen: !isNetworkMenuOpen })
-          //   },
-          // }),
-
-        ]),
-
-        props.isUnlocked && h('div', {
-          style: {
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-          },
-        }, [
-
-          // props.isUnlocked && h(AccountDropdowns, {
-          //   style: {},
-          //   enableAccountsSelector: true,
-          //   identities: this.props.identities,
-          //   selected: this.props.selectedAddress,
-          //   network: this.props.network,
-          //   keyrings: this.props.keyrings,
-          // }, []),
-
-          // hamburger
-          props.isUnlocked && h(SandwichExpando, {
-            className: 'sandwich-expando',
-            width: 16,
-            barHeight: 2,
-            padding: 0,
-            isOpen: state.isMainMenuOpen,
-            color: 'rgb(247,146,30)',
-            onClick: () => {
-              this.setState({
-                isMainMenuOpen: !state.isMainMenuOpen,
-              })
-            },
-          }),
-        ]),
+        }),
       ]),
     ])
   )
@@ -229,7 +203,7 @@ App.prototype.renderAppBar = function () {
 
 App.prototype.renderNetworkDropdown = function () {
   const props = this.props
-  const { provider: { type: providerType, rpcTarget: activeNetwork } } = props
+  const {provider: {type: providerType, rpcTarget: activeNetwork}} = props
   const rpcList = props.frequentRpcList
   const state = this.state || {}
   const isOpen = state.isNetworkMenuOpen
@@ -238,7 +212,7 @@ App.prototype.renderNetworkDropdown = function () {
     useCssTransition: true,
     isOpen,
     onClickOutside: (event) => {
-      const { classList } = event.target
+      const {classList} = event.target
       const isNotToggleElement = [
         classList.contains('menu-icon'),
         classList.contains('network-name'),
@@ -247,7 +221,7 @@ App.prototype.renderNetworkDropdown = function () {
       // classes from three constituent nodes of the toggle element
 
       if (isNotToggleElement) {
-        this.setState({ isNetworkMenuOpen: false })
+        this.setState({isNetworkMenuOpen: false})
       }
     },
     zIndex: 11,
@@ -265,7 +239,7 @@ App.prototype.renderNetworkDropdown = function () {
       DropdownMenuItem,
       {
         key: 'main',
-        closeMenu: () => this.setState({ isNetworkMenuOpen: !isOpen }),
+        closeMenu: () => this.setState({isNetworkMenuOpen: !isOpen}),
         onClick: () => props.dispatch(actions.setProviderType('mainnet')),
         style: {
           fontSize: '18px',
@@ -282,7 +256,7 @@ App.prototype.renderNetworkDropdown = function () {
       DropdownMenuItem,
       {
         key: 'ropsten',
-        closeMenu: () => this.setState({ isNetworkMenuOpen: !isOpen }),
+        closeMenu: () => this.setState({isNetworkMenuOpen: !isOpen}),
         onClick: () => props.dispatch(actions.setProviderType('ropsten')),
         style: {
           fontSize: '18px',
@@ -299,7 +273,7 @@ App.prototype.renderNetworkDropdown = function () {
       DropdownMenuItem,
       {
         key: 'kovan',
-        closeMenu: () => this.setState({ isNetworkMenuOpen: !isOpen }),
+        closeMenu: () => this.setState({isNetworkMenuOpen: !isOpen}),
         onClick: () => props.dispatch(actions.setProviderType('kovan')),
         style: {
           fontSize: '18px',
@@ -316,7 +290,7 @@ App.prototype.renderNetworkDropdown = function () {
       DropdownMenuItem,
       {
         key: 'rinkeby',
-        closeMenu: () => this.setState({ isNetworkMenuOpen: !isOpen }),
+        closeMenu: () => this.setState({isNetworkMenuOpen: !isOpen}),
         onClick: () => props.dispatch(actions.setProviderType('rinkeby')),
         style: {
           fontSize: '18px',
@@ -333,7 +307,7 @@ App.prototype.renderNetworkDropdown = function () {
       DropdownMenuItem,
       {
         key: 'default',
-        closeMenu: () => this.setState({ isNetworkMenuOpen: !isOpen }),
+        closeMenu: () => this.setState({isNetworkMenuOpen: !isOpen}),
         onClick: () => props.dispatch(actions.setProviderType('localhost')),
         style: {
           fontSize: '18px',
@@ -352,7 +326,7 @@ App.prototype.renderNetworkDropdown = function () {
     h(
       DropdownMenuItem,
       {
-        closeMenu: () => this.setState({ isNetworkMenuOpen: !isOpen }),
+        closeMenu: () => this.setState({isNetworkMenuOpen: !isOpen}),
         onClick: () => this.props.dispatch(actions.showConfigPage()),
         style: {
           fontSize: '18px',
@@ -384,7 +358,7 @@ App.prototype.renderDropdown = function () {
         parentClassList.contains('sandwich-expando')
 
       if (isOpen && !isToggleElement) {
-        this.setState({ isMainMenuOpen: false })
+        this.setState({isMainMenuOpen: false})
       }
     },
     style: {
@@ -395,13 +369,17 @@ App.prototype.renderDropdown = function () {
     innerStyle: {},
   }, [
     h(DropdownMenuItem, {
-      closeMenu: () => this.setState({ isMainMenuOpen: !isOpen }),
-      onClick: () => { this.props.dispatch(actions.showConfigPage()) },
+      closeMenu: () => this.setState({isMainMenuOpen: !isOpen}),
+      onClick: () => {
+        this.props.dispatch(actions.showConfigPage())
+      },
     }, 'Settings'),
 
     h(DropdownMenuItem, {
-      closeMenu: () => this.setState({ isMainMenuOpen: !isOpen }),
-      onClick: () => { this.props.dispatch(actions.lockMetamask()) },
+      closeMenu: () => this.setState({isMainMenuOpen: !isOpen}),
+      onClick: () => {
+        this.props.dispatch(actions.lockMetamask())
+      },
     }, 'Log Out'),
 
     // h(DropdownMenuItem, {
@@ -418,8 +396,8 @@ App.prototype.renderDropdown = function () {
   ])
 }
 
-App.prototype.renderLoadingIndicator = function ({ isLoading, isLoadingNetwork, loadMessage }) {
-  const { isMascara } = this.props
+App.prototype.renderLoadingIndicator = function ({isLoading, isLoadingNetwork, loadMessage}) {
+  const {isMascara} = this.props
 
   return isMascara
     ? null
@@ -461,7 +439,7 @@ App.prototype.renderPrimary = function () {
   if (!props.noActiveNotices) {
     log.debug('rendering notice screen for unread notices.')
     return h('div', {
-      style: { width: '100%' },
+      style: {width: '100%'},
     }, [
 
       h(NoticeScreen, {
@@ -638,7 +616,7 @@ App.prototype.toggleMetamaskActive = function () {
 }
 
 App.prototype.renderCustomOption = function (provider) {
-  const { rpcTarget, type } = provider
+  const {rpcTarget, type} = provider
   const props = this.props
 
   if (type !== 'rpc') return null
@@ -660,7 +638,7 @@ App.prototype.renderCustomOption = function (provider) {
         {
           key: rpcTarget,
           onClick: () => props.dispatch(actions.setRpcTarget(rpcTarget)),
-          closeMenu: () => this.setState({ isNetworkMenuOpen: false }),
+          closeMenu: () => this.setState({isNetworkMenuOpen: false}),
         },
         [
           h('i.fa.fa-question-circle.fa-lg.menu-icon'),
@@ -672,7 +650,7 @@ App.prototype.renderCustomOption = function (provider) {
 }
 
 App.prototype.getNetworkName = function () {
-  const { provider } = this.props
+  const {provider} = this.props
   const providerName = provider.type
 
   let name
@@ -704,7 +682,7 @@ App.prototype.renderCommonRpc = function (rpcList, provider) {
         DropdownMenuItem,
         {
           key: `common${rpc}`,
-          closeMenu: () => this.setState({ isNetworkMenuOpen: false }),
+          closeMenu: () => this.setState({isNetworkMenuOpen: false}),
           onClick: () => props.dispatch(actions.setRpcTarget(rpc)),
         },
         [

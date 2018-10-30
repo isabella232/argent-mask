@@ -13,7 +13,7 @@ const EnsInput = require('./components/ens-input')
 const ethUtil = require('ethereumjs-util')
 module.exports = connect(mapStateToProps)(SendTransactionScreen)
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   var result = {
     address: state.metamask.selectedAddress,
     accounts: state.metamask.accounts,
@@ -37,7 +37,8 @@ function mapStateToProps (state) {
 }
 
 inherits(SendTransactionScreen, PersistentForm)
-function SendTransactionScreen () {
+
+function SendTransactionScreen() {
   PersistentForm.call(this)
 }
 
@@ -58,133 +59,105 @@ SendTransactionScreen.prototype.render = function () {
 
   return (
 
-    h('.send-screen.flex-column.flex-grow', [
+    h('.send-screen', [
+      // header bar (back button, label)
+      h('header.panel.screen-header', [
+        // back button
+        h('i.fa.fa-arrow-left.fa-lg.cursor-pointer.color-orange', {
+          onClick: this.back.bind(this),
+        }),
+        h('h1', 'Send ETH'),
+      ]),
 
       //
       // Sender Profile
       //
 
-      h('.account-data-subsection.flex-row.flex-grow', {
-        style: {
-          margin: '0 20px',
-        },
-      }, [
+      h('.panel.identity-panel', [
 
         // header - identicon + nav
-        h('.flex-row.flex-space-between', {
-          style: {
-            marginTop: '15px',
-          },
-        }, [
-          // back button
-          h('i.fa.fa-arrow-left.fa-lg.cursor-pointer.color-orange', {
-            onClick: this.back.bind(this),
+
+        // large identicon
+        h('.identicon-wrapper.select-none', [
+          h(Identicon, {
+            diameter: 62,
+            address: address,
           }),
-
-          // large identicon
-          h('.identicon-wrapper.flex-column.flex-center.select-none', [
-            h(Identicon, {
-              diameter: 62,
-              address: address,
-            }),
-          ]),
-
-          // invisible place holder
-          h('i.fa.fa-users.fa-lg.invisible', {
-            style: {
-              marginTop: '28px',
-            },
-          }),
-
         ]),
 
         // account label
-
-        h('.flex-column', {
-          style: {
-            marginTop: '10px',
-            alignItems: 'flex-start',
-          },
-        }, [
-          h('h2.font-medium.color-forest.flex-center', {
-            style: {
-              paddingTop: '8px',
-              marginBottom: '8px',
-            },
-          }, identity && identity.name),
+        h('.identity-data', [
+          h('h3.ens', identity && identity.name),
 
           // address and getter actions
-          h('.flex-row.flex-center', {
-            style: {
-              marginBottom: '8px',
-            },
-          }, [
-
-            h('div', {
-              style: {
-                lineHeight: '16px',
-              },
-            }, addressSummary(address)),
-
-          ]),
-
-          // balance
-          h('.flex-row.flex-center', [
-
-            h(EthBalance, {
-              value: account && account.balance,
-              conversionRate,
-              currentCurrency,
-            }),
-
-          ]),
+          h('.full-address', addressSummary(address)),
         ]),
       ]),
+
+
+      // Ether balance
+      h(EthBalance, {
+        value: account && account.balance,
+        conversionRate,
+        currentCurrency,
+      }),
+
 
       //
       // Required Fields
       //
 
-      h('h3.flex-center.text-transform-uppercase', {
-        style: {
-          background: '#EBEBEB',
-          color: '#AEAEAE',
-          marginTop: '15px',
-          marginBottom: '16px',
-        },
-      }, [
-        'Send Transaction',
-      ]),
+      h('hr'),
 
       // error message
       props.error && h('span.error.flex-center', props.error),
 
-      // 'to' field
-      h('section.flex-row.flex-center', [
-        h(EnsInput, {
-          name: 'address',
-          placeholder: 'Recipient Address',
-          onChange: this.recipientDidChange.bind(this),
-          network,
-          identities,
-          addressBook,
-        }),
-      ]),
+      h('div.panel.recipient-panel', [
+        // 'to' field
+        h('div.form-group', [
+          h(EnsInput, {
+            name: 'address',
+            placeholder: 'Recipient Address',
+            onChange: this.recipientDidChange.bind(this),
+            network,
+            identities,
+            addressBook,
+          }),
+        ]),
 
-      // 'amount' and send button
-      h('section.flex-row.flex-center', [
+        // 'amount' and send button
+        h('div.form-group', [
 
-        h('input.large-input', {
-          name: 'amount',
-          placeholder: 'Amount',
-          type: 'number',
-          style: {
-            marginRight: '6px',
-          },
-          dataset: {
-            persistentFormId: 'tx-amount',
-          },
-        }),
+          h('input.form-control', {
+            name: 'amount',
+            placeholder: 'Amount',
+            type: 'number',
+            style: {
+              marginRight: '6px',
+            },
+            dataset: {
+              persistentFormId: 'tx-amount',
+            },
+          }),
+        ]),
+
+        h('div.form-group', [
+          h('label', {
+            htmlFor: 'txData'
+          }, 'Transaction data (optional)'),
+
+          h('input.form-control', {
+            name: 'txData',
+            placeholder: '0x01234',
+            style: {
+              width: '100%',
+              resize: 'none',
+            },
+            dataset: {
+              persistentFormId: 'tx-data',
+            },
+          }),
+        ]),
 
         h('button.primary', {
           onClick: this.onSubmit.bind(this),
@@ -192,37 +165,8 @@ SendTransactionScreen.prototype.render = function () {
             textTransform: 'uppercase',
           },
         }, 'Next'),
-
       ]),
 
-      //
-      // Optional Fields
-      //
-      h('h3.flex-center.text-transform-uppercase', {
-        style: {
-          background: '#EBEBEB',
-          color: '#AEAEAE',
-          marginTop: '16px',
-          marginBottom: '16px',
-        },
-      }, [
-        'Transaction Data (optional)',
-      ]),
-
-      // 'data' field
-      h('section.flex-column.flex-center', [
-        h('input.large-input', {
-          name: 'txData',
-          placeholder: '0x01234',
-          style: {
-            width: '100%',
-            resize: 'none',
-          },
-          dataset: {
-            persistentFormId: 'tx-data',
-          },
-        }),
-      ]),
     ])
   )
 }

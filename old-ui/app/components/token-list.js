@@ -54,7 +54,7 @@ TokenList.prototype.render = function () {
     return h(TokenCell, tokenData)
   })
 
-  return h('.full-flex-height', [
+  return h('.token-list', [
     this.renderTokenStatusBar(),
 
     h('ol.full-flex-height.flex-column', {
@@ -102,15 +102,7 @@ TokenList.prototype.renderTokenStatusBar = function () {
     msg = `No tokens found`
   }
 
-  return h('div', {
-    style: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      minHeight: '70px',
-      padding: '10px',
-    },
-  }, [
+  return h('div.token-list-header', [
     h('span', msg),
     h('button', {
       key: 'reveal-account-bar',
@@ -118,15 +110,8 @@ TokenList.prototype.renderTokenStatusBar = function () {
         event.preventDefault()
         this.props.addToken()
       },
-      style: {
-        display: 'flex',
-        height: '40px',
-        padding: '10px',
-        justifyContent: 'center',
-        alignItems: 'center',
-      },
     }, [
-      'ADD TOKEN',
+      'Add token',
     ]),
   ])
 }

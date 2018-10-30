@@ -15,14 +15,15 @@ const emptyAddr = '0x0000000000000000000000000000000000000000'
 
 module.exports = connect(mapStateToProps)(AddTokenScreen)
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     identities: state.metamask.identities,
   }
 }
 
 inherits(AddTokenScreen, Component)
-function AddTokenScreen () {
+
+function AddTokenScreen() {
   this.state = {
     warning: null,
     address: '',
@@ -35,133 +36,105 @@ function AddTokenScreen () {
 AddTokenScreen.prototype.render = function () {
   const state = this.state
   const props = this.props
-  const { warning, symbol, decimals } = state
+  const {warning, symbol, decimals} = state
 
   return (
-    h('.flex-column.flex-grow', [
+    h('div.add-token-screen', [
 
-      // subtitle and nav
-      h('.section-title.flex-row.flex-center', [
-        h('i.fa.fa-arrow-left.fa-lg.cursor-pointer', {
+      // header bar (back button, label)
+      h('header.panel.screen-header', [
+        // back button
+        h('i.fa.fa-arrow-left.fa-lg.cursor-pointer.color-orange', {
           onClick: (event) => {
             props.dispatch(actions.goHome())
           },
         }),
-        h('h2.page-subtitle', 'Add Token'),
+        h('h1', 'Add token'),
       ]),
 
       h('.error', {
         style: {
           display: warning ? 'block' : 'none',
-          padding: '0 20px',
-          textAlign: 'center',
         },
       }, warning),
 
       // conf view
-      h('.flex-column.flex-justify-center.flex-grow.select-none', [
-        h('.flex-space-around', {
-          style: {
-            padding: '20px',
-          },
-        }, [
+      h('div.panel.add-token.select-none', [
 
-          h('div', [
-            h(Tooltip, {
-              position: 'top',
-              title: 'The contract of the actual token contract. Click for more info.',
+        h('div.form-group', [
+          h('label', {
+            htmlFor: 'token-address'
+          }, 'Token Contract Address '),
+
+          h(Tooltip, {
+            position: 'top',
+            title: 'The contract of the actual token contract. Click for more info.',
+          }, [
+            h('a', {
+              href: 'https://metamask.zendesk.com/hc/en-us/articles/360015488811-What-is-a-Token-Contract-Address-',
+              target: '_blank',
             }, [
-              h('a', {
-                style: { fontWeight: 'bold', paddingRight: '10px'},
-                href: 'https://support.metamask.io/kb/article/24-what-is-a-token-contract-address',
-                target: '_blank',
-              }, [
-                h('span', 'Token Contract Address  '),
-                h('i.fa.fa-question-circle'),
-              ]),
+              h('i.fa.fa-question-circle'),
             ]),
           ]),
 
-          h('section.flex-row.flex-center', [
-            h('input#token-address', {
-              name: 'address',
-              placeholder: 'Token Contract Address',
-              onChange: this.tokenAddressDidChange.bind(this),
-              style: {
-                width: 'inherit',
-                flex: '1 0 auto',
-                height: '30px',
-                margin: '8px',
-              },
-            }),
-          ]),
-
-          h('div', [
-            h('span', {
-              style: { fontWeight: 'bold', paddingRight: '10px'},
-            }, 'Token Symbol'),
-          ]),
-
-          h('div', { style: {display: 'flex'} }, [
-            h('input#token_symbol', {
-              placeholder: `Like "ETH"`,
-              value: symbol,
-              style: {
-                width: 'inherit',
-                flex: '1 0 auto',
-                height: '30px',
-                margin: '8px',
-              },
-              onChange: (event) => {
-                var element = event.target
-                var symbol = element.value
-                this.setState({ symbol })
-              },
-            }),
-          ]),
-
-          h('div', [
-            h('span', {
-              style: { fontWeight: 'bold', paddingRight: '10px'},
-            }, 'Decimals of Precision'),
-          ]),
-
-          h('div', { style: {display: 'flex'} }, [
-            h('input#token_decimals', {
-              value: decimals,
-              type: 'number',
-              min: 0,
-              max: 36,
-              style: {
-                width: 'inherit',
-                flex: '1 0 auto',
-                height: '30px',
-                margin: '8px',
-              },
-              onChange: (event) => {
-                var element = event.target
-                var decimals = element.value.trim()
-                this.setState({ decimals })
-              },
-            }),
-          ]),
-
-          h('button', {
-            style: {
-              alignSelf: 'center',
-            },
-            onClick: (event) => {
-              const valid = this.validateInputs()
-              if (!valid) return
-
-              const { address, symbol, decimals } = this.state
-              this.props.dispatch(actions.addToken(address.trim(), symbol.trim(), decimals))
-                .then(() => {
-                  this.props.dispatch(actions.goHome())
-                })
-            },
-          }, 'Add'),
+          h('input#token-address.form-control', {
+            name: 'address',
+            placeholder: 'Token Contract Address',
+            onChange: this.tokenAddressDidChange.bind(this)
+          }),
         ]),
+
+
+        h('div.form-group', [
+          h('label', {
+            htmlFor: 'token_symbol'
+          }, 'Token Symbol'),
+
+          h('input#token_symbol.form-control', {
+            placeholder: `Like "ETH"`,
+            value: symbol,
+            onChange: (event) => {
+              var element = event.target
+              var symbol = element.value
+              this.setState({symbol})
+            },
+          }),
+
+        ]),
+
+
+        h('div.form-group', [
+          h('label', {
+            htmlFor: 'token_decimals'
+          }, 'Decimals of Precision'),
+
+          h('input#token_decimals.form-control', {
+            value: decimals,
+            type: 'number',
+            min: 0,
+            max: 36,
+            onChange: (event) => {
+              var element = event.target
+              var decimals = element.value.trim()
+              this.setState({decimals})
+            },
+          }),
+        ]),
+
+
+        h('button', {
+          onClick: (event) => {
+            const valid = this.validateInputs()
+            if (!valid) return
+
+            const {address, symbol, decimals} = this.state
+            this.props.dispatch(actions.addToken(address.trim(), symbol.trim(), decimals))
+              .then(() => {
+                this.props.dispatch(actions.goHome())
+              })
+          },
+        }, 'Add'),
       ]),
     ])
   )
@@ -179,7 +152,7 @@ AddTokenScreen.prototype.tokenAddressDidChange = function (event) {
   const el = event.target
   const address = el.value.trim()
   if (ethUtil.isValidAddress(address) && address !== emptyAddr) {
-    this.setState({ address })
+    this.setState({address})
     this.attemptToAutoFillTokenParams(address)
   }
 }
@@ -188,7 +161,7 @@ AddTokenScreen.prototype.validateInputs = function () {
   let msg = ''
   const state = this.state
   const identitiesList = Object.keys(this.props.identities)
-  const { address, symbol, decimals } = state
+  const {address, symbol, decimals} = state
   const standardAddress = ethUtil.addHexPrefix(address).toLowerCase()
 
   const validAddress = ethUtil.isValidAddress(address)
@@ -219,7 +192,7 @@ AddTokenScreen.prototype.validateInputs = function () {
       warning: msg,
     })
   } else {
-    this.setState({ warning: null })
+    this.setState({warning: null})
   }
 
   return isValid
@@ -233,9 +206,9 @@ AddTokenScreen.prototype.attemptToAutoFillTokenParams = async function (address)
     contract.decimals(),
   ])
 
-  const [ symbol, decimals ] = results
+  const [symbol, decimals] = results
   if (symbol && decimals) {
-    console.log('SETTING SYMBOL AND DECIMALS', { symbol, decimals })
-    this.setState({ symbol: symbol[0], decimals: decimals[0].toString() })
+    console.log('SETTING SYMBOL AND DECIMALS', {symbol, decimals})
+    this.setState({symbol: symbol[0], decimals: decimals[0].toString()})
   }
 }
