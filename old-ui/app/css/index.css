@@ -515,6 +515,15 @@ button.cancel {
 /*
  * Transaction confirmation screen
  */
+.confirm-transaction-screen .screen-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.confirm-transaction-screen .screen-header .subtitle-wrapper  {
+  max-width: 200px;
+}
+
 .confirmation-buttons {
   display: flex;
   justify-content: space-around;
