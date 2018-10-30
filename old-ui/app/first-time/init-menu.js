@@ -78,7 +78,7 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
       h('div.form-group', [
         h('label', {
           htmlFor: 'password-box'
-        }, 'Enter your new browser key'),
+        }, 'Choose a password'),
 
         h(Tooltip, {
           // title: 'Your DEN is your password-encrypted storage within MetaMask.',
