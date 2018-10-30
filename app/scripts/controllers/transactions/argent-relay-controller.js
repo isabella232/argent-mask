@@ -77,7 +77,7 @@ class ArgentRelayController {
     }
 
     async signRelayedTx(relayParams) {
-        let input = '0x19' + '00' + relayParams.from.slice(2) + relayParams.to.slice(2) + leftPad(relayParams.value, '64', '0') + relayParams.data.slice(2) + relayParams.nonce.slice(2) + leftPad(relayParams.gasPrice, '64', '0');
+        let input = '0x19' + '00' + relayParams.from.slice(2) + relayParams.wallet.slice(2) + leftPad(relayParams.value, '64', '0') + relayParams.data.slice(2) + relayParams.nonce.slice(2) + leftPad(relayParams.gasPrice, '64', '0');
         let messageData = await web3.sha3(input, { encoding: 'hex' });
         relayParams.signatures = await this.signMessage({ from: relayParams.to, data: messageData })
     }
