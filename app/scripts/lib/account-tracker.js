@@ -13,8 +13,8 @@ const ObservableStore = require('obs-store')
 const EventEmitter = require('events').EventEmitter
 function noop () {}
 
-const DAPP_MANAGER_MODULE_ADDRESS = '0x99ed02549F75D9324C98919d70eff6058bEd774c'
-const LOCK_MANAGER_MODULE_ADDRESS = '0x9e225589f2A6f1b42DB458b659B5949c28a2d77c'
+const DAPP_MANAGER_MODULE_ADDRESS = '0x3d756571e23c5Fb2744F6C64e57F29f01f9Fd498'
+const LOCK_MANAGER_MODULE_ADDRESS = '0xf17c98504804B7f6F6542C3badD3F9C511A75eC8'
 const web3Abi = require('web3-eth-abi')
 const getDailyUnspentAbi = require('./methods/argent/getDailyUnspent')
 const getLockAbi = require('./methods/argent/getLock')

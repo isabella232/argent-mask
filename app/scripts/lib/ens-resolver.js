@@ -1,6 +1,7 @@
 
 const ensRegistries = {
-    ropsten: '0x112234455c3a32fd11230c42e7bccd4a84e02010', // official ropsten ens registry
+    // ropsten: '0x112234455c3a32fd11230c42e7bccd4a84e02010', // official ropsten ens registry
+    ropsten: '0xBBC9110736cc593D49678f9509D3855A87660E73', // official ropsten ens registry
     rinkeby: '0x2e15B5F43561e13a344F392d062c178531D624d9', // our own ens registry
     mainnet: '0x314159265dd8dbb310642f98f50c066173c1259b',
 }
@@ -21,12 +22,15 @@ class EnsResolver {
         const ensRegistryAddress = ensRegistries[opts.getProviderConfig().type];
         const ensInstance = web3.eth.contract(ensRegistryJson).at(ensRegistryAddress);
         this.resolver = Promisifier.promisify(ensInstance.resolver);
+        console.log('ensRegistryAddress', ensRegistryAddress, 'ensInstance', ensInstance, 'this.resolver', this.resolver)
     }
 
     async addressFromEns(ens) {
+        console.log('ens', ens, 'namehash', this._namehash(ens), 'this.resolver', this.resolver)
         const ensResolverAddress = await this.resolver(this._namehash(ens)); // 0xc5463256e1c0c24e1eca9cc1072343f0e5617037
         const ensResolver = web3.eth.contract(ensResolverJson).at(ensResolverAddress);
         const addr = Promisifier.promisify(ensResolver.addr);
+        console.log('ensResolverAddress', ensResolverAddress, 'addr for ', ens, 'is:', await addr(this._namehash(ens)));
         return await addr(this._namehash(ens));
     }
 

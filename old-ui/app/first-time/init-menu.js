@@ -68,7 +68,7 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
         h('input.form-control', {
           type: 'text',
           id: 'ens-box',
-          placeholder: 'yourname.argentx.eth',
+          placeholder: 'yourname.argent.xyz',
           onInput: this.inputChanged.bind(this),
         }),
       ]),
@@ -179,14 +179,14 @@ InitializeMenuScreen.prototype.createNewVault = function () {
 
   // ENS Validation
 
-  if (!ens.match(/^\w+(\.argentx\.eth|)?$/)) {
+  if (!ens.match(/^\w+(\.argent\.xyz|)?$/)) {
     this.warning = 'Invalid ENS subdomain'
     this.props.dispatch(actions.displayWarning(this.warning))
     return
   }
 
-  if(!ens.endsWith('.argentx.eth')) {
-    ens = `${ens}.argentx.eth`
+  if(!ens.endsWith('.argent.xyz')) {
+    ens = `${ens}.argent.xyz`
   }
 
   // Password Validation

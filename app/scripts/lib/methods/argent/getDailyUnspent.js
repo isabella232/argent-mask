@@ -13,12 +13,11 @@ module.exports = {
     "name": "getDailyUnspent",
     "outputs": [
         {
-            "name": "",
+            "name": "_unspent",
             "type": "uint256"
         }
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function",
-    "signature": "0x954b0b16"
+    "type": "function"
 }
