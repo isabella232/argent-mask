@@ -85,19 +85,20 @@ hr {
 
 body {
   overflow-x: hidden;
-  font-family: 'Barlow', sans-serif;
+  font-family: 'Barlow Regular', sans-serif;
   color: var(--argent-black);
 }
 
 
+h1,
+h2 {
+  font-family: 'Barlow Medium', sans-serif;
+  margin-bottom: 0.5em;
+}
+
 h1 {
   font-size: 2em;
   font-weight: 600;
-}
-
-h1,
-h2 {
-  margin-bottom: 0.5em;
 }
 
 a {
@@ -466,7 +467,7 @@ button:hover,
  */
 .menu-droppo {
   /* TODO: Separate Font Awesome icon so that it is not also the container, so that we don't have to override the font styles */
-  font-family: 'Barlow', sans-serif;
+  font-family: 'Barlow Regular', sans-serif;
   font-size: 1rem;
   min-width: 180px;
   position: absolute;

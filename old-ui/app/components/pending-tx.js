@@ -362,12 +362,11 @@ PendingTx.prototype.render = function () {
 
                 // Accept Button or Buy Button
                 insufficientBalance ? h('button.btn-green', { onClick: props.buyEth }, 'Buy Ether') :
-                  h('input.confirm.btn-green', {
+                  h('button.confirm.btn-green', {
                     type: 'submit',
-                    value: 'SUBMIT',
                     style: { marginLeft: '10px' },
                     disabled: buyDisabled,
-                  }),
+                  }, 'Submit'),
 
                 h('button.cancel.btn-red', {
                   onClick: props.cancelTransaction,

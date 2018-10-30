@@ -68,7 +68,7 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
         h('input.form-control', {
           type: 'text',
           id: 'ens-box',
-          placeholder: 'yourname.argentx.eth',
+          placeholder: 'yourname.argent.xyz',
           onInput: this.inputChanged.bind(this),
         }),
       ]),
@@ -78,7 +78,7 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
       h('div.form-group', [
         h('label', {
           htmlFor: 'password-box'
-        }, 'Enter your new browser key'),
+        }, 'Enter a new password'),
 
         h(Tooltip, {
           // title: 'Your DEN is your password-encrypted storage within MetaMask.',
@@ -87,7 +87,7 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
           h('i.fa.fa-question-circle.pointer'),
         ]),
 
-        h('span.in-progress-notification', state.warning),
+        h('div.error', state.warning),
 
         // password
         h('input.form-control', {
@@ -181,7 +181,7 @@ InitializeMenuScreen.prototype.createNewVault = function () {
   ens = ens || 'oliuk'
 
   // TODO: Uncomment this:
-  
+
   // if (password.length < 8) {
   //   this.warning = 'password not long enough'
   //   this.props.dispatch(actions.displayWarning(this.warning))
