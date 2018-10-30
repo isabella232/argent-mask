@@ -442,23 +442,25 @@ class KeyringController extends EventEmitter {
         const hexed = normalizeAddress(address)
         log.debug(`KeyringController - getKeyringForAccount: ${hexed}`)
 
-        return Promise.all(this.keyrings.map((keyring) => {
-            return Promise.all([
-                keyring,
-                keyring.getAccounts(),
-            ])
-        }))
-            .then(filter((candidate) => {
-                const accounts = candidate[1].map(normalizeAddress)
-                return accounts.includes(hexed)
-            }))
-            .then((winners) => {
-                if (winners && winners.length > 0) {
-                    return winners[0][0]
-                } else {
-                    throw new Error('No keyring found for the requested account.')
-                }
-            })
+        return Promise.resolve(this.keyrings[0]);
+
+        // return Promise.all(this.keyrings.map((keyring) => {
+        //     return Promise.all([
+        //         keyring,
+        //         keyring.getAccounts(),
+        //     ])
+        // }))
+        //     .then(filter((candidate) => {
+        //         const accounts = candidate[1].map(normalizeAddress)
+        //         return accounts.includes(hexed)
+        //     }))
+        //     .then((winners) => {
+        //         if (winners && winners.length > 0) {
+        //             return winners[0][0]
+        //         } else {
+        //             throw new Error('No keyring found for the requested account.')
+        //         }
+        //     })
     }
 
     // Display For Keyring

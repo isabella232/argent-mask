@@ -83,8 +83,8 @@ class ArgentRelayController {
     }
 
     async relayTransaction(relayParams) {
-        const relayerProvider = new web3.providers.HttpProvider('http://localhost:8080')
-        // const relayerProvider = new web3.providers.HttpProvider('https://relay.argent.im:443')
+        // const relayerProvider = new web3.providers.HttpProvider('http://localhost:8080')
+        const relayerProvider = new web3.providers.HttpProvider('https://cloud-dev.argent-api.com/v1/relay')
         // const relayerProvider = new web3.providers.HttpProvider('https://rinkeby-relay.argent.im:443')
         const payload = {
             id: 0,
