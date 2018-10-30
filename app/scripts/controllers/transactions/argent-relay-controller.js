@@ -6,7 +6,7 @@ const { getBlockNumberAsync } = require('bluebird').promisifyAll(web3.eth)
 const transferTokenAbi = require('../../lib/methods/argent/transferToken')
 const erc20TransferAbi = require('../../lib/methods/erc20Transfer')
 const ETH_TOKEN = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
-const DAPP_MANAGER_MODULE_ADDRESS = '0x99ed02549F75D9324C98919d70eff6058bEd774c'
+const DAPP_MANAGER_MODULE_ADDRESS = '0x3d756571e23c5Fb2744F6C64e57F29f01f9Fd498'
 const erc20TransferSignature = '0xa9059cbb' // == web3.utils.sha3("transfer(address,uint256)").slice(0, 10)
 
 class ArgentRelayController {
