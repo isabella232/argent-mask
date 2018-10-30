@@ -9,25 +9,23 @@ const FiatValue = require('./fiat-value.js')
 module.exports = EthBalanceComponent
 
 inherits(EthBalanceComponent, Component)
-function EthBalanceComponent () {
+
+function EthBalanceComponent() {
   Component.call(this)
 }
 
 EthBalanceComponent.prototype.render = function () {
   var props = this.props
-  let { value } = props
-  const { style, width } = props
+  let {value} = props
+  const {style, width} = props
   var needsParse = this.props.needsParse !== undefined ? this.props.needsParse : true
   value = value ? formatBalance(value, 6, needsParse) : '...'
 
   return (
 
-    h('.ether-balance.ether-balance-amount', {
-      style,
-    }, [
+    h('.ether-balance.ether-balance-amount', [
       h('div', {
         style: {
-          display: 'inline',
           width,
         },
       }, this.renderBalance(value)),
@@ -37,7 +35,7 @@ EthBalanceComponent.prototype.render = function () {
 }
 EthBalanceComponent.prototype.renderBalance = function (value) {
   var props = this.props
-  const { conversionRate, shorten, incoming, currentCurrency } = props
+  const {conversionRate, shorten, incoming, currentCurrency} = props
   if (value === 'None') return value
   if (value === '...') return value
   var balanceObj = generateBalanceObject(value, shorten ? 1 : 3)
@@ -57,33 +55,18 @@ EthBalanceComponent.prototype.renderBalance = function (value) {
 
   return (
     h(Tooltip, {
-      position: 'bottom',
-      title: `${ethNumber} ${ethSuffix}`,
-    }, h('div.flex-column', [
-      h('.flex-row', {
-        style: {
-          alignItems: 'flex-end',
-          lineHeight: '13px',
-          fontFamily: 'Montserrat Light',
-          textRendering: 'geometricPrecision',
-        },
-      }, [
-        h('div', {
-          style: {
-            width: '100%',
-            textAlign: 'right',
-          },
-        }, incoming ? `+${balance}` : balance),
-        h('div', {
-          style: {
-            color: ' #AEAEAE',
-            fontSize: '12px',
-            marginLeft: '5px',
-          },
-        }, label),
-      ]),
+        position: 'bottom',
+        title: `${ethNumber} ${ethSuffix}`,
+      },
+      // Afaik React <16 requires these silly wrapper divs.
+      h('div', [
+        h('div.eth', [
+          h('span.eth-value', incoming ? `+${balance}` : balance),
+          h('span.currency-suffix', label),
+        ]),
 
-      showFiat ? h(FiatValue, { value: props.value, conversionRate, currentCurrency }) : null,
-    ]))
+        showFiat ? h(FiatValue, {value: props.value, conversionRate, currentCurrency}) : null,
+      ])
+    )
   )
 }

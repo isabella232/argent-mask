@@ -83,7 +83,6 @@ AccountDetailScreen.prototype.render = function () {
         ]),
         h('.full-address', checksumAddress),
 
-
         h(EthBalance, {
           value: account && account.balance,
           conversionRate,

@@ -61,7 +61,7 @@ ConfirmTxScreen.prototype.render = function () {
 
   return (
 
-    h('.flex-column.flex-grow', [
+    h('div.confirm-transaction-screen', [
 
       h(LoadingIndicator, {
         isLoading: this.state ? !this.state.bypassLoadingScreen : txData.loadingDefaults,
@@ -73,8 +73,8 @@ ConfirmTxScreen.prototype.render = function () {
       }),
 
       // subtitle and nav
-      h('.section-title.flex-row.flex-center', [
-        !isNotification ? h('i.fa.fa-arrow-left.fa-lg.cursor-pointer', {
+      h('header.panel.screen-header', [
+        !isNotification ? h('i.fa.fa-arrow-left.fa-lg.cursor-pointer.color-orange', {
           onClick: this.goHome.bind(this),
         }) : null,
         h('h2.page-subtitle', 'Confirm Transaction'),

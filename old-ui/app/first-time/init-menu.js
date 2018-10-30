@@ -87,7 +87,7 @@ InitializeMenuScreen.prototype.renderMenu = function (state) {
           h('i.fa.fa-question-circle.pointer'),
         ]),
 
-        h('span.in-progress-notification', state.warning),
+        h('div.error', state.warning),
 
         // password
         h('input.form-control', {
